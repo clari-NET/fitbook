@@ -1,20 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { store } from './store/store'
+import { Provider } from 'react-redux'
+import Fitbook from './Fitbook';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello, Fit Bros/Sis!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <Fitbook />
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
