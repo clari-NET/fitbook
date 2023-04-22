@@ -13,7 +13,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Fitbook" component={Fitbook} />
+          <Stack.Screen name="Fitbook" component={(props) =>  <Fitbook {...props} extraData={someData}/>
           <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
