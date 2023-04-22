@@ -10,7 +10,8 @@ export default function CommunityList ({ communities }) {
   return (
     <View >
       <Text >Hello from Communities List!</Text>
-      {new Array(3).fill(0).map(community => <CommunityCard community={community}/>)}
+      {communities.map(community => <CommunityCard community={community}/>)}
     </View>
   )
 }
+
