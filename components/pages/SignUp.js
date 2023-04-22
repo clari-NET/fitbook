@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-
-const SignUpStack = createNativeStackNavigator();
 export default function SignUp({ navigation }) {
   return (
     <View style={styles.container}>

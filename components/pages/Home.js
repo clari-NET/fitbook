@@ -1,18 +1,24 @@
+import React, {useState } from 'react';
 import { Stylesheet, Text, View, Button } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Event from '../cards/Event';
+import Post from '../cards/Post';
 
 
-export default function Home({ navigation }) {
+export default function Home() {
+  const [showEvent, setShowEvent] = useState(true);
+
+  const toggleComponent = () => {
+    setShowEvent(!showEvent);
+  }
   return (
     <View style={styles.container}>
       <Text>Hello from Home!</Text>
+      {showEvent ? <Event /> : <Post />}
       <Button
-        title="Go to Sign-up Screen"
-        onPress={() => {
-          navigation.navigate('SignUp')
-        }}
+        title="Toggle Post/Event"
+        onPress={toggleComponent}
       />
-      <StatusBar style="auto" />
     </View>
   )
 }
