@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "reset-main": "git checkout main && git fetch origin && git reset --hard origin/main"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
