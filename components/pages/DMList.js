@@ -23,9 +23,24 @@ const sampleData = [
 ];
 
 const MessageList = () => {
+  const [messages, setMessages] = useState(sampleData);
+
+  const renderMessage = ({ item }) => (
+    <>
+      <Text>profile img </Text>
+      <View>
+        <Text >{item.name}</Text>
+        <Text >{item.body}...</Text>
+      </View>
+    </>
+  );
 
   return (
-<Text>DMList</Text>
+    <FlatList
+      data={messages}
+      renderItem={renderMessage}
+      keyExtractor={item => item.id.toString()}
+    />
   );
 };
 
