@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 
-export default function Event ({ event }) {
+export default function CommunityCard ({ community }) {
 
   return (
     <View >
-      <Text >Hello from Event Card!</Text>
+      <Text >Hello from CommunityCard!</Text>
     </View>
   )
 }
