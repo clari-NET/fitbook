@@ -1,11 +1,11 @@
 // import Card from '../cards/';
 
-export default function FriendsList({ friends }) {
+export default function Friend({ friends }) {
 
   return (
     <ScrollView>
       <View>
-        <Text>Hello from FriendsList!</Text>
+        <Text>Hello from Friend!</Text>
       </View>
     </ScrollView>
   )
