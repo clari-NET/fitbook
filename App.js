@@ -4,7 +4,6 @@ import { Provider as PaperProvider, adaptNavigationTheme } from 'react-native-pa
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Fitbook from './Fitbook';
 import SignUp from './components/pages/SignUp'
-
 import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
