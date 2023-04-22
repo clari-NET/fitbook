@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import SignUp from './pages/SignUp';
+import SignUp from './components/pages/SignUp';
 
 export default function Fitbook({ navigation }) {
   return (

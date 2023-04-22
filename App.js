@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Fitbook from './Fitbook';
-import SignUp from './pages/SignUp'
+import SignUp from './components/pages/SignUp'
 
 // Create Stack.Navigator component
 const Stack = createNativeStackNavigator();
