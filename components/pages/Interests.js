@@ -1,15 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
-// import SignUp from './components/pages/SignUp';
 
-export default function Fitbook({ navigation }) {
+export default function Interests({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Hello, Fit Bros/Sis!</Text>
+      <Text>What are your interests?</Text>
       <Button
-        title="Go to Sign-up Screen"
+        title="Continue"
         onPress={() => {
-          navigation.navigate('SignUp')
+          navigation.navigate('Main')
         }}
       />
       <StatusBar style="auto" />

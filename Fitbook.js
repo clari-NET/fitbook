@@ -1,7 +1,9 @@
 import { Provider as PaperProvider, adaptNavigationTheme } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignUp from './components/pages/SignUp';
-import Landing from './components/pages/Landing';
+import Login from './components/pages/Login';
+import Interests from './components/pages/Interests';
+import Main from './components/pages/Main';
 import AppHeader from './components/utility/AppHeader';
 import { useSelector } from 'react-redux';
 
@@ -37,8 +39,11 @@ export default function Fitbook({ navigation }) {
         <Stack.Navigator initialRouteName="Landing"  screenOptions={{
           header: (props) => <AppHeader {...props} />,
         }}>
-          <Stack.Screen name="Landing" component={Landing} />
+          <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Interests" component={Interests} />
+          <Stack.Screen name="Main" component={Main} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

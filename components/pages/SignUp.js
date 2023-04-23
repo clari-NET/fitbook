@@ -10,6 +10,12 @@ export default function SignUp({ navigation}) {
           navigation.goBack();
         }}
       />
+      <Button
+        title="Sign Up!"
+        onPress={() => {
+          navigation.navigate('Interests');
+        }}
+      />
     </View>
   );
 }

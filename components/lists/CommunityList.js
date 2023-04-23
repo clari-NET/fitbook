@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
-import Community from '../pages/Community.js';
+// import Community from '../pages/Community.js';
 import CommunityCard from '../cards/CommunityCard.js';
 
 export default function CommunityList ({ communities }) {

@@ -1,5 +1,5 @@
 import React, {useState } from 'react';
-import { Stylesheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Event from '../cards/Event';
 import Post from '../cards/Post';
