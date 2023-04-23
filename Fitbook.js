@@ -36,13 +36,13 @@ export default function Fitbook({ navigation }) {
   return (
     <PaperProvider theme={dark ? CombinedDarkTheme : CombinedDefaultTheme}>
       <NavigationContainer theme={dark ? CombinedDarkTheme : CombinedDefaultTheme}>
-        <Stack.Navigator initialRouteName="Landing"  screenOptions={{
+        <Stack.Navigator initialRouteName="Main"  screenOptions={{
           header: (props) => <AppHeader {...props} />,
         }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Interests" component={Interests} />
-          <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
 
         </Stack.Navigator>
       </NavigationContainer>
