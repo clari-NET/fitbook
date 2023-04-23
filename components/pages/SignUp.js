@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default function SignUp({ navigation }) {
+export default function SignUp({ navigation}) {
   return (
     <View style={styles.container}>
       <Text>Sign up, Swole Bro/Sis!</Text>
