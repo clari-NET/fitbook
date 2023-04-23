@@ -25,12 +25,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "fb11e326-d7eb-48e6-be05-cbf1162ef760"
-      }
-    },
-    "owner": "yale"
+    }
   }
 }

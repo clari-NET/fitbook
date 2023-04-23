@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import SignUp from './SignUp';
+// import SignUp from './components/pages/SignUp';
 
-export default function Landing({ navigation }) {
+export default function Fitbook({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Hello, Fit Bros/Sis!</Text>
