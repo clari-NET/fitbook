@@ -1,9 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function Interests({ navigation }) {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <Text>What are your interests?</Text>
       <Button
         title="Continue"
@@ -19,7 +22,6 @@ export default function Interests({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },

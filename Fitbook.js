@@ -26,6 +26,28 @@ const { LightTheme, DarkTheme } = adaptNavigationTheme({
 const CombinedDefaultTheme = merge(MD3LightTheme, LightTheme);
 const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
 
+const CustomDarkTheme = {
+  ...CombinedDarkTheme,
+  roundness: 2,
+  colors: {
+    ...CombinedDarkTheme.colors,
+    surface: '#141729',
+    primary: '#FF6000',
+    secondary: '#5ACDED',
+  }
+};
+
+const CustomDefaultTheme = {
+  ...CombinedDefaultTheme,
+  roundness: 2,
+  colors: {
+    ...CombinedDefaultTheme.colors,
+    surface: '#FFF6C7',
+    primary: '#5ACDED',
+    secondary: '#FF6000',
+  }
+};
+
 // Create Stack.Navigator component
 const Stack = createNativeStackNavigator();
 
@@ -34,8 +56,8 @@ export default function Fitbook({ navigation }) {
   const { dark } = useSelector((state) => state.theme);
 
   return (
-    <PaperProvider theme={dark ? CombinedDarkTheme : CombinedDefaultTheme}>
-      <NavigationContainer theme={dark ? CombinedDarkTheme : CombinedDefaultTheme}>
+    <PaperProvider theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
+      <NavigationContainer theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
         <Stack.Navigator initialRouteName="Main"  screenOptions={{
           header: (props) => <AppHeader {...props} />,
         }}>

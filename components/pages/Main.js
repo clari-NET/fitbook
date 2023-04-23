@@ -2,13 +2,14 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Button } from 'react-native';
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text, BottomNavigation } from 'react-native-paper';
+import { Text, BottomNavigation, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Home from './Home';
 import Profile from './Profile';
 import Community from './Community';
 import DMList from './DMList';
+import AppHeader from '../utility/AppHeader';
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 const Tab = createMaterialBottomTabNavigator();
@@ -16,9 +17,12 @@ const Tab = createMaterialBottomTabNavigator();
 // const Tab = createBottomTabNavigator();
 
 export default function Main({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <>
-    <View style={styles.container}>
+      <AppHeader />
+      <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <Text>Welcome to the main app</Text>
       <Button
         title="Logout"
@@ -68,10 +72,10 @@ export default function Main({ navigation }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
