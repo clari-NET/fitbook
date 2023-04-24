@@ -18,7 +18,7 @@ const AppHeader = ({ navigation, back }) => {
     >
       <Appbar.Content title="Fitbook" />
         <Switch
-          color={'orange'}
+          color={theme?.colors.primary}
           value={dark}
           onValueChange={() => dispatch(toggle())}
         />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 const sampleData = [
   {
@@ -24,11 +25,12 @@ const sampleData = [
 
 const MessageList = () => {
   const [messages, setMessages] = useState(sampleData);
+  const { colors } = useTheme();
 
   const renderMessage = ({ item }) => (
     <>
       <Text>profile img </Text>
-      <View>
+      <View style={[styles.container, { backgroundColor: colors.surface }]}>
         <Text >{item.name}</Text>
         <Text >{item.body}...</Text>
       </View>
@@ -43,5 +45,13 @@ const MessageList = () => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default MessageList;
