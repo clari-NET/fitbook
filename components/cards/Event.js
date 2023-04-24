@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Card, Text } from 'react-native-paper';
-
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+import { View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function Event({ event }) {
-
   return (
-    <Card>
-      <Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent} />
+    <Card >
       <Card.Content>
-        <Text variant="titleLarge">Card title</Text>
-        <Text variant="bodyMedium">Card content</Text>
+        <View style={{flexDirection: 'row', width: '100%', height: '100%'}}>
+          <Card.Cover style={{width: '50%', height: 120, resizeMode: 'cover'}} source={{ uri: 'https://picsum.photos/700' }} />
+          <View style={{flex: 1, marginLeft: 20}}>
+            <Text variant="titleSmall">Granite, California</Text>
+            <Text variant="bodySmall">Tuesday, May 3rd 11:00AM PST</Text>
+            <Text variant="titleSmall">Event title:</Text>
+            <Text variant="titleSmall">Roller Demons take over granite park</Text>
+          </View>
+        </View>
       </Card.Content>
-      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-      <Card.Actions>
-        <Button>Cancel</Button>
-        <Button>Ok</Button>
-      </Card.Actions>
     </Card>
   );
 }

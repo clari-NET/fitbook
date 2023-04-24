@@ -3,8 +3,8 @@ import { View, Text, Dimensions } from "react-native"
 import Carousel from 'react-native-snap-carousel';
 import Event from '../cards/Event.js';
 
-export const SLIDER_WIDTH = Dimensions.get('window').width + 80
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7)
+export const SLIDER_WIDTH = Dimensions.get('window').width;
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 export default function EventList ({ events }) {
 
@@ -14,9 +14,9 @@ export default function EventList ({ events }) {
       renderItem={Event}
       sliderWidth={SLIDER_WIDTH}
       itemWidth={ITEM_WIDTH}
+      layout={'stack'}
+      activeSlideOffset={10}
+      contentContainerCustomStyle={{marginVertical: 20}}
     />
-    //   <Text >Hello from Events List!</Text>
-    //   {new Array(3).fill(0).map(event => <Event event={event}/>)}
-    // </View>
   )
 }
