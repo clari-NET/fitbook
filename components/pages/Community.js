@@ -25,9 +25,12 @@ export default function Community () {
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <Image
-          source={{uri: sampleData.banner}}
+        style={{width: '100%', height: '50%'}}
+        source={{uri: 'https://unsplash.com/photos/MTwzYSHnoXE'}}
       />
-      <CommunityList communities={new Array(4).fill(0)}/>
+      <View style={styles.banner_bar}/>
+      <Text>Top posts this year</Text>
+      {/* <CommunityList communities={new Array(3).fill(0)}/> */}
     </View>
   )
 }
@@ -38,4 +41,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  banner_container: {
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  banner_bar: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#FF6000',
+    position: 'absolute',
+    top: 0,
+  }
 });
