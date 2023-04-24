@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { FlatList, Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
+import Conversation from './Conversation.js';
 
 const sampleData = [
   {
@@ -23,27 +24,42 @@ const sampleData = [
   },
 ];
 
-const MessageList = () => {
+export default function MessageList() {
   const [messages, setMessages] = useState(sampleData);
+  const [currConvo, setCurrConvo] = useState("DMList");
   const { colors } = useTheme();
 
   const renderMessage = ({ item }) => (
     <>
-      <Text>profile img </Text>
-      <View style={[styles.container, { backgroundColor: colors.surface }]}>
-        <Text >{item.name}</Text>
-        <Text >{item.body}...</Text>
-      </View>
+      <TouchableOpacity
+          onPress={() => {
+            console.log(item.id, ' profile img was pressed');
+          }}>
+        <Text>profile img </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+          onPress={() => {
+            console.log(item.id, ' text was pressed');
+            setCurrConvo(item.name.toString());
+          }}>
+        <View style={[styles.container, { backgroundColor: colors.surface }]}>
+          <Text >{item.name}</Text>
+          <Text >{item.body}...</Text>
+        </View>
+      </TouchableOpacity>
     </>
   );
 
-  return (
+  return currConvo === "DMList" ?
+  (
     <FlatList
       data={messages}
       renderItem={renderMessage}
       keyExtractor={item => item.id.toString()}
     />
-  );
+  )
+  :
+  <Conversation currConvo={currConvo} setCurrConvo={setCurrConvo}/>
 };
 
 const styles = StyleSheet.create({
@@ -53,5 +69,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-export default MessageList;
