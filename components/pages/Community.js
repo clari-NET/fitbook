@@ -28,7 +28,9 @@ export default function Community () {
         style={{width: '100%', height: '50%'}}
         source={{uri: 'https://unsplash.com/photos/MTwzYSHnoXE'}}
       />
-      <View style={styles.banner_bar}/>
+      <View style={styles.banner_container}>
+        <View style={styles.banner_bar}/>
+      </View>
       <Text>Top posts this year</Text>
       {/* <CommunityList communities={new Array(3).fill(0)}/> */}
     </View>
@@ -42,15 +44,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   banner_container: {
-    height: 150,
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: 60,
+    width: '100%',
   },
   banner_bar: {
     width: '100%',
-    height: 50,
+    height: '100%',
     backgroundColor: '#FF6000',
-    position: 'absolute',
-    top: 0,
   }
 });
