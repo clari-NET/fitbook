@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, ScrollView, Text, StyleSheet, Image} from 'react-native';
 import CommunityList from '../lists/CommunityList.js';
 import { useTheme } from 'react-native-paper';
 
@@ -10,7 +10,7 @@ export default function Community () {
     const sampleData = {
         id: 1,
         name: 'Roller Demons',
-        banner: 'https://unsplash.com/photos/MTwzYSHnoXE',
+        banner: 'https://picsum.photos/700',
         icon: 'U+1F6F9',
         user: {
             user_id: 12,
@@ -23,33 +23,55 @@ export default function Community () {
     }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+    <>
+    <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
+      <View style={styles.bannerImage_container}>
       <Image
-        style={{width: '100%', height: '50%'}}
-        source={{uri: 'https://unsplash.com/photos/MTwzYSHnoXE'}}
+        style={styles.bannerImage}
+        source={{uri: sampleData.banner}}
       />
-      <View style={styles.banner_container}>
-        <View style={styles.banner_bar}/>
       </View>
-      <Text>Top posts this year</Text>
+      <View style={styles.bannerContainer}>
+        <Text style={styles.bannerName}>{sampleData.icon} {sampleData.name}</Text>
+        <Text style={styles.bannerName}>test</Text>
+      </View>
       {/* <CommunityList communities={new Array(3).fill(0)}/> */}
     </View>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  main_container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
-  banner_container: {
+  bannerImage_container: {
+    width: '100%',
+    height: 100,
+    position: 'absolute',
+    top: 0,
+  },
+  bannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  bannerContainer: {
     height: 60,
     width: '100%',
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 100,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FF6000',
   },
-  banner_bar: {
+  bannerBar: {
     width: '100%',
     height: '100%',
     backgroundColor: '#FF6000',
+  },
+  bannerName: {
+    color: '#FFF',
   }
 });
