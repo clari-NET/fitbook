@@ -51,9 +51,11 @@ export default function Community() {
           <EventList events={new Array(5).fill(0)} />
         </ScrollView>
       </View>
-      <ScrollView style={styles.posts}>
-        <Post communities={new Array(3).fill(0)} />
-      </ScrollView>
+      <View style={styles.posts}>
+        <ScrollView>
+          <Post communities={new Array(3).fill(0)} />
+        </ScrollView>
+      </View>
     </View>
   );
 }
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
   bannerImage_container: {
     width: '100%',
     height: 100,
-    flex: 1.5,
+    flex: 2,
   },
   bannerImage: {
     width: '100%',
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   carousel_container: {
-    flex: 2,
+    flex: 4,
   },
   carousel: {
     width: '100%',
