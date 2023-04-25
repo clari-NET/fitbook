@@ -6,38 +6,21 @@ import FriendsList from '../lists/FriendsList';
 
 const sampleData = [
   {
-    id: 1,
-    image: 'PROFILE',
-    name: 'Johnathan S.',
-    username: 'bigJ',
-  },
-  {
-    id: 2,
-    image: 'PROFILE',
-    name: 'Elliot T.',
-    username: 'ChampE',
-  },
-  {
-    id: 3,
-    image: 'PROFILE',
-    name: 'Brett T.',
-    username: 'notoriousB',
-  },
-  {
-    id: 4,
-    image: 'PROFILE',
-    name: 'Nic M.',
-    username: 'NicJam',
+    profilePhoto: 'https://nickelodeonuniverse.com/wp-content/uploads/Squidward.png',
+    fitnessStats: {},
+    friends: [],
+    name: { first: 'Mo', last: 'Akbari' },
+    username: 'KingMo',
   },
 ];
 
 function Friends() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [friends, setFriends] = useState([]);
+  const [friendsList, setFriendsList] = useState([]);
 
   useEffect(() => {
     // get request to fetch friends list
-    setFriends(sampleData);
+    setFriendsList(sampleData);
   }, []);
 
   const handleSearch = (query) => {
@@ -49,8 +32,8 @@ function Friends() {
     setSearchQuery(query);
   };
 
-  const handleSendMessage = (event) => {
-    console.log(`started DM with: ${event.name}`);
+  const handleSendMessage = (username) => {
+    console.log(`started DM with: ${username}`);
   };
 
   return (
@@ -62,7 +45,7 @@ function Friends() {
           onChangeText={handleSearch}
         />
       </View>
-      <FriendsList friends={friends} handleSendMessage={handleSendMessage} />
+      <FriendsList friendsList={friendsList} handleSendMessage={handleSendMessage} />
     </View>
   );
 }

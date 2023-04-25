@@ -37,7 +37,6 @@ export default function Profile() {
         <Button title="Profile" onPress={() => setProfileSubPage('Profile')} />
       </View>
       <SubPage page={profileSubPage} />
-      <Text>Hello from Profile page! This is where you'll see your profile or that of another user, depending on how you got here. we love props!</Text>
     </View>
   );
 }
