@@ -3,11 +3,13 @@ import { useTheme } from 'react-native-paper';
 import {
   View, ScrollView, Text, StyleSheet, Image, Button,
 } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
 import Post from '../cards/Post';
 import EventList from '../lists/EventList';
 
 export default function Community() {
   const [joined, setJoined] = useState(false);
+  const [filter, setFilter] = useState('Recent');
   const { colors } = useTheme();
   // some function for 'onClick => navigateTo(Community)
 
@@ -29,6 +31,13 @@ export default function Community() {
       1, 2, 3, 4, 5,
     ],
   };
+
+  const postFilterList = [
+    { key: 1, value: 'Recent' },
+    { key: 2, value: 'Hot' },
+    { key: 3, value: 'Most upvoted' },
+
+  ];
 
   return (
     <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
@@ -52,6 +61,13 @@ export default function Community() {
         </ScrollView>
       </View>
       <View style={styles.posts}>
+        <SelectList
+          setSelected={(val) => setFilter(val)}
+          data={postFilterList}
+          save='value'
+          search={false}
+          // onSelect={filter function}
+        />
         <ScrollView>
           <Post communities={new Array(3).fill(0)} />
         </ScrollView>
@@ -63,7 +79,6 @@ export default function Community() {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
-    // justifyContent: 'flex-start',
   },
   bannerImage_container: {
     width: '100%',
