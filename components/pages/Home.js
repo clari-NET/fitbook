@@ -1,7 +1,8 @@
 import React, {useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Event from '../cards/Event';
+import EventList from '../lists/EventList';
 import Post from '../cards/Post';
 import { useTheme } from 'react-native-paper';
 
@@ -14,14 +15,14 @@ export default function Home({ theme }) {
     setShowEvent(!showEvent);
   }
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+    <ScrollView >
       <Text>Hello from Home!</Text>
-      {showEvent ? <Event /> : <Post />}
+      {showEvent ? <EventList events={new Array(5).fill(0)}/> : <Post />}
       <Button
         title="Toggle Post/Event"
         onPress={toggleComponent}
       />
-    </View>
+    </ScrollView>
   )
 }
 

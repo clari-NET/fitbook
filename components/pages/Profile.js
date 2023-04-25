@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-export default function Profile () {
+export default function Profile() {
   const { colors } = useTheme();
 
   return (

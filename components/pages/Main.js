@@ -4,6 +4,7 @@ import { StyleSheet, View, Button } from 'react-native';
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, BottomNavigation, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import Home from './Home';
 import Profile from './Profile';
@@ -12,10 +13,17 @@ import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
 import Friends from './Friends';
 
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 const Tab = createMaterialBottomTabNavigator();
 
 // const Tab = createBottomTabNavigator();
+
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default function Main({ navigation }) {
   const { colors } = useTheme();
@@ -24,25 +32,25 @@ export default function Main({ navigation }) {
     <>
       <AppHeader />
       <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      <Text>Welcome to the main app</Text>
-      <Button
-        title="Logout"
-        onPress={() => {navigation.navigate('Login')}}
-      />
-      <StatusBar style="auto" />
-    </View>
+        <Text>Welcome to the main app</Text>
+        <Button
+          title="Logout"
+          onPress={() => { navigation.navigate('Login'); }}
+        />
+        <StatusBar style="auto" />
+      </View>
       <Tab.Navigator>
         <Tab.Screen
-          name='Home'
+          name="Home"
           component={Home}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (
-            <Icon name='home' color={color} size={20} />
+              <Icon name='home' color={color} size={20} />
           )}}
         />
         <Tab.Screen
-          name='Profile'
+          name="Profile"
           component={Profile}
           options={{
             tabBarLabel: 'Profile',
@@ -51,7 +59,7 @@ export default function Main({ navigation }) {
           )}}
         />
         <Tab.Screen
-          name='Community'
+          name="Community"
           component={Community}
           options={{
             tabBarLabel: 'Communities',
@@ -60,7 +68,7 @@ export default function Main({ navigation }) {
           )}}
         />
         <Tab.Screen
-          name='Messages'
+          name="Messages"
           component={DMList}
           options={{
             tabBarLabel: 'Messages',
@@ -69,15 +77,6 @@ export default function Main({ navigation }) {
           )}}
         />
       </Tab.Navigator>
-      </>
+    </>
   );
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
