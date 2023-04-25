@@ -19,3 +19,5 @@ app.json
 
 # Secure
 .env
+# firebase
+**/keys.js
