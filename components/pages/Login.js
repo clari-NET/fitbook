@@ -1,86 +1,122 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useTheme, Button, Text, Snackbar } from 'react-native-paper';
-import React, { useState } from 'react';
-// import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import React, { useState, useEffect } from 'react';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 
 export default function Login({ navigation }) {
   const { colors } = useTheme();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // let currentUser = auth().currentUser;
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [success, setSuccess] = useState(false);
   const [failure, setFailure] = useState(false);
+  const [name, setName] = useState('Undefined');
 
-  const handleLogin = async (e) =>{
-    e.preventDefault()
+  // useEffect(() => {
+  //   const getUser = async () => {
+  //     let doc = await firebase.firestore()
+  //     .collection('users')
+  //     .doc(currentUser.uid)
+  //     .get();
+
+  //     if (!doc.exists) {
+  //       Alert.alert('Not logged in');
+  //     } else {
+  //       navigation.navigate('Main');
+  //     }
+  //   }
+  // })
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
     try {
-    const auth = getAuth()
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
-    if(userCredential.user) {
-      navigation.navigate('Main')
-    }
+      if(userCredential.user) {
+        navigation.navigate('Main');
+      }
 
-    const name = await auth.currentUser.displayName
-    toast.success(`Welcome back ${name}`)
-    setSuccess(true);
+      const getName = await auth.currentUser.displayName;
+      setName(getName);
+      setSuccess(true);
     } catch (error) {
-        console.log(error)
-        toast.error('Incorrect user credentials')
+      console.log(error);
+      setFailure(true);
     }
-}
+  };
+
+  const onDismiss = () => {
+    setSuccess(false);
+    setFailure(false);
+  };
 
   return (
-    <>
-    <Snackbar
-        visible={visible}
-        onDismiss={onDismissSnackBar}
-        action={{
-          label: 'Undo',
-          onPress: () => {
-            // Do something
-          },
-        }}>
-        Hey there! I'm a Snackbar.
+    <View style={[styles.container, { backgroundColor: colors.secondary }]}>
+      <Snackbar
+        style={styles.success}
+        visible={success}
+        onDismiss={onDismiss}
+        duration={3000}
+      >
+        Welcome back
+        {' '}
+        {name}
       </Snackbar>
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+      <Snackbar
+        visible={failure}
+        onDismiss={onDismiss}
+        duration={3000}
+      >
+        Incorrect user credentials
+      </Snackbar>
       <Text>Hello, Fit Bros/Sis!</Text>
       <TextInput
         label="Email"
         value={email}
-        onChangeText={email => setUsername(email)}
-        mode="outlined"
+        onChangeText={(email) => setEmail(email)}
+        mode="flat"
         style={styles.input}
+        activeUnderlineColor="#000"
       />
       <TextInput
         label="Password"
+        secureTextEntry
         value={password}
-        onChangeText={password => setPassword(password)}
-        mode="outlined"
+        onChangeText={(password) => setPassword(password)}
+        mode="flat"
         style={styles.input}
+        activeUnderlineColor="#000"
       />
       <Button
+        style={styles.btn}
         mode="elevated"
         buttonColor={colors.primary}
         textColor={colors.secondary}
-        onPress={() => {
-          console.log('Create handleLogin')
+        onPress={(e) => {
+          handleLogin(e);
         }}
-      >Login</Button>
+      >
+        Login
+      </Button>
       <Text>Need to create an account?</Text>
       <Button
+        style={styles.btn}
         mode="outlined"
-        textColor={colors.secondary}
+        textColor={colors.primary}
+        buttonColor={colors.surface}
         onPress={() => {
-          navigation.navigate('SignUp')
+          navigation.navigate('SignUp');
         }}
-      >Sign-up</Button>
+      >
+        Sign-up
+      </Button>
       <StatusBar style="auto" />
     </View>
-    </>
-
   );
 }
 
@@ -92,5 +128,14 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '80%',
+    marginTop: 5,
+  },
+  btn: {
+    width: '60%',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  success: {
+    backgroundColor: '#00A67C',
   },
 });
