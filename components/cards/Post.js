@@ -5,7 +5,48 @@ export default function Post () {
 
   return (
     <View >
-      <Text >Hello from Post Card!</Text>
+      <Button
+        // ProfilePhoto
+        title="Profile"
+        onPress={() => {
+          // navigation.navigate('Community');
+        }}
+      />
+      <Button
+        title="Community"
+        onPress={() => {
+          // navigation.navigate('Community');
+        }}
+      />
+      <Text>Date</Text>
+      <Button
+        title="Profile"
+        onPress={() => {
+          // navigation.navigate('Profile');
+        }}
+      />
+      <Text>Post</Text>
+      <Button
+        title="Lift"
+        onPress={() => {
+          // Increase Like count by one
+        }}
+      />
+      <Button
+        title="Comment"
+        onPress={() => {
+          //opens directly with keyboard open
+          // navigation.navigate('CommentView');
+        }}
+      />
+      <Button
+        title="Share"
+        onPress={() => {
+          //opens directly with keyboard open
+          // navigation.navigate('CommentView');
+        }}
+      />
+
     </View>
   )
 }
