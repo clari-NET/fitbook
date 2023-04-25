@@ -11,6 +11,7 @@ import Profile from './Profile';
 import Community from './Community';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
+import Friends from './Friends';
 
 const Tab = createMaterialBottomTabNavigator();
 
