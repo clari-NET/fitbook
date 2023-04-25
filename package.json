@@ -7,8 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "reset-main": "git checkout main && git fetch origin && git reset --hard origin/main",
-    "code-review": "git checkout -b $TARGET && git pull origin $TARGET && git merge main"
+    "reset-main": "git checkout main && git fetch origin && git reset --hard origin/main && npm install",
+    "code-review": "git checkout -b $TARGET && git pull origin $TARGET && git merge main && npm install"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.7",
