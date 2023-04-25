@@ -1,9 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { useTheme, Button, Text, Snackbar } from 'react-native-paper';
-import React, { useState, useEffect } from 'react';
+import {
+  useTheme,
+  Button,
+  Text,
+  Snackbar,
+} from 'react-native-paper';
+import React, { useState } from 'react';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import {setDoc, doc, serverTimestamp} from 'firebase/firestore';
+import db from '../../firebase/firebase.config';
 
 export default function Login({ navigation }) {
   const { colors } = useTheme();
@@ -14,21 +21,6 @@ export default function Login({ navigation }) {
   const [success, setSuccess] = useState(false);
   const [failure, setFailure] = useState(false);
   const [name, setName] = useState('Undefined');
-
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     let doc = await firebase.firestore()
-  //     .collection('users')
-  //     .doc(currentUser.uid)
-  //     .get();
-
-  //     if (!doc.exists) {
-  //       Alert.alert('Not logged in');
-  //     } else {
-  //       navigation.navigate('Main');
-  //     }
-  //   }
-  // })
 
   const handleLogin = async (e) => {
     e.preventDefault();

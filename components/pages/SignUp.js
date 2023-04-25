@@ -26,7 +26,7 @@ export default function SignUp({ navigation }) {
     try {
       const auth = getAuth();
       const userData = await createUserWithEmailAndPassword(auth, email, password);
-      updateProfile(auth.currentUser, { username: username });
+      updateProfile(auth.currentUser, { username });
       const timeStamp = serverTimestamp();
       await setDoc(doc(db, 'users', userData.user.uid), {
         name,

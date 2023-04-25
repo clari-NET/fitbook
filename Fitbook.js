@@ -1,5 +1,10 @@
 import React from 'react';
-import { Provider as PaperProvider, adaptNavigationTheme, MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
+import {
+  Provider as PaperProvider,
+  adaptNavigationTheme,
+  MD3DarkTheme,
+  MD3LightTheme,
+} from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   NavigationContainer,
@@ -13,6 +18,8 @@ import Login from './components/pages/Login';
 import Interests from './components/pages/Interests';
 import Main from './components/pages/Main';
 import AppHeader from './components/utility/AppHeader';
+import SplashScreen from './components/utility/SplashScreen';
+import useFirebaseAuth from './firebase/useFirebaseAuth';
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -47,20 +54,31 @@ const CustomDefaultTheme = {
 // Create Stack.Navigator component
 const Stack = createNativeStackNavigator();
 
-export default function Fitbook({ navigation }) {
+export default function Fitbook() {
   const { dark } = useSelector((state) => state.theme);
+  const { isSignedIn, isLoading } = useFirebaseAuth();
+
+  if (isLoading) {
+    // We haven't finished checking for the token yet
+    return <SplashScreen />;
+  }
 
   return (
     <PaperProvider theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
       <NavigationContainer theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
         <Stack.Navigator
-          initialRouteName="Main"
+          initialRouteName={isSignedIn ? 'Main' : 'Login'}
           screenOptions={{ header: () => <AppHeader /> }}
         >
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="Interests" component={Interests} />
-          <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+          {isSignedIn ? (
+            <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="Interests" component={Interests} />
+            </>
+          )}
 
         </Stack.Navigator>
       </NavigationContainer>
