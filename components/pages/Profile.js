@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 // import getProfile from '../firebaseFiles/API';
+import db from '../../firebaseFiles/firebase.config';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { initializeApp } from 'firebase/app';
+
 import {
   getFirestore,
   getDocs,
@@ -13,10 +14,6 @@ import {
   where,
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebaseFiles/keys';
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
 
 export default function Profile() {
   const { colors } = useTheme();
@@ -54,9 +51,9 @@ export default function Profile() {
       <Text>
         Friends:
         {' '}
-        {userData ? userData.friends[0] : null}
-        {userData ? userData.friends[1] : null}
-        {userData ? userData.friends[2] : null}
+        {userData.friends ? userData.friends[0] : null}
+        {userData.friends ? userData.friends[1] : null}
+        {userData.friends ? userData.friends[2] : null}
       </Text>
     </View>
   );
