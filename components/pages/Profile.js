@@ -20,8 +20,12 @@ export default function Profile() {
   }, [profileSubPage]);
 
   function SubPage({ page }) {
-    return { Event: <Text>Event sub-page</Text>,
-    Friends: <Friends /> }[page];
+    return {
+      Event: <Text>Event sub-page</Text>,
+      Friends: <Friends />,
+      Community: <Text>Community sub-page</Text>,
+      Profile: <Text>Profile sub-page</Text>,
+    }[page];
   }
 
   return (
@@ -29,8 +33,8 @@ export default function Profile() {
       <View>
         <Button title='Event' onPress={() => setProfileSubPage('Event')} />
         <Button title="Friends" onPress={() => setProfileSubPage('Friends')} />
-        <Button title="Community" onPress />
-        <Button title="Profile" onPress />
+        <Button title="Community" onPress={() => setProfileSubPage('Community')} />
+        <Button title="Profile" onPress={() => setProfileSubPage('Profile')} />
       </View>
       <SubPage page={profileSubPage} />
       <Text>Hello from Profile page! This is where you'll see your profile or that of another user, depending on how you got here. we love props!</Text>
