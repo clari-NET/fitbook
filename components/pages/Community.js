@@ -7,29 +7,29 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import Post from '../cards/Post';
 import EventList from '../lists/EventList';
 
+const sampleData = {
+  id: 1,
+  name: 'Roller Demons',
+  banner: 'https://picsum.photos/700',
+  icon: 'U+1F6F9',
+  user: {
+    user_id: 12,
+    username: 'swolebraham',
+  },
+  location: 'San Diego, CA',
+  members: [
+    1, 2, 3, 4, 5,
+  ],
+};
+
 export default function Community() {
   const [joined, setJoined] = useState(false);
   const [filter, setFilter] = useState('Recent');
   const { colors } = useTheme();
   // some function for 'onClick => navigateTo(Community)
 
-  const joinCommunity = () => {
+  const joinCommunityToggle = () => {
     setJoined(!joined);
-  };
-
-  const sampleData = {
-    id: 1,
-    name: 'Roller Demons',
-    banner: 'https://picsum.photos/700',
-    icon: 'U+1F6F9',
-    user: {
-      user_id: 12,
-      username: 'swolebraham',
-    },
-    location: 'San Diego, CA',
-    members: [
-      1, 2, 3, 4, 5,
-    ],
   };
 
   const postFilterList = [
@@ -52,8 +52,8 @@ export default function Community() {
           {sampleData.icon} {sampleData.name}
         </Text>
         {joined
-          ? <Button title='Joined' onPress={joinCommunity} />
-          : <Button title='Join' onPress={joinCommunity} />}
+          ? <Button title='Joined' onPress={joinCommunityToggle} />
+          : <Button title='Join' onPress={joinCommunityToggle} />}
       </View>
       <View style={styles.carousel_container}>
         <ScrollView style={styles.carousel}>
