@@ -15,8 +15,7 @@ export default function Home({ theme }) {
     setShowEvent(!showEvent);
   }
   return (
-    <ScrollView >
-      <Text>Hello from Home!</Text>
+    <ScrollView>
       {showEvent ? <EventList events={new Array(5).fill(0)}/> : <Post />}
       <Button
         title="Toggle Post/Event"
