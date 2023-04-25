@@ -4,7 +4,7 @@ import { Text, TextInput } from 'react-native-paper';
 import CommunityCard from '../cards/CommunityCard';
 import TextBanner from '../utility/TextBanner';
 
-export default function CommunityList({ communities }) {
+export default function CommunityList() {
   const [text, setText] = useState('');
   function handleSearch(val) {
     setText(val);
