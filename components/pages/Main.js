@@ -12,6 +12,9 @@ import Community from './Community';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
 import Friends from './Friends';
+import { userStatus } from '../../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
+import {getAuth } from 'firebase/auth';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -27,6 +30,8 @@ const styles = StyleSheet.create({
 
 export default function Main({ navigation }) {
   const { colors } = useTheme();
+  const dispatch = useDispatch();
+  const auth = getAuth();
 
   return (
     <>
@@ -35,7 +40,10 @@ export default function Main({ navigation }) {
         <Text>Welcome to the main app</Text>
         <Button
           title="Logout"
-          onPress={() => { navigation.navigate('Login'); }}
+          onPress={() => {
+            auth.signOut();
+            dispatch(userStatus(false));
+          }}
         />
         <StatusBar style="auto" />
       </View>

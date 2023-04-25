@@ -9,8 +9,7 @@ import {
 } from 'react-native-paper';
 import React, { useState } from 'react';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import {setDoc, doc, serverTimestamp} from 'firebase/firestore';
-import db from '../../firebase/firebase.config';
+import * as SecureStore from 'expo-secure-store';
 
 export default function Login({ navigation }) {
   const { colors } = useTheme();
@@ -22,6 +21,10 @@ export default function Login({ navigation }) {
   const [failure, setFailure] = useState(false);
   const [name, setName] = useState('Undefined');
 
+  async function save(key, value) {
+    await SecureStore.setItemAsync(key, value);
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -30,6 +33,8 @@ export default function Login({ navigation }) {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
       if(userCredential.user) {
+        await save('FitbookEmail', email);
+        await save('FitbookPassword', password);
         navigation.navigate('Main');
       }
 

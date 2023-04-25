@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Provider as PaperProvider,
   adaptNavigationTheme,
@@ -11,7 +11,7 @@ import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import merge from 'deepmerge';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
@@ -19,7 +19,9 @@ import Interests from './components/pages/Interests';
 import Main from './components/pages/Main';
 import AppHeader from './components/utility/AppHeader';
 import SplashScreen from './components/utility/SplashScreen';
-import useFirebaseAuth from './firebase/useFirebaseAuth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { userStatus, loaded } from './redux/user/userSlice';
+import * as SecureStore from 'expo-secure-store';
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -56,10 +58,55 @@ const Stack = createNativeStackNavigator();
 
 export default function Fitbook() {
   const { dark } = useSelector((state) => state.theme);
-  const { isSignedIn, isLoading } = useFirebaseAuth();
+  const { isSignedIn, isLoading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const auth = getAuth();
+  // const { isSignedIn, isLoading } = useFirebaseAuth();
+  // const [isSignedIn, setIsSignedIn] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
+  const isMounted = useRef(true);
+
+  async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      return result;
+    } else {
+      return false;
+    }
+  }
+  console.log(isSignedIn)
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const email = await getValueFor('FitbookEmail');
+        const password = await getValueFor('FitbookPassword');
+        if (email && password) {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          if (userCredential.user) {
+            dispatch(userStatus(true));
+          }
+          dispatch(loaded());
+        } else {
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              dispatch(userStatus(!!user));
+            }
+            dispatch(loaded());
+          });
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    };
+    getUser();
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [isMounted, isSignedIn, isLoading]);
 
   if (isLoading) {
-    // We haven't finished checking for the token yet
     return <SplashScreen />;
   }
 
