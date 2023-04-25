@@ -10,6 +10,7 @@ import Profile from './Profile';
 import Community from './Community';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
+import Friends from './Friends';
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 const Tab = createMaterialBottomTabNavigator();

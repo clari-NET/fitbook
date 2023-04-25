@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, TextInput, FlatList, Button,
+  View, TextInput, Button,
 } from 'react-native';
+import FriendsList from '../lists/FriendsList';
 
 const sampleData = [
   {
@@ -30,7 +31,7 @@ const sampleData = [
   },
 ];
 
-function FriendsList() {
+function Friends() {
   const [searchQuery, setSearchQuery] = useState('');
   const [friends, setFriends] = useState([]);
 
@@ -41,9 +42,9 @@ function FriendsList() {
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
-    const filteredFriends = sampleData
+    const filteredFriends = friends
       .filter((friend) => friend.name.toLowerCase().includes(query.toLowerCase())
-      || friend.username.toLowerCase().includes(query.toLowerCase()));
+        || friend.username.toLowerCase().includes(query.toLowerCase()));
     setFriends(filteredFriends);
     setSearchQuery(query);
   };
@@ -51,26 +52,6 @@ function FriendsList() {
   const handleSendMessage = (event) => {
     console.log(`started DM with: ${event.name}`);
   };
-
-  const renderCard = ({ item }) => (
-    <View>
-      <View>
-        {/* need to put img */}
-        <Text>{item.image}</Text>
-      </View>
-      <View>
-        <Text>{item.name}</Text>
-        <Text>
-          @
-          {item.username}
-        </Text>
-        <Text>{item.date}</Text>
-      </View>
-      <View>
-        <Button title="message" onPress={() => handleSendMessage(item)} />
-      </View>
-    </View>
-  );
 
   return (
     <View>
@@ -82,18 +63,15 @@ function FriendsList() {
         />
       </View>
       <View>
-        <Button title="Event" onPress={(e) => console.log(e)} />
+        <Button title='Event' onPress />
         <Button title="Friends" onPress />
         <Button title="Community" onPress />
         <Button title="Profile" onPress />
       </View>
-      <FlatList
-        data={friends}
-        renderItem={renderCard}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      <FriendsList friends={friends} handleSendMessage={handleSendMessage} />
+
     </View>
   );
 }
 
-export default FriendsList;
+export default Friends;
