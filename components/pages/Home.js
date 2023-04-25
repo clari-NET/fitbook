@@ -34,12 +34,8 @@ export default function Home({ theme }) {
 
   return (
     <ScrollView>
-<<<<<<< HEAD
       <Text>Hello from Home!</Text>
       {showEvent ? <EventList events={new Array(5).fill(0)} /> : <PostList posts={posts} />}
-=======
-      {showEvent ? <EventList events={new Array(5).fill(0)}/> : <Post />}
->>>>>>> main
       <Button
         title="Toggle Post/Event"
         onPress={toggleComponent}
