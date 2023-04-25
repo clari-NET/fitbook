@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 
-export default function CommunityCard ({ community }) {
-
+export default function CommunityCard({ community }) {
   return (
-    <View >
-      <Text >Hello from CommunityCard!</Text>
+    <View>
+      <Text variant='titleMedium'>Hello from CommunityCard!</Text>
     </View>
-  )
+  );
 }
