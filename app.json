@@ -28,6 +28,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow FitBook to accesses your photos to let you share them with your friends.",
+          "cameraPermission": "Allow FitBook to access your camera."
+        }
+      ]
+    ]
   }
 }

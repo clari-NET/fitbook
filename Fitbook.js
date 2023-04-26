@@ -16,13 +16,14 @@ import merge from 'deepmerge';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
 import ForgotPassword from './components/pages/ForgotPassword';
-import Interests from './components/pages/Interests';
+// import Interests from './components/pages/Interests';
 import Main from './components/pages/Main';
 import AppHeader from './components/utility/AppHeader';
 import SplashScreen from './components/utility/SplashScreen';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { userStatus, loaded } from './redux/user/userSlice';
 import * as SecureStore from 'expo-secure-store';
+import ImageUpload from './components/utility/ImageUpload';
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -121,7 +122,8 @@ export default function Fitbook() {
         >
           {isSignedIn ? (
             <>
-              <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+              <Stack.Screen name="Main" component={ImageUpload} options={{ headerShown: false }} />
+              {/* <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} /> */}
               {/* <Stack.Screen name="Interests" component={Interests} /> */}
             </>
           ) : (
