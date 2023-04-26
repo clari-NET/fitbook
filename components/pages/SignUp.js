@@ -42,6 +42,7 @@ export default function SignUp({ navigation }) {
       await setDoc(doc(db, 'users', userData.user.uid), {
         name,
         email,
+        username,
         timeStamp,
       });
       await save('FitbookEmail', email);
