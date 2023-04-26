@@ -3,19 +3,20 @@ const {
   gender,
   community,
   users,
-  statsistics,
+  statistics,
   activities,
   messages,
 } = require('./dataSet');
 
-// Get data for each section
-// Write function to randomly generate data for each section
-// Post it to the database
+// Storing all community admins
+const communityAdmins = new Set();
 
-// Generate a single user
+// Populating all data fields for a given user
 const generateUser = (userId) => {
+  // Looking at specific user
   const singleUser = users[userId];
 
+  // Randomizing selection functions
   const createArray = (mostOutputWanted, dataLength) => (
     Array.from(
       { length: Math.floor(Math.random() * (mostOutputWanted - 1) + 1) },
@@ -27,19 +28,29 @@ const generateUser = (userId) => {
     array.map((item) => (data[item]))
   );
 
+  // Generating random data using functions above for each section
   const friendData = createArray(10, 48);
-
   const communityData = createArray(10, 18);
-
   const interestsArray = createArray(10, 48);
   const interestsData = createDataFromArray(interestsArray, activities);
-
   const statsArray = createArray(3, 24);
-  const statsData = createDataFromArray(statsArray, statsistics);
-
+  const statsData = createDataFromArray(statsArray, statistics);
   const messagesArray = createArray(10, 24);
   const messagesData = createDataFromArray(messagesArray, messages);
 
+  // Assigning admin to each community
+  const assignAdmin = (communityDataLength) => {
+    const communityId = Math.floor(Math.random() * (communityDataLength - 1) + 1);
+    if (!communityAdmins.has(communityId)) {
+      communityAdmins.add(communityId);
+      return communityId;
+    }
+    return null;
+  };
+
+  const isAdminOfCommunity = assignAdmin(community.length);
+
+  // Returning the data object
   return {
     id: userId,
     name: {
@@ -53,11 +64,9 @@ const generateUser = (userId) => {
       dark_mode: boolean[Math.round(Math.random())],
     },
     friends: friendData,
-    community_admin: [
-      {
-        id: Math.floor(Math.random() * (48 - 1) + 1),
-      },
-    ],
+    community_admin: {
+      community_id: isAdminOfCommunity,
+    },
     communities: communityData,
     stats: statsData,
     messages: messagesData,
@@ -65,10 +74,14 @@ const generateUser = (userId) => {
 };
 
 // Generate all users
-const allUsers = () => {
-  users.forEach(user => {
-    generateUser(user.id);
-  });
+const generateAllUsers = (numberOfUsers) => {
+  let id = numberOfUsers;
+  const allUsers = [];
+  while (id > 0) {
+    allUsers.push(generateUser(id));
+    id -= 1;
+  }
+  return allUsers;
 };
 
 // const communities = {

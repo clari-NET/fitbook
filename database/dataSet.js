@@ -28,74 +28,92 @@ exports.activities = [
 
 exports.community = [
   {
+    id: 1,
     name: 'FitFam Community',
     description: 'A community of fitness enthusiasts who are like family, supporting each other in their health and wellness journeys.',
   },
   {
+    id: 2,
     name: 'Sweat Squad',
     description: 'A group of dedicated athletes who love to work up a sweat and push themselves to their limits.',
   },
   {
+    id: 3,
     name: "Runners' Alliance",
     description: 'A community of runners who come together to share their passion for running and motivate each other to reach their goals.',
   },
   {
+    id: 4,
     name: 'Yoga Tribe',
     description: 'A tribe of yoga practitioners who share a love for this ancient practice, and come together to support and inspire one another.',
   },
   {
+    id: 5,
     name: 'Gym Warriors',
     description: 'A group of dedicated gym-goers who push themselves to their limits and strive to achieve their fitness goals.',
   },
   {
+    id: 6,
     name: 'Spin Squad',
     description: 'A community of spin enthusiasts who love to ride together and challenge each other to push their limits.',
   },
   {
+    id: 7,
     name: 'Fitness Friends',
     description: 'A community of friends who share a passion for fitness and enjoy working out together.',
   },
   {
+    id: 8,
     name: 'Team CrossFit',
     description: 'A team of dedicated CrossFit athletes who come together to train, compete and support one another.',
   },
   {
+    id: 9,
     name: 'Endurance Nation',
     description: 'A community of endurance athletes who push themselves to their limits and strive to achieve their fitness goals.',
   },
   {
+    id: 10,
     name: 'Athletic Alliance',
     description: 'A community of athletes who come together to share their passion for sports and motivate each other to reach their goals.',
   },
   {
+    id: 11,
     name: 'Iron Tribe',
     description: 'A tribe of strength athletes who share a love for powerlifting, weightlifting, and other strength sports.',
   },
   {
+    id: 12,
     name: 'Boxing Brigade',
     description: 'A community of boxing enthusiasts who come together to train, spar, and support each other in their boxing journey.',
   },
   {
+    id: 13,
     name: 'Trailblazers',
     description: 'A community of outdoor enthusiasts who love to explore the great outdoors, go on hikes and trail runs together.',
   },
   {
+    id: 14,
     name: 'Swim Squad',
     description: 'A community of swimmers who share a love for the water, come together to train, compete and support each other in their swimming journey.',
   },
   {
+    id: 15,
     name: 'Cycling Crew',
     description: 'A crew of cyclists who love to ride together, challenge each other, and explore the world on two wheels.',
   },
   {
+    id: 16,
     name: 'Tennis Titans',
     description: 'A community of tennis enthusiasts who share a passion for the sport, and come together to play, compete, and have fun.',
   },
   {
+    id: 17,
     name: 'Pilates Posse',
     description: 'A group of Pilates enthusiasts who come together to practice, support each other and share their love for this mindful practice.',
   },
   {
+    id: 18,
     name: 'Surf Tribe',
     description: 'A tribe of surfers who share a love for the ocean, come together to catch waves, have fun and support each other in their surfing journey.',
   }];
