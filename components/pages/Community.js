@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Text } from 'react-native-paper';
 import {
-  View, ScrollView, Text, StyleSheet, Image, Button,
+  View, ScrollView, StyleSheet, Image, Button,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import PostList from '../lists/PostList';
 import EventList from '../lists/EventList';
+import Feed from './Feed';
 
 const sampleData = {
   id: 1,
@@ -79,13 +80,11 @@ export default function Community() {
         </ScrollView>
       </View>
       <View style={styles.posts}>
-        <SelectList
-          setSelected={(val) => setFilter(val)}
-          data={postFilterList}
-          save='value'
-          search={false}
-          // onSelect={filter function}
-        />
+        <ScrollView>
+          <Feed
+            section='community'
+          />
+        </ScrollView>
         <ScrollView>
           <PostList posts={posts} />
         </ScrollView>
