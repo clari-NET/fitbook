@@ -47,7 +47,7 @@ export default function SignUp({ navigation }) {
       await save('FitbookEmail', email);
       await save('FitbookPassword', password);
 
-      navigation.navigate('Interests');
+      // navigation.navigate('Interests');
     } catch (error) {
       setFailure(true);
     }

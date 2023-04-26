@@ -122,7 +122,7 @@ export default function Fitbook() {
           {isSignedIn ? (
             <>
               <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
-              <Stack.Screen name="Interests" component={Interests} />
+              {/* <Stack.Screen name="Interests" component={Interests} /> */}
             </>
           ) : (
             <>
