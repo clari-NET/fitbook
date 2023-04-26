@@ -25,10 +25,10 @@ function Friends() {
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
-    const filteredFriends = friends
+    const filteredFriends = friendsList
       .filter((friend) => friend.name.toLowerCase().includes(query.toLowerCase())
         || friend.username.toLowerCase().includes(query.toLowerCase()));
-    setFriends(filteredFriends);
+    setFriendsList(filteredFriends);
     setSearchQuery(query);
   };
 

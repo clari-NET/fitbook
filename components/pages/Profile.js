@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Friends from './Friends';
+import ProfileCommunity from './ProfileCommunity';
 
 export default function Profile() {
   const { colors } = useTheme();
@@ -23,7 +24,7 @@ export default function Profile() {
     return {
       Event: <Text>Event sub-page</Text>,
       Friends: <Friends />,
-      Community: <Text>Community sub-page</Text>,
+      ProfileCommunity: <Text>Community sub-page</Text>,
       Profile: <Text>Profile sub-page</Text>,
     }[page];
   }
@@ -33,7 +34,7 @@ export default function Profile() {
       <View>
         <Button title='Event' onPress={() => setProfileSubPage('Event')} />
         <Button title="Friends" onPress={() => setProfileSubPage('Friends')} />
-        <Button title="Community" onPress={() => setProfileSubPage('Community')} />
+        <Button title="Community" onPress={() => setProfileSubPage('ProfileCommunity')} />
         <Button title="Profile" onPress={() => setProfileSubPage('Profile')} />
       </View>
       <SubPage page={profileSubPage} />
