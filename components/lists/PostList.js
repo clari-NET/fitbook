@@ -7,11 +7,12 @@ export default function PostList({ posts }) {
 
   return (
     <View>
-      <FlatList
+      {posts.length > 0 && posts.map((post) => (<Post post={post} key={post.id} />))}
+      {/* <FlatList
         data={posts}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-      />
+      /> */}
     </View>
   );
 }

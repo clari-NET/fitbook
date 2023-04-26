@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Text } from 'react-native-paper';
 import {
-  View, ScrollView, Text, StyleSheet, Image, Button,
+  View, ScrollView, StyleSheet, Image, Button,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import PostList from '../lists/PostList';
 import EventList from '../lists/EventList';
+import Feed from './Feed';
 
 const sampleData = {
   id: 1,
@@ -51,11 +52,11 @@ export default function Community() {
     setJoined(!joined);
   };
 
-  const postFilterList = [
-    { key: 1, value: 'Recent' },
-    { key: 2, value: 'Hot' },
-    { key: 3, value: 'Most upvoted' },
-  ];
+  // const postFilterList = [
+  //   { key: 1, value: 'Recent' },
+  //   { key: 2, value: 'Hot' },
+  //   { key: 3, value: 'Most upvoted' },
+  // ];
 
   return (
     <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
@@ -73,23 +74,7 @@ export default function Community() {
           ? <Button title='Joined' onPress={joinCommunityToggle} />
           : <Button title='Join' onPress={joinCommunityToggle} />}
       </View>
-      <View style={styles.carousel_container}>
-        <ScrollView style={styles.carousel}>
-          <EventList events={new Array(5).fill(0)} />
-        </ScrollView>
-      </View>
-      <View style={styles.posts}>
-        <SelectList
-          setSelected={(val) => setFilter(val)}
-          data={postFilterList}
-          save='value'
-          search={false}
-          // onSelect={filter function}
-        />
-        <ScrollView>
-          <PostList posts={posts} />
-        </ScrollView>
-      </View>
+
     </View>
   );
 }
