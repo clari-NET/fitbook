@@ -61,20 +61,15 @@ export default function Fitbook() {
   const { isSignedIn, isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const auth = getAuth();
-  // const { isSignedIn, isLoading } = useFirebaseAuth();
-  // const [isSignedIn, setIsSignedIn] = useState(false);
-  // const [isLoading, setIsLoading] = useState(true);
   const isMounted = useRef(true);
 
   async function getValueFor(key) {
     let result = await SecureStore.getItemAsync(key);
     if (result) {
       return result;
-    } else {
-      return false;
     }
+    return false;
   }
-  console.log(isSignedIn)
 
   useEffect(() => {
     const getUser = async () => {

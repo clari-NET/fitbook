@@ -1,9 +1,15 @@
 import { StyleSheet, View, Alert } from 'react-native';
-import { useTheme, TextInput, Button, Text, Snackbar } from 'react-native-paper';
+import {
+  useTheme,
+  TextInput,
+  Button,
+  Text,
+  Snackbar,
+} from 'react-native-paper';
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import {getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
-import {setDoc, doc, serverTimestamp} from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
 import db from '../../firebase/firebase.config';
 import * as SecureStore from 'expo-secure-store';
 
@@ -15,6 +21,10 @@ export default function SignUp({ navigation }) {
   const [password, setPassword] = useState('');
   const [failure, setFailure] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  async function save(key, value) {
+    await SecureStore.setItemAsync(key, value);
+  }
 
   const handleSignUp = async () => {
     if (!email) {
@@ -34,10 +44,11 @@ export default function SignUp({ navigation }) {
         email,
         timeStamp,
       });
+      await save('FitbookEmail', email);
+      await save('FitbookPassword', password);
 
       navigation.navigate('Interests');
     } catch (error) {
-      console.log(error);
       setFailure(true);
     }
   };
