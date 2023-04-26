@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 // import getProfile from '../firebaseFiles/API';
-import db from '../../firebaseFiles/firebase.config';
-
-/* eslint-disable import/no-extraneous-dependencies */
 
 import {
   getFirestore,
@@ -13,7 +10,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import firebaseConfig from '../../firebaseFiles/keys';
+import db from '../../firebaseFiles/firebase.config';
 
 export default function Profile() {
   const { colors } = useTheme();

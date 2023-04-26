@@ -19,3 +19,4 @@ app.json
 
 # firebase
 **/keys.js
+.env
