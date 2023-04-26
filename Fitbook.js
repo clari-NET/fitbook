@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import merge from 'deepmerge';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
+import ForgotPassword from './components/pages/ForgotPassword';
 import Interests from './components/pages/Interests';
 import Main from './components/pages/Main';
 import AppHeader from './components/utility/AppHeader';
@@ -118,6 +119,7 @@ export default function Fitbook() {
             <>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
               <Stack.Screen name="Interests" component={Interests} />
             </>
           )}

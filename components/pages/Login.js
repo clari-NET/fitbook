@@ -118,7 +118,7 @@ export default function Login({ navigation }) {
         textColor={colors.primary}
         buttonColor={colors.surface}
         onPress={() => {
-          console.log('reset')
+          navigation.navigate('ForgotPassword');
         }}
       >
         Forgot password?
