@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
-import db from '../../firebase/firebase.config';
+import db from '../../firebaseFiles/firebase.config';
 import * as SecureStore from 'expo-secure-store';
 
 export default function SignUp({ navigation }) {
