@@ -5,17 +5,16 @@ import { StyleSheet, View, Button } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { getAuth } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 
 import Home from './Home';
 import ProfileMain from './ProfileMain';
-import CommunityList from '../lists/CommunityList';
+import CommunityTab from './CommunityTab';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
-import Friends from './Friends';
 import { userStatus } from '../../redux/user/userSlice';
-import { useDispatch } from 'react-redux';
-import {getAuth } from 'firebase/auth';
-import * as SecureStore from 'expo-secure-store';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -41,20 +40,17 @@ export default function Main({ navigation }) {
 
   return (
     <>
-      <AppHeader />
-      <View style={[styles.container, { backgroundColor: colors.surface }]}>
-        {/* <Text>Welcome to the main app</Text> */}
-        <Button
-          title="Logout"
-          onPress={async() => {
-            auth.signOut();
-            await deleteStore('FitbookEmail');
-            await deleteStore('FitbookPassword');
-            dispatch(userStatus(false));
-          }}
-        />
-        <StatusBar />
-      </View>
+      <AppHeader
+        onLogout={async () => {
+          auth.signOut();
+          await deleteStore('FitbookEmail');
+          await deleteStore('FitbookPassword');
+          dispatch(userStatus(false));
+        }}
+      />
+      {/* <View style={[styles.container, { backgroundColor: colors.surface }]}> */}
+      <StatusBar />
+      {/* </View> */}
       <Tab.Navigator>
         <Tab.Screen
           name='Home'
@@ -73,8 +69,8 @@ export default function Main({ navigation }) {
           }}
         />
         <Tab.Screen
-          name='Community'
-          component={CommunityList}
+          name='CommunityTab'
+          component={CommunityTab}
           options={{
             tabBarLabel: 'Communities',
             tabBarIcon: ({ color }) => ColoredIcon('account-group', color),

@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import merge from 'deepmerge';
 import SignUp from './components/pages/SignUp';
 import Login from './components/pages/Login';
+import ForgotPassword from './components/pages/ForgotPassword';
 import Interests from './components/pages/Interests';
 import Main from './components/pages/Main';
 import AppHeader from './components/utility/AppHeader';
@@ -48,9 +49,9 @@ const CustomDefaultTheme = {
   roundness: 2,
   colors: {
     ...CombinedDefaultTheme.colors,
-    surface: '#FFF6C7',
-    primary: '#5ACDED',
-    secondary: '#FF6000',
+    surface: '#f0f0f0',
+    primary: '#FF6000',
+    secondary: '#212121',
     tertiary: '#141729',
   },
 };
@@ -119,12 +120,15 @@ export default function Fitbook() {
           screenOptions={{ header: getAppHeader }}
         >
           {isSignedIn ? (
-            <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+            <>
+              <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+              {/* <Stack.Screen name="Interests" component={Interests} /> */}
+            </>
           ) : (
             <>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="SignUp" component={SignUp} />
-              <Stack.Screen name="Interests" component={Interests} />
+              <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             </>
           )}
 
