@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View, StyleSheet } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Modal from 'react-native-modal';
 import { getDocs, collection, query, where } from 'firebase/firestore';
@@ -17,25 +17,34 @@ async function getEvents() {
   const events = eventDocs.docs.map((doc) => doc.data());
   return events;
 }
+const styles = StyleSheet.create({
+  carouselContainer: {
+    height: 200, // You can adjust this value according to your design requirements
+  },
+});
 
 export default function EventList({ events }) {
   const [modalIsVisible, setIsVisible] = useState(false);
   const [viewEvent, setViewEvent] = useState({});
+
   function handlePress(event) {
     setViewEvent(event);
     setIsVisible(true);
   }
+
   return (
     <>
-      <Carousel
-        data={events}
-        renderItem={() => <Event handlePress={handlePress} />}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-        layout='stack'
-        activeSlideOffset={10}
-        contentContainerCustomStyle={{ marginVertical: 20 }}
-      />
+      <View style={styles.carouselContainer}>
+        <Carousel
+          data={events}
+          renderItem={() => <Event handlePress={handlePress} />}
+          sliderWidth={SLIDER_WIDTH}
+          itemWidth={ITEM_WIDTH}
+          layout='stack'
+          activeSlideOffset={10}
+          contentContainerCustomStyle={{ marginVertical: 20 }}
+        />
+      </View>
       <Modal isVisible={modalIsVisible}>
         <EventDetails event={viewEvent} close={() => setIsVisible(false)} />
       </Modal>
