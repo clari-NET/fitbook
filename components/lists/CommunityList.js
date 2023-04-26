@@ -111,7 +111,7 @@ export default function CommunityList({ navigation }) {
       <TextBanner text='Recommendations' />
       {communities.length !== 0 &&
         communities.map((community) => (
-          <CommunityCard community={community} key={community.name} />
+          <CommunityCard community={community} key={community.name} handlePress={handlePress} />
         ))}
 
 {/* add a community */}

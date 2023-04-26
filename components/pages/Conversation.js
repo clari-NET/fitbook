@@ -3,6 +3,8 @@ import { View, TouchableOpacity, StyleSheet} from 'react-native';
 import { Text, useTheme, Avatar } from 'react-native-paper';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Appbar } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { reset } from '../../redux/conversation/conversationSlice';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
 
 export default function Conversation({ currConvo, setCurrConvo }) {
   const { colors } = useTheme();
+  const dispatch = useDispatch();
 
   const [messages, setMessages] = useState([]);
 
@@ -51,7 +54,7 @@ export default function Conversation({ currConvo, setCurrConvo }) {
   return (
     <>
       <View style={styles.cardRow}>
-        <Appbar.BackAction onPress={() => { setCurrConvo('DMList'); }} />
+        <Appbar.BackAction onPress={() => { dispatch(reset()); }} />
         <Avatar.Image
             size={50}
             source={{ uri: 'https://picsum.photos/700' }}

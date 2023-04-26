@@ -7,9 +7,10 @@ import Friends from './Friends';
 import ProfileCommunity from './ProfileCommunity';
 import Feed from './Feed';
 
-export default function Profile() {
+export default function Profile({ navigation }) {
   const { colors } = useTheme();
   const [profileSubPage, setProfileSubPage] = useState('Activity');
+  console.log('Profile', navigation)
 
   useEffect(() => {
     // fetch data for
@@ -24,7 +25,7 @@ export default function Profile() {
   function SubPage({ page }) {
     return {
       Activity: <Feed />,
-      Friends: <Friends />,
+      Friends: <Friends navigation={navigation} />,
       ProfileCommunity: <ProfileCommunity />,
       Profile: <Text>Profile sub-page</Text>,
     }[page];
