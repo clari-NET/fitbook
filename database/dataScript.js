@@ -8,22 +8,24 @@ const {
   messages,
 } = require('./dataSet');
 
-// Storing all community admins
+// Storing all collections of data
 const communityAdmins = new Set();
+const allUsers = [];
+
+// Creating array based on data
+const createArray = (mostOutputWanted, dataLength) => (
+  Array.from(
+    { length: Math.floor(Math.random() * (mostOutputWanted - 1) + 1) },
+    () => Math.floor(Math.random() * dataLength),
+  )
+);
 
 // Populating all data fields for a given user
 const generateUser = (userId) => {
   // Looking at specific user
   const singleUser = users[userId];
 
-  // Randomizing selection functions
-  const createArray = (mostOutputWanted, dataLength) => (
-    Array.from(
-      { length: Math.floor(Math.random() * (mostOutputWanted - 1) + 1) },
-      () => Math.floor(Math.random() * dataLength),
-    )
-  );
-
+  // Randomizing selection from the data
   const createDataFromArray = (array, data) => (
     array.map((item) => (data[item]))
   );
@@ -40,8 +42,9 @@ const generateUser = (userId) => {
 
   // Assigning admin to each community
   const assignAdmin = (communityDataLength) => {
-    const communityId = Math.floor(Math.random() * (communityDataLength - 1) + 1);
-    if (!communityAdmins.has(communityId)) {
+    const allCommunities = createArray(communityDataLength, communityDataLength);
+    const communityId = allCommunities[Math.floor(Math.random() * (allCommunities.length) + 1)];
+    if (!communityAdmins.has(communityId) && communityId !== 0) {
       communityAdmins.add(communityId);
       return communityId;
     }
@@ -76,13 +79,13 @@ const generateUser = (userId) => {
 // Generate all users
 const generateAllUsers = (numberOfUsers) => {
   let id = numberOfUsers;
-  const allUsers = [];
   while (id > 0) {
     allUsers.push(generateUser(id));
     id -= 1;
   }
   return allUsers;
 };
+generateAllUsers(users.length - 1);
 
 // const communities = {
 //   id: 'number',
