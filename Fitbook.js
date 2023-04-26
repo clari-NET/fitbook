@@ -120,13 +120,15 @@ export default function Fitbook() {
           screenOptions={{ header: getAppHeader }}
         >
           {isSignedIn ? (
-            <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+            <>
+              <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+              <Stack.Screen name="Interests" component={Interests} />
+            </>
           ) : (
             <>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="SignUp" component={SignUp} />
               <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-              <Stack.Screen name="Interests" component={Interests} />
             </>
           )}
 
