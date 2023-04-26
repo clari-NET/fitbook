@@ -4,9 +4,9 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { useTheme, Button, Surface } from 'react-native-paper';
 
 const styles = StyleSheet.create({
   postContainer: {
@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
   date: {
     color: '#999',
   },
+  dateContainer: {
+    marginLeft: 'auto',
+  },
   postContent: {
     marginBottom: 10,
   },
@@ -51,7 +54,8 @@ const styles = StyleSheet.create({
 
 export default function Post({ post }) {
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
+  const [likeCount, setLikeCount] = useState(post.lifts);
+  const theme = useTheme();
 
   const handleLike = () => {
     setLiked(!liked);
@@ -59,35 +63,36 @@ export default function Post({ post }) {
   };
 
   return (
-    <View style={styles.postContainer}>
+    <Surface style={styles.postContainer}>
       <View style={styles.postHeader}>
         <Image
           style={styles.profilePhoto}
-          source={{ uri: 'https://source.unsplash.com/random?gym,fitness' }}
+          source={{ uri: post.user.profilePhoto }}
         />
-        <Text style={styles.username}>{post.username}</Text>
-        <Text style={styles.community}>{post.community}</Text>
-        <Text style={styles.date}>
-          {formatDistanceToNow(new Date(post.date), { addSuffix: true })}
-        </Text>
-      </View>
-      <Text style={styles.postContent}>Post content here</Text>
-      <View style={styles.postActions}>
-        <TouchableOpacity onPress={handleLike} style={styles.actionButton}>
-          <Text>
-            {liked ? 'Drop' : 'Lift'}
-            (
-            {likeCount}
-            )
+        <Text style={styles.username}>{post.user.username}</Text>
+        <Text style={styles.community}>{post.community.name}</Text>
+        <View style={styles.dateContainer}>
+          <Text style={styles.date}>
+            {formatDistanceToNow(new Date(post.date), { addSuffix: true })}
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text>Comment</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text>Share</Text>
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
+      <Text style={styles.postContent}>{post.content}</Text>
+      <View style={styles.postActions}>
+        <Button
+          mode="text"
+          onPress={handleLike}
+          color={liked ? theme.colors.accent : theme.colors.text}
+        >
+          {`${liked ? 'Drop' : 'Lift'} ${likeCount}`}
+        </Button>
+        <Button mode="text" onPress={() => {}}>
+          Comment
+        </Button>
+        <Button mode="text" onPress={() => {}}>
+          Share
+        </Button>
+      </View>
+    </Surface>
   );
 }
