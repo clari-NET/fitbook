@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'react-native-paper';
 import EventList from '../lists/EventList';
 import PostList from '../lists/PostList';
+import Feed from './Feed';
 
 export default function Home({ theme }) {
   const [showEvent, setShowEvent] = useState(true);
@@ -33,14 +34,7 @@ export default function Home({ theme }) {
   ];
 
   return (
-    <ScrollView>
-      <Text>Hello from Home!</Text>
-      {showEvent ? <EventList events={new Array(5).fill(0)} /> : <PostList posts={posts} />}
-      <Button
-        title="Toggle Post/Event"
-        onPress={toggleComponent}
-      />
-    </ScrollView>
+      <Feed />
   );
 }
 

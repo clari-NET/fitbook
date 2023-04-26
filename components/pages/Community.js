@@ -52,11 +52,11 @@ export default function Community() {
     setJoined(!joined);
   };
 
-  const postFilterList = [
-    { key: 1, value: 'Recent' },
-    { key: 2, value: 'Hot' },
-    { key: 3, value: 'Most upvoted' },
-  ];
+  // const postFilterList = [
+  //   { key: 1, value: 'Recent' },
+  //   { key: 2, value: 'Hot' },
+  //   { key: 3, value: 'Most upvoted' },
+  // ];
 
   return (
     <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
@@ -74,21 +74,7 @@ export default function Community() {
           ? <Button title='Joined' onPress={joinCommunityToggle} />
           : <Button title='Join' onPress={joinCommunityToggle} />}
       </View>
-      <View style={styles.carousel_container}>
-        <ScrollView style={styles.carousel}>
-          <EventList events={new Array(5).fill(0)} />
-        </ScrollView>
-      </View>
-      <View style={styles.posts}>
-        <ScrollView>
-          <Feed
-            section='community'
-          />
-        </ScrollView>
-        <ScrollView>
-          <PostList posts={posts} />
-        </ScrollView>
-      </View>
+
     </View>
   );
 }
