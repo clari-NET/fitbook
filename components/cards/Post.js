@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Post({ post }) {
+export default function Post({ post, navigation }) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.lifts);
   const theme = useTheme();
@@ -86,7 +86,15 @@ export default function Post({ post }) {
         >
           {`${liked ? 'Drop' : 'Lift'} ${likeCount}`}
         </Button>
-        <Button mode="text" onPress={() => {}}>
+        <Button
+          mode="text"
+          onPress={() => {
+            navigation.navigate('Comment', {
+              post,
+              comments: post.comments,
+            });
+          }}
+        >
           Comment
         </Button>
         <Button mode="text" onPress={() => {}}>

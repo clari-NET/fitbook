@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useTheme, Text } from 'react-native-paper';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import DropDown from 'react-native-paper-dropdown';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PostList from '../lists/PostList';
+import Comment from './Comment';
 import EventList from '../lists/EventList';
 
 const styles = StyleSheet.create({
@@ -205,9 +207,19 @@ const filterList = [
   { value: 'allTime', label: 'All Time' },
 ];
 
+function PostListWrapper(postData) {
+  return function PostListWrapperComponent(props) {
+    return <PostList {...props} posts={postData} />;
+  };
+}
+
+
 export default function Feed({ section }) {
   const [filter, setFilter] = useState('Recent');
   const [showDropDown, setShowDropDown] = useState(false);
+
+  const PostStack = createNativeStackNavigator();
+  const PostListWrapperComponent = PostListWrapper(posts);
 
   return (
     <ScrollView>
@@ -223,7 +235,13 @@ export default function Feed({ section }) {
         onDismiss={() => setShowDropDown(false)}
       />
       <View style={styles.posts}>
-        <PostList posts={posts} />
+        <PostStack.Navigator>
+          <PostStack.Screen
+            name="PostList"
+            component={PostListWrapperComponent}
+          />
+          <PostStack.Screen name="Comment" component={Comment} />
+        </PostStack.Navigator>
       </View>
     </ScrollView>
   );
