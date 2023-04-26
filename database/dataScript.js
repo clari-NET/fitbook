@@ -4,7 +4,8 @@ const {
   community,
   users,
   statsistics,
-  activities
+  activities,
+  messages,
 } = require('./dataSet');
 
 // Get data for each section
@@ -15,41 +16,29 @@ const {
 const generateUser = (userId) => {
   const singleUser = users[userId];
 
-  const friendData = Array.from(
-    { length: Math.floor(Math.random() * (10 - 1) + 1) },
-    () => Math.floor(Math.random() * 48),
-  );
-
-  const communityData = Array.from(
-    { length: Math.floor(Math.random() * (10 - 1) + 1) },
-    () => Math.floor(Math.random() * 18),
-  );
-
-  const interestsArray = Array.from(
-    { length: Math.floor(Math.random() * (10 - 1) + 1) },
-    () => Math.floor(Math.random() * 48),
-  );
-
-  const interestsData = interestsArray.map((interest) => (statsistics[interest]));
-
-  const statsArray = Array.from(
-    { length: Math.floor(Math.random() * (3 - 1) + 1) },
-    () => Math.floor(Math.random() * 24),
-  );
-  const statsData = statsArray.map((stat) => (statsistics[stat]));
-
-  const messagesArray = Array.from(
-    { length: Math.floor(Math.random() * (10 - 1) + 1) },
-    () => Math.floor(Math.random() * 24),
-  );
-  const messagesData = messagesArray.map((message) => (statsistics[message]));
-
   const createArray = (mostOutputWanted, dataLength) => (
-    return Array.from(
+    Array.from(
       { length: Math.floor(Math.random() * (mostOutputWanted - 1) + 1) },
       () => Math.floor(Math.random() * dataLength),
     )
-  )
+  );
+
+  const createDataFromArray = (array, data) => (
+    array.map((item) => (data[item]))
+  );
+
+  const friendData = createArray(10, 48);
+
+  const communityData = createArray(10, 18);
+
+  const interestsArray = createArray(10, 48);
+  const interestsData = createDataFromArray(interestsArray, activities);
+
+  const statsArray = createArray(3, 24);
+  const statsData = createDataFromArray(statsArray, statsistics);
+
+  const messagesArray = createArray(10, 24);
+  const messagesData = createDataFromArray(messagesArray, messages);
 
   return {
     id: userId,
