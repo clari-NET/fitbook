@@ -1,11 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import { Text, View } from 'react-native';
+import React from 'react';
+import {
+  FlatList,
+} from 'react-native';
+import ProfileCommunityCard from '../cards/ProfileCommunityCard';
 
-export default function ProfileCommunityList ({ userCommunities }) {
-
+export default function ProfileCommunityList({ communityList, handleFavorite, styles }) {
   return (
-    <View >
-      <Text >View the communities you joined here.</Text>
-    </View>
-  )
+    <FlatList
+      data={communityList}
+      renderItem={({ item }) => (
+        <ProfileCommunityCard item={item} handleSendMessage={handleFavorite} styles={styles}/>)}
+      keyExtractor={(item) => item.name.toString()}
+      styles={styles.banner_container}
+    />
+  );
 }

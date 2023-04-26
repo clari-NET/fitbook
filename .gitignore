@@ -10,7 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 app.json
-.env
+
 
 # macOS
 .DS_Store
@@ -22,4 +22,3 @@ app.json
 .env
 # firebase
 **/keys.js
-.env

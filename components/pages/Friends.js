@@ -6,51 +6,37 @@ import FriendsList from '../lists/FriendsList';
 
 const sampleData = [
   {
-    id: 1,
-    image: 'PROFILE',
-    name: 'Johnathan S.',
-    username: 'bigJ',
-  },
-  {
-    id: 2,
-    image: 'PROFILE',
-    name: 'Elliot T.',
-    username: 'ChampE',
-  },
-  {
-    id: 3,
-    image: 'PROFILE',
-    name: 'Brett T.',
-    username: 'notoriousB',
-  },
-  {
-    id: 4,
-    image: 'PROFILE',
-    name: 'Nic M.',
-    username: 'NicJam',
+    profilePhoto: 'https://nickelodeonuniverse.com/wp-content/uploads/Squidward.png',
+    fitnessStats: {},
+    friends: [],
+    name: { first: 'Mo', last: 'Akbari' },
+    username: 'KingMo',
   },
 ];
 
 function Friends() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [friends, setFriends] = useState([]);
+  const [friendsList, setFriendsList] = useState([]);
+  const [filteredFriends, setFilterdFriendsList] = useState([]);
 
   useEffect(() => {
     // get request to fetch friends list
-    setFriends(sampleData);
+    setFriendsList(sampleData);
+    setFilterdFriendsList(sampleData);
   }, []);
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
-    const filteredFriends = friends
-      .filter((friend) => friend.name.toLowerCase().includes(query.toLowerCase())
-        || friend.username.toLowerCase().includes(query.toLowerCase()));
-    setFriends(filteredFriends);
+    setFilterdFriendsList([...friendsList
+      .filter((friend) => friend.name.first.toLowerCase().includes(query.toLowerCase())
+      || friend.name.last.toLowerCase().includes(query.toLowerCase())
+      || friend.username.toLowerCase().includes(query.toLowerCase()))]);
+    // setFriendsList(filteredFriends);
     setSearchQuery(query);
   };
 
-  const handleSendMessage = (event) => {
-    //console.log(`started DM with: ${event.name}`);
+  const handleSendMessage = (username) => {
+    console.log(`started DM with: ${username}`);
   };
 
   return (
@@ -62,7 +48,7 @@ function Friends() {
           onChangeText={handleSearch}
         />
       </View>
-      <FriendsList friends={friends} handleSendMessage={handleSendMessage} />
+      <FriendsList friendsList={filteredFriends} handleSendMessage={handleSendMessage} />
     </View>
   );
 }
