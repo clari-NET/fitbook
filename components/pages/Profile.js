@@ -4,6 +4,7 @@ import {
   useTheme, Avatar, Text, IconButton, SegmentedButtons, MD3Colors,
 } from 'react-native-paper';
 import Friends from './Friends';
+import ProfileCommunity from './ProfileCommunity';
 import Feed from './Feed';
 
 import {
@@ -122,7 +123,7 @@ export default function Profile({ navigation }) {
     return {
       Activity: <Feed />,
       Friends: <Friends />,
-      Communities: <Text>Communities sub-page</Text>,
+      ProfileCommunity: <ProfileCommunity />,
       Profile: <Text>Profile sub-page</Text>,
     }[page];
   }
@@ -132,7 +133,7 @@ export default function Profile({ navigation }) {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Button title='Activity' onPress={() => setProfileSubPage('Activity')} />
         <Button title="Friends" onPress={() => setProfileSubPage('Friends')} />
-        <Button title="Communities" onPress={() => setProfileSubPage('Communities')} />
+        <Button title="Community" onPress={() => setProfileSubPage('ProfileCommunity')} />
         <Button title="Profile" onPress={() => setProfileSubPage('Profile')} />
       </View>
       <SubPage page={profileSubPage} />
