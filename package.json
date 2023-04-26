@@ -7,8 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "reset-main": "git checkout main && git fetch origin && git reset --hard origin/main",
-    "code-review": "git checkout -b $TARGET && git pull origin $TARGET && git merge main"
+    "reset-main": "git checkout main && git fetch origin && git reset --hard origin/main && npm install",
+    "code-review": "git checkout -b $TARGET && git pull origin $TARGET && git merge main && npm install"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -16,16 +16,24 @@
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@reduxjs/toolkit": "^1.9.5",
+    "date-fns": "^2.29.3",
     "deepmerge": "^4.3.1",
     "eslint-config-universe": "^11.2.0",
     "expo": "~48.0.11",
+    "expo-secure-store": "~12.1.1",
     "expo-status-bar": "~1.4.4",
     "firebase": "^9.20.0",
     "react": "18.2.0",
+<<<<<<< HEAD
     "react-native": "0.71.6",
     "react-native-dotenv": "^3.4.8",
+=======
+    "react-native": "0.71.7",
+    "react-native-dropdown-select-list": "^2.0.4",
+>>>>>>> main
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.7.0",
+    "react-native-paper-dropdown": "^1.0.7",
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-snap-carousel": "^4.0.0-beta.6",
@@ -39,7 +47,8 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "react-native-dotenv": "^3.4.8"
   },
   "private": true
 }

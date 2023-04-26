@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 export default function FriendsCard({ item, handleSendMessage}) {
-  // console.log(props);
+  // //console.log(props);
   return (
     <View>
       <View>
