@@ -2,7 +2,6 @@ import React, {useState, useEffect, useCallback} from 'react';
 import { View, TouchableOpacity, StyleSheet} from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { GiftedChat } from 'react-native-gifted-chat'
-import DmForm from '../forms/DmForm';
 
 const styles = StyleSheet.create({
   container: {
@@ -56,19 +55,13 @@ export default function Conversation({ currConvo, setCurrConvo }) {
           {currConvo}
         </Text>
       </TouchableOpacity>
-      <View style={[styles.container, { backgroundColor: colors.surface }]}>
-        <Text>Conversation Page</Text>
-        <GiftedChat
-          messages={messages}
-          onSend={messages => onSend(messages)}
-          user={{
-            _id: 1,
-          }}
-        />
-      </View>
-      <View>
-        <DmForm />
-      </View>
+      <GiftedChat
+        messages={messages}
+        onSend={messages => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+      />
     </>
   );
 }
