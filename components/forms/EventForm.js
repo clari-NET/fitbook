@@ -20,10 +20,16 @@ export default function PostForm({handleSubmit}) {
     <Surface style={styles.surface}>
       <Text variant='titleLarge'>Create an Event</Text>
       <TextInput
-        label='Say something'
+        label='Event Title'
+        mode='outlined'
+        placeholder='e.g. "Glutes wit da Homiez"'
+        style={styles.textInput}
+      />
+      <TextInput
+        label='Event Description'
         mode='outlined'
         multiline
-        placeholder='Speak to your people...'
+        placeholder='Say more, my G'
         style={styles.textInput}
       />
       <Button mode='contained' onPress={handleSubmit}>Post!</Button>

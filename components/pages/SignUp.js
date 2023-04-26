@@ -16,7 +16,8 @@ import * as SecureStore from 'expo-secure-store';
 export default function SignUp({ navigation }) {
   const { colors } = useTheme();
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [failure, setFailure] = useState(false);
@@ -29,7 +30,7 @@ export default function SignUp({ navigation }) {
   const handleSignUp = async () => {
     if (!email) {
       Alert.alert('Please include an email');
-    } else if (!name) {
+    } else if (!firstName) {
       Alert.alert('Please include your name');
     } else if (!password || password.length < 6) {
       Alert.alert('Password needs to be atleast 6 characters');
@@ -40,14 +41,18 @@ export default function SignUp({ navigation }) {
       updateProfile(auth.currentUser, { username });
       const timeStamp = serverTimestamp();
       await setDoc(doc(db, 'users', userData.user.uid), {
-        name,
+        name: {
+          first: firstName,
+          last: lastName,
+        },
         email,
+        username,
         timeStamp,
       });
       await save('FitbookEmail', email);
       await save('FitbookPassword', password);
 
-      navigation.navigate('Interests');
+      // navigation.navigate('Interests');
     } catch (error) {
       setFailure(true);
     }
@@ -69,7 +74,7 @@ export default function SignUp({ navigation }) {
         <Text>
           Welcome
           {' '}
-          {name}
+          {firstName}
         </Text>
       </Snackbar>
       <Snackbar
@@ -82,6 +87,7 @@ export default function SignUp({ navigation }) {
       <Text>Sign up, Swole Bro/Sis!</Text>
       <TextInput
         label="Email"
+        autoCapitalize='none'
         value={email}
         onChangeText={email => setEmail(email)}
         mode="flat"
@@ -89,15 +95,24 @@ export default function SignUp({ navigation }) {
         activeUnderlineColor="#000"
       />
       <TextInput
-        label="name"
-        value={name}
-        onChangeText={name => setName(name)}
+        label="firstName"
+        value={firstName}
+        onChangeText={firstName => setFirstName(firstName)}
+        mode="flat"
+        style={styles.input}
+        activeUnderlineColor="#000"
+      />
+      <TextInput
+        label="lastName"
+        value={lastName}
+        onChangeText={lastName => setLastName(lastName)}
         mode="flat"
         style={styles.input}
         activeUnderlineColor="#000"
       />
       <TextInput
         label="Username"
+        autoCapitalize='none'
         value={username}
         onChangeText={username => setUsername(username)}
         mode="flat"
