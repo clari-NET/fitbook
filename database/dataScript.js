@@ -1,16 +1,18 @@
 const {
   boolean,
-  gender,
   community,
   users,
   statistics,
   activities,
   messages,
+  emojis,
+  locations,
 } = require('./dataSet');
 
 // Storing all collections of data
 const communityAdmins = new Set();
 const allUsers = [];
+const allCommunities = [];
 
 // Creating array based on data
 const createArray = (mostOutputWanted, dataLength) => (
@@ -20,10 +22,12 @@ const createArray = (mostOutputWanted, dataLength) => (
   )
 );
 
+// SINGLE USER
+
 // Populating all data fields for a given user
 const generateUser = (userId) => {
   // Looking at specific user
-  const singleUser = users[userId];
+  const singleUser = users[userId - 1];
 
   // Randomizing selection from the data
   const createDataFromArray = (array, data) => (
@@ -85,26 +89,56 @@ const generateAllUsers = (numberOfUsers) => {
   }
   return allUsers;
 };
-generateAllUsers(users.length - 1);
 
-// const communities = {
-//   id: 'number',
-//   name: 'string',
-//   description: 'string',
-//   banner: 'url',
-//   icon: 'unix code',
-//   admin: {
-//     id: 'number',
-//     name: 'string',
-//   },
-//   location: 'string',
-//   members: [
-//     {
-//       user_id: 'number',
-//     },
-//   ],
-//   favorite: 'boolean',
-// };
+// SINGLE COMMUNITY
+const generateCommunity = (communityId) => {
+  // Invoking generate users so that it occurs first
+  generateAllUsers(users.length);
+  // Looking at specific user
+  const singleCommunity = community[communityId - 1];
+
+  const findAdmin = () => {
+    let admin;
+    allUsers.forEach((user) => {
+      if (user.community_admin.community_id === communityId) {
+        admin = { id: user.id, name: user.name };
+      }
+    });
+    return admin || null;
+  };
+
+  const isAdmin = findAdmin();
+
+  const findMembers = () => {
+    const members = allUsers.filter((user) => user.communities.includes(communityId));
+    return members.map((user) => ({ user_id: user.id }));
+  };
+
+  const allMembers = findMembers();
+
+  return {
+    id: communityId,
+    name: singleCommunity.name,
+    description: singleCommunity.description,
+    banner: 'https://picsum.photos/700',
+    icon: emojis[[Math.floor(Math.random() * (emojis.length) + 1)]],
+    admin: isAdmin,
+    location: locations[[Math.floor(Math.random() * (locations.length) + 1)]],
+    members: allMembers,
+    favorite: boolean[Math.round(Math.random())],
+  };
+};
+
+const generateAllCommunities = (numberOfCommunities) => {
+  let id = numberOfCommunities;
+  while (id > 0) {
+    allCommunities.push(generateCommunity(id));
+    id -= 1;
+  }
+  return allCommunities;
+};
+
+generateAllCommunities(community.length);
 
 // const events = {
 //   id: 'number',

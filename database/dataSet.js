@@ -747,3 +747,11 @@ exports.messages = [
     createdAt: 1645954067251,
   },
 ];
+
+exports.emojis = [
+  'U+1F436', 'U+1F338', 'U+1F680', 'U+1F355', 'U+1F393', 'U+1F3B8', 'U+1F341', 'U+1F981', 'U+1F30A', 'U+1F984', 'U+1F3A8', 'U+1F6B2', 'U+1F418', 'U+1F368', 'U+1F4DA', 'U+1F30B', 'U+1F3A2', 'U+1F420', 'U+1F308',
+];
+
+exports.locations = [
+  'Miami, FL', 'Honolulu, HI', 'Denver, CO', 'Chicago, IL', 'Boston, MA', 'San Francisco, CA', 'Kansas City, MO', 'Charleston, SC', 'Baltimore, MD', 'Portland, OR', 'New Orleans, LA', 'Austin, TX', 'Portland, ME', 'Seattle, WA', 'Nashville, TN', 'Las Vegas, NV', 'Anchorage, AK', 'Atlanta, GA', 'Phoenix, AZ', 'St. Louis, MO',
+];
