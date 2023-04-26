@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Avatar, Button, Card, Text } from 'react-native-paper';
+import React from 'react';
+import { Card, Text } from 'react-native-paper';
 import { View } from 'react-native';
-import { useTheme } from 'react-native-paper';
 
 export default function CommunityCard({ community, handlePress }) {
   return (
