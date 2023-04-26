@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, ScrollView, StyleSheet } from 'react-native';
 import { FAB, Modal, Portal } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
-import PostList from '../lists/PostList';
+import Post from '../cards/Post';
 import EventList from '../lists/EventList';
 import PostForm from '../forms/PostForm';
 import EventForm from '../forms/EventForm';
@@ -211,22 +211,26 @@ export default function Feed({ onPostSelected }) {
 
   return (
     <>
-      <ScrollView>
-        <EventList events={new Array(5).fill(0)} />
-        <DropDown
-          label={filter}
-          mode="outlined"
-          list={filterList}
-          value={filter}
-          setValue={setFilter}
-          visible={showDropDown}
-          showDropDown={() => setShowDropDown(true)}
-          onDismiss={() => setShowDropDown(false)}
-        />
-        <View style={styles.posts}>
-          <PostList posts={posts} onPostSelected={onPostSelected} />
-        </View>
-      </ScrollView>
+      <FlatList
+        data={posts}
+        renderItem={({ item }) => <Post post={item} onPress={onPostSelected} />}
+        keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={(
+          <>
+            <EventList events={new Array(5).fill(0)} />
+            <DropDown
+              label={filter}
+              mode="outlined"
+              list={filterList}
+              value={filter}
+              setValue={setFilter}
+              visible={showDropDown}
+              showDropDown={() => setShowDropDown(true)}
+              onDismiss={() => setShowDropDown(false)}
+            />
+          </>
+        )}
+      />
       <FAB.Group
         open={open}
         visible
