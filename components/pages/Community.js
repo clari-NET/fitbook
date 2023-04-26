@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useTheme, Text } from 'react-native-paper';
 import {
-  View, ScrollView, StyleSheet, Image, Button,
+  View, StyleSheet, Image, Button,
 } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
-import PostList from '../lists/PostList';
-import EventList from '../lists/EventList';
 import Feed from './Feed';
 
 const sampleData = {
@@ -22,62 +19,6 @@ const sampleData = {
     1, 2, 3, 4, 5,
   ],
 };
-
-const posts = [
-  {
-    id: '1',
-    profilePhotoUrl: 'https://example.com/profile-photo-url1.jpg',
-    username: 'User1',
-    community: 'Community1',
-    date: '2023-04-24T10:30:00.000Z',
-    content: 'Post content 1',
-  },
-  {
-    id: '2',
-    profilePhotoUrl: 'https://example.com/profile-photo-url2.jpg',
-    username: 'User2',
-    community: 'Community2',
-    date: '2023-04-24T11:00:00.000Z',
-    content: 'Post content 2',
-  },
-];
-
-export default function Community() {
-  const [joined, setJoined] = useState(false);
-  const [filter, setFilter] = useState('Recent');
-  const { colors } = useTheme();
-  // some function for 'onClick => navigateTo(Community)
-
-  const joinCommunityToggle = () => {
-    setJoined(!joined);
-  };
-
-  // const postFilterList = [
-  //   { key: 1, value: 'Recent' },
-  //   { key: 2, value: 'Hot' },
-  //   { key: 3, value: 'Most upvoted' },
-  // ];
-
-  return (
-    <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
-      <View style={styles.bannerImage_container}>
-        <Image
-          style={styles.bannerImage}
-          source={{ uri: sampleData.banner }}
-        />
-      </View>
-      <View style={styles.banner_container}>
-        <Text style={styles.bannerName}>
-          {sampleData.icon} {sampleData.name}
-        </Text>
-        {joined
-          ? <Button title='Joined' onPress={joinCommunityToggle} />
-          : <Button title='Join' onPress={joinCommunityToggle} />}
-      </View>
-
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   main_container: {
@@ -104,14 +45,34 @@ const styles = StyleSheet.create({
   bannerName: {
     color: '#FFF',
   },
-  carousel_container: {
-    flex: 4,
-  },
-  carousel: {
-    width: '100%',
-    height: '100%',
-  },
-  posts: {
-    flex: 5,
-  },
 });
+
+export default function Community() {
+  const [joined, setJoined] = useState(false);
+  const { colors } = useTheme();
+
+  const joinCommunityToggle = () => {
+    setJoined(!joined);
+  };
+
+  return (
+    <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
+      <View style={styles.bannerImage_container}>
+        <Image
+          style={styles.bannerImage}
+          source={{ uri: sampleData.banner }}
+        />
+      </View>
+      <View style={styles.banner_container}>
+        <Text style={styles.bannerName}>
+          {sampleData.icon}
+          {sampleData.name}
+        </Text>
+        {joined
+          ? <Button title='Joined' onPress={joinCommunityToggle} />
+          : <Button title='Join' onPress={joinCommunityToggle} />}
+      </View>
+      <Feed />
+    </View>
+  );
+}

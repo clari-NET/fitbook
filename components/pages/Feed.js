@@ -1,46 +1,8 @@
 import React, { useState } from 'react';
-import { useTheme, Text } from 'react-native-paper';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import DropDown from 'react-native-paper-dropdown';
 import PostList from '../lists/PostList';
 import EventList from '../lists/EventList';
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-  },
-  bannerImage_container: {
-    width: '100%',
-    height: 100,
-    flex: 2,
-  },
-  bannerImage: {
-    width: '100%',
-    height: '100%',
-  },
-  banner_container: {
-    height: 60,
-    width: '100%',
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FF6000',
-  },
-  bannerName: {
-    color: '#FFF',
-  },
-  carousel_container: {
-    flex: 4,
-  },
-  carousel: {
-    width: '100%',
-    height: '100%',
-  },
-  posts: {
-    flex: 5,
-  },
-});
 
 const posts = [
   {
@@ -71,7 +33,7 @@ const filterList = [
   { value: 'allTime', label: 'All Time' },
 ];
 
-export default function Feed({ section }) {
+export default function Feed() {
   const [filter, setFilter] = useState('Recent');
   const [showDropDown, setShowDropDown] = useState(false);
 
@@ -88,7 +50,7 @@ export default function Feed({ section }) {
         showDropDown={() => setShowDropDown(true)}
         onDismiss={() => setShowDropDown(false)}
       />
-      <View style={styles.posts}>
+      <View>
         <PostList posts={posts} />
       </View>
     </ScrollView>

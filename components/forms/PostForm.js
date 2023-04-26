@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'react-native-paper';
 
-export default function PostForm({ currentCommunity }) {
+export default function PostForm() {
   return (
     <TextInput
       label="Message"
