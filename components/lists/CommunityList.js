@@ -78,10 +78,10 @@ export default function CommunityList({ navigation }) {
   }
 
   function handlePress(community) {
-    // navigation.navigate('Community', { community });
-    //commented out the function for now since navigation prop is not passed
+    navigation.navigate('Community', { community });
+    // commented out the function for now since navigation prop is not passed
     // and throws an error
-    console.log('Navigate to Community X')
+    // console.log('Navigate to Community X')
   }
 
   function handleSubmit() {
