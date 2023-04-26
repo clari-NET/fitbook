@@ -17,18 +17,21 @@ const sampleData = [
 function Friends() {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
+  const [filteredFriends, setFilterdFriendsList] = useState([]);
 
   useEffect(() => {
     // get request to fetch friends list
     setFriendsList(sampleData);
+    setFilterdFriendsList(sampleData);
   }, []);
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
-    const filteredFriends = friendsList
-      .filter((friend) => friend.name.toLowerCase().includes(query.toLowerCase())
-        || friend.username.toLowerCase().includes(query.toLowerCase()));
-    setFriendsList(filteredFriends);
+    setFilterdFriendsList([...friendsList
+      .filter((friend) => friend.name.first.toLowerCase().includes(query.toLowerCase())
+      || friend.name.last.toLowerCase().includes(query.toLowerCase())
+      || friend.username.toLowerCase().includes(query.toLowerCase()))]);
+    // setFriendsList(filteredFriends);
     setSearchQuery(query);
   };
 
@@ -45,7 +48,7 @@ function Friends() {
           onChangeText={handleSearch}
         />
       </View>
-      <FriendsList friendsList={friendsList} handleSendMessage={handleSendMessage} />
+      <FriendsList friendsList={filteredFriends} handleSendMessage={handleSendMessage} />
     </View>
   );
 }

@@ -25,7 +25,7 @@ export default function Profile() {
     return {
       Activity: <Feed />,
       Friends: <Friends />,
-      ProfileCommunity: <Text>Community sub-page</Text>,
+      ProfileCommunity: <ProfileCommunity />,
       Profile: <Text>Profile sub-page</Text>,
     }[page];
   }

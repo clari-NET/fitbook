@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, TextInput, Button,
+  View, TextInput, StyleSheet
 } from 'react-native';
+import { Button, useTheme } from 'react-native-paper';
 import ProfileCommunityList from '../lists/ProfileCommunityList';
 
 const sampleData = [
@@ -9,24 +10,33 @@ const sampleData = [
     name: 'Best Community',
     banner: 'https://static.wikia.nocookie.net/spongebobgalaxy/images/2/23/Squidwards_House.png/revision/latest?cb=20180707172828',
     tag: 'BestTag',
+    favorite: true,
+  },
+  {
+    name: 'Second Best Community',
+    banner: 'https://static.wikia.nocookie.net/spongebobgalaxy/images/2/23/Squidwards_House.png/revision/latest?cb=20180707172828',
+    tag: 'SecondBestTag',
+    favorite: false,
   },
 ];
 
-function Friends() {
+function ProfileCommunity() {
+  const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [communityList, setCommunityList] = useState([]);
+  const [filteredCommunityList, setFilteredCommunityList] = useState([]);
 
   useEffect(() => {
     // get request to fetch friends list
-    setFriendsList(sampleData);
+    setCommunityList(sampleData);
+    setFilteredCommunityList(sampleData);
   }, []);
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
-    const filteredCommunities = communityList
+    setFilteredCommunityList([...communityList
       .filter((community) => community.name.toLowerCase().includes(query.toLowerCase())
-        || community.tag.toLowerCase().includes(query.toLowerCase()));
-    setCommunityList(filteredCommunities);
+        || community.tag.toLowerCase().includes(query.toLowerCase()))]);
     setSearchQuery(query);
   };
 
@@ -35,7 +45,7 @@ function Friends() {
   };
 
   return (
-    <View>
+    <View style={styles.main_container}>
       <View>
         <TextInput
           placeholder="Search..."
@@ -43,9 +53,42 @@ function Friends() {
           onChangeText={handleSearch}
         />
       </View>
-      <ProfileCommunityList communityList={communityList} handleFavorite={handleFavorite} />
+      <ProfileCommunityList communityList={filteredCommunityList} handleFavorite={handleFavorite} styles={styles}/>
     </View>
   );
 }
 
-export default Friends;
+export default ProfileCommunity;
+
+const styles = StyleSheet.create({
+  main_container: {
+    flex: 1,
+  },
+  bannerImage_container: {
+    width: '100%',
+    height: 100,
+    flex: 2,
+  },
+  bannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  banner_container: {
+    height: 60,
+    width: '100%',
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFF',
+  },
+  bannerName: {
+    color: '#FFF',
+  },
+  posts: {
+    flex: 5,
+  },
+  favStar: {
+    width: 20,
+  },
+});
