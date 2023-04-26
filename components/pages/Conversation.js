@@ -17,7 +17,7 @@ export default function Conversation({ currConvo, setCurrConvo }) {
     <>
       <TouchableOpacity
         onPress={() => {
-          console.log('back button was pressed');
+          //console.log('back button was pressed');
           setCurrConvo('DMList');
         }}
       >
@@ -25,7 +25,7 @@ export default function Conversation({ currConvo, setCurrConvo }) {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          console.log('profile img was pressed');
+          //console.log('profile img was pressed');
         }}
       >
         <Text>

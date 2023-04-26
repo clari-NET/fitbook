@@ -5,10 +5,11 @@ import {
 import { useTheme } from 'react-native-paper';
 import Friends from './Friends';
 import ProfileCommunity from './ProfileCommunity';
+import Feed from './Feed';
 
 export default function Profile() {
   const { colors } = useTheme();
-  const [profileSubPage, setProfileSubPage] = useState('Event');
+  const [profileSubPage, setProfileSubPage] = useState('Activity');
 
   useEffect(() => {
     // fetch data for
@@ -22,7 +23,7 @@ export default function Profile() {
 
   function SubPage({ page }) {
     return {
-      Event: <Text>Event sub-page</Text>,
+      Activity: <Feed />,
       Friends: <Friends />,
       ProfileCommunity: <Text>Community sub-page</Text>,
       Profile: <Text>Profile sub-page</Text>,
@@ -31,8 +32,8 @@ export default function Profile() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      <View>
-        <Button title='Event' onPress={() => setProfileSubPage('Event')} />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Button title='Activity' onPress={() => setProfileSubPage('Activity')} />
         <Button title="Friends" onPress={() => setProfileSubPage('Friends')} />
         <Button title="Community" onPress={() => setProfileSubPage('ProfileCommunity')} />
         <Button title="Profile" onPress={() => setProfileSubPage('Profile')} />

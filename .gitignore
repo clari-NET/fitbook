@@ -11,11 +11,14 @@ npm-debug.*
 web-build/
 app.json
 
+
 # macOS
 .DS_Store
 
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
-# environment variables
+# Secure
 .env
+# firebase
+**/keys.js
