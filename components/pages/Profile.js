@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 // import getProfile from '../firebaseFiles/API';
-import db from '../../firebaseFiles/firebase.config';
+import db from '../../firebase/firebase.config';
 
 /* eslint-disable import/no-extraneous-dependencies */
 
