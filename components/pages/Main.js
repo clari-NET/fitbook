@@ -12,6 +12,10 @@ import Community from './Community';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
 import Friends from './Friends';
+import { userStatus } from '../../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
+import {getAuth } from 'firebase/auth';
+import * as SecureStore from 'expo-secure-store';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -27,6 +31,12 @@ const styles = StyleSheet.create({
 
 export default function Main({ navigation }) {
   const { colors } = useTheme();
+  const dispatch = useDispatch();
+  const auth = getAuth();
+
+  async function deleteStore(key) {
+    await SecureStore.deleteItemAsync(key);
+  }
 
   return (
     <>
@@ -35,7 +45,12 @@ export default function Main({ navigation }) {
         <Text>Welcome to the main app</Text>
         <Button
           title="Logout"
-          onPress={() => { navigation.navigate('Login'); }}
+          onPress={async() => {
+            auth.signOut();
+            await deleteStore('FitbookEmail');
+            await deleteStore('FitbookPassword');
+            dispatch(userStatus(false));
+          }}
         />
         <StatusBar style="auto" />
       </View>
