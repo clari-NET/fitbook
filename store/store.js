@@ -7,4 +7,4 @@ export const store = configureStore({
     theme: themeReducer,
     user: userReducer,
   },
-})
+});
