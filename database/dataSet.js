@@ -755,3 +755,193 @@ exports.emojis = [
 exports.locations = [
   'Miami, FL', 'Honolulu, HI', 'Denver, CO', 'Chicago, IL', 'Boston, MA', 'San Francisco, CA', 'Kansas City, MO', 'Charleston, SC', 'Baltimore, MD', 'Portland, OR', 'New Orleans, LA', 'Austin, TX', 'Portland, ME', 'Seattle, WA', 'Nashville, TN', 'Las Vegas, NV', 'Anchorage, AK', 'Atlanta, GA', 'Phoenix, AZ', 'St. Louis, MO',
 ];
+
+exports.events = [
+  {
+    id: 1,
+    name: 'Morning Yoga',
+    date_time: {
+      date: '2023-05-02',
+      time: '08:00 AM',
+    },
+    category: 'Yoga',
+    location: 'New Orleans, LA',
+    description: 'Start your day off with a relaxing and energizing yoga flow, suitable for all levels.',
+  },
+  {
+    id: 2,
+    name: 'Zumba Fitness',
+    date_time: {
+      date: '2023-05-04',
+      time: '06:30 PM',
+    },
+    category: 'Dance',
+    location: 'Austin, TX',
+    description: 'Get your heart pumping and your feet moving with this fun and upbeat dance workout, featuring Latin-inspired rhythms.',
+  },
+  {
+    id: 3,
+    name: 'Body Pump',
+    date_time: {
+      date: '2023-05-06',
+      time: '09:00 AM',
+    },
+    category: 'Strength Training',
+    location: 'Portland, ME',
+    description: 'Build lean muscle and tone your entire body with this full-body workout, using light to moderate weights and high reps.',
+  },
+  {
+    id: 4,
+    name: 'Cycling Challenge',
+    date_time: {
+      date: '2023-05-08',
+      time: '07:30 AM',
+    },
+    category: 'Cycling',
+    location: 'Seattle, WA',
+    description: 'Push yourself to the limit with this challenging and high-intensity indoor cycling workout, designed to improve your cardiovascular fitness and endurance.',
+  },
+  {
+    id: 5,
+    name: 'CrossFit Team WOD',
+    date_time: {
+      date: '2023-05-10',
+      time: '05:00 PM',
+    },
+    category: 'CrossFit',
+    location: 'Nashville, TN',
+    description: 'Join a supportive and fun community while completing a challenging and varied workout, combining functional movements and high-intensity interval training.',
+  },
+  {
+    id: 6,
+    name: 'Pilates Mat Class',
+    date_time: {
+      date: '2023-05-12',
+      time: '10:00 AM',
+    },
+    category: 'Pilates',
+    location: 'Chicago, IL',
+    description: 'Strengthen your core and improve your posture and flexibility with this classic Pilates mat class, suitable for all levels.',
+  },
+  {
+    id: 7,
+    name: 'Hatha Yoga',
+    date_time: {
+      date: '2023-05-14',
+      time: '09:30 AM',
+    },
+    category: 'Yoga',
+    location: 'Denver, CO',
+    description: 'Find balance and harmony in body and mind with this gentle and meditative style of yoga, focusing on breath and alignment.',
+  },
+  {
+    id: 8,
+    name: 'Tabata Bootcamp',
+    date_time: {
+      date: '2023-05-16',
+      time: '06:00 PM',
+    },
+    category: 'HIIT',
+    location: 'Boston, MA',
+    description: 'Get ready to sweat and burn calories with this high-intensity interval training workout, using the Tabata protocol to push you to your limits.',
+  },
+  {
+    id: 9,
+    name: 'Zumba Toning',
+    date_time: {
+      date: '2023-05-18',
+      time: '07:00 PM',
+    },
+    category: 'Dance',
+    location: 'Las Vegas, NV',
+    description: 'Sculpt and tone your muscles while dancing to upbeat rhythms, using weighted toning sticks for an extra challenge.',
+  },
+  {
+    id: 10,
+    name: 'Power Yoga',
+    date_time: {
+      date: '2023-05-20',
+      time: '08:30 AM',
+    },
+    category: 'Yoga',
+    location: 'Miami, FL',
+    description: 'Challenge yourself and build strength and stamina with this dynamic and athletic style of yoga, combining flow sequences and strength poses.',
+  },
+  {
+    id: 11,
+    name: 'TRX Suspension Training',
+    date_time: {
+      date: '2023-05-22',
+      time: '11:00 AM',
+    },
+    category: 'Strength Training',
+    location: 'San Diego, CA',
+    description: 'Use your own body weight and gravity to improve your functional strength, balance, and stability with this full-body workout using TRX suspension straps.',
+  },
+  {
+    id: 12,
+    name: 'Spinning Ride',
+    date_time: {
+      date: '2023-05-24',
+      time: '06:30 PM',
+    },
+    category: 'Cycling',
+    location: 'New York, NY',
+    description: 'Experience the thrill of outdoor cycling indoors with this intense and challenging spinning ride, set to music and incorporating hills, sprints, and intervals.',
+  },
+  {
+    id: 13,
+    name: 'Paddleboard Yoga',
+    date_time: {
+      date: '2023-06-05',
+      time: '11:00 AM',
+    },
+    category: 'Yoga',
+    location: 'Miami Beach, FL',
+    description: 'Take your yoga practice to the water and enjoy the sun, the sea, and the sky while balancing on a paddleboard and flowing through poses.',
+  },
+  {
+    id: 14,
+    name: 'Boxing Fitness',
+    date_time: {
+      date: '2023-05-28',
+      time: '07:00 PM',
+    },
+    category: 'Boxing',
+    location: 'Los Angeles, CA',
+    description: 'Learn basic boxing techniques and get a full-body workout with this fun and empowering class, using gloves and punching bags.',
+  },
+  {
+    id: 15,
+    name: 'Aerial Yoga',
+    date_time: {
+      date: '2023-05-30',
+      time: '10:00 AM',
+    },
+    category: 'Yoga',
+    location: 'Seattle, WA',
+    description: 'Explore new dimensions of movement and flexibility with this playful and challenging style of yoga, using suspended hammocks to support and deepen your poses.',
+  },
+  {
+    id: 16,
+    name: 'Barbell Strength',
+    date_time: {
+      date: '2023-06-01',
+      time: '06:00 PM',
+    },
+    category: 'Strength Training',
+    location: 'Houston, TX',
+    description: 'Get stronger and build lean muscle mass with this traditional weightlifting class, using barbells and plates to target all major muscle groups.',
+  },
+  {
+    id: 17,
+    name: 'Tai Chi',
+    date_time: {
+      date: '2023-06-03',
+      time: '08:30 AM',
+    },
+    category: 'Mind-Body',
+    location: 'Portland, OR',
+    description: 'Connect with your inner peace and cultivate mindfulness and relaxation with this gentle and flowing form of martial arts, based on ancient Chinese philosophy.',
+  },
+];

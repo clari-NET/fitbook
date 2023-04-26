@@ -7,12 +7,15 @@ const {
   messages,
   emojis,
   locations,
+  events,
 } = require('./dataSet');
 
 // Storing all collections of data
 const communityAdmins = new Set();
 const allUsers = [];
 const allCommunities = [];
+const allEvents = [];
+const allPosts = [];
 
 // Creating array based on data
 const createArray = (mostOutputWanted, dataLength) => (
@@ -22,17 +25,17 @@ const createArray = (mostOutputWanted, dataLength) => (
   )
 );
 
+// Randomizing selection from the data
+const createDataFromArray = (array, data) => (
+  array.map((item) => (data[item]))
+);
+
 // SINGLE USER
 
 // Populating all data fields for a given user
 const generateUser = (userId) => {
   // Looking at specific user
   const singleUser = users[userId - 1];
-
-  // Randomizing selection from the data
-  const createDataFromArray = (array, data) => (
-    array.map((item) => (data[item]))
-  );
 
   // Generating random data using functions above for each section
   const friendData = createArray(10, 48);
@@ -46,8 +49,8 @@ const generateUser = (userId) => {
 
   // Assigning admin to each community
   const assignAdmin = (communityDataLength) => {
-    const allCommunities = createArray(communityDataLength, communityDataLength);
-    const communityId = allCommunities[Math.floor(Math.random() * (allCommunities.length) + 1)];
+    const allComms = createArray(communityDataLength, communityDataLength);
+    const communityId = allComms[Math.floor(Math.random() * (allComms.length) + 1)];
     if (!communityAdmins.has(communityId) && communityId !== 0) {
       communityAdmins.add(communityId);
       return communityId;
@@ -92,7 +95,7 @@ const generateAllUsers = (numberOfUsers) => {
 
 // SINGLE COMMUNITY
 const generateCommunity = (communityId) => {
-  // Looking at specific user
+  // Looking at specific community
   const singleCommunity = community[communityId - 1];
 
   const findAdmin = () => {
@@ -140,24 +143,39 @@ const generateAllCommunities = (numberOfCommunities) => {
 
 generateAllCommunities(community.length);
 
-// const events = {
-//   id: 'number',
-//   name: 'string',
-//   category: 'string',
-//   location: 'string',
-//   date_time: {
-//     date: 'date',
-//     time: 'time',
-//   },
-//   community: {
-//     id: 'number',
-//     name: 'string',
-//   },
-//   members: {
-//     id: 'number',
-//     username: 'string',
-//   },
-// };
+// SINGLE EVENT
+const generateEvent = (eventId) => {
+  // Looking at specific event
+  const singleEvent = events[eventId - 1];
+
+  const membersArray = createArray(10, users.length);
+  const membersData = createDataFromArray(membersArray, users);
+  const eventMembers = membersData.map((user) => ({ user_id: user.id, username: `${user.firstName} ${user.lastName}` }));
+
+  return {
+    id: eventId,
+    name: singleEvent.name,
+    category: singleEvent.category,
+    location: singleEvent.location,
+    date_time: {
+      date: singleEvent.date_time.date,
+      time: singleEvent.date_time.time,
+    },
+    community: community[[Math.floor(Math.random() * (community.length) + 1)]],
+    members: eventMembers,
+  };
+};
+
+const generateAllEvents = (numberOfEvents) => {
+  // Invoking generate users so that it occurs first
+  generateAllUsers(users.length);
+  let id = numberOfEvents;
+  while (id > 0) {
+    allEvents.push(generateEvent(id));
+    id -= 1;
+  }
+  return allEvents;
+};
 
 // const posts = {
 //   id: 'number',
