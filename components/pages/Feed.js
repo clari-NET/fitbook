@@ -28,7 +28,6 @@ export default function Community({ section }) {
         save='value'
         search={false}
         maxHeight={100}
-        dropdownStyles={{ 'overflow-y': 'scroll' }}
         // onSelect={filter function}
       />
     </View>
