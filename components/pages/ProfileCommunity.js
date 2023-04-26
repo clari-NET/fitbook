@@ -53,7 +53,8 @@ function ProfileCommunity() {
           onChangeText={handleSearch}
         />
       </View>
-      <ProfileCommunityList communityList={filteredCommunityList} handleFavorite={handleFavorite} styles={styles}/>
+      <ProfileCommunityList communityList={filteredCommunityList}
+        handleFavorite={handleFavorite} styles={styles}/>
     </View>
   );
 }
