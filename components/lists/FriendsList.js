@@ -5,7 +5,7 @@ import {
 import FriendsCard from '../cards/FriendsCard';
 
 export default function FriendsList({ friends, handleSendMessage }) {
-  console.log(handleSendMessage(''));
+  //console.log(handleSendMessage(''));
   return (
     <FlatList
       data={friends}
