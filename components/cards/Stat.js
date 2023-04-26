@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet, View, ScrollView, FlatList,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Card, List, Text } from 'react-native-paper';
 // import Stat from '../cards/Stat';
 

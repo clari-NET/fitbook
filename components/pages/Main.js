@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
 import Home from './Home';
-import ProfileMain from './ProfileMain';
+import Profile from './Profile';
 import CommunityTab from './CommunityTab';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
@@ -61,8 +61,8 @@ export default function Main({ navigation }) {
           }}
         />
         <Tab.Screen
-          name="ProfileMain"
-          component={ProfileMain}
+          name="Profile"
+          component={Profile}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => ColoredIcon('bell', color),
