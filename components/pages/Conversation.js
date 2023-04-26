@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import { View, TouchableOpacity, StyleSheet} from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { Text, useTheme, Avatar } from 'react-native-paper';
+import { GiftedChat } from 'react-native-gifted-chat';
+import { Appbar } from 'react-native-paper';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,24 +38,22 @@ export default function Conversation({ currConvo, setCurrConvo }) {
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() => {
-          //console.log('back button was pressed');
-          setCurrConvo('DMList');
-        }}
-      >
-        <Text>Back Button</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          //console.log('profile img was pressed');
-        }}
-      >
-        <Text>
-          profile img:
-          {currConvo}
-        </Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        <Appbar.BackAction onPress={() => { setCurrConvo('DMList'); }} />
+        <Avatar.Image
+            size={50}
+            source={{ uri: 'https://picsum.photos/700' }}
+          />
+        <TouchableOpacity
+          onPress={() => {
+            //console.log('profile img was pressed');
+          }}
+        >
+          <Text>
+            {currConvo}
+          </Text>
+        </TouchableOpacity>
+      </View>
       <GiftedChat
         messages={messages}
         onSend={messages => onSend(messages)}
