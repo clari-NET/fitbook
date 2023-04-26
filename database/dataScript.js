@@ -92,8 +92,6 @@ const generateAllUsers = (numberOfUsers) => {
 
 // SINGLE COMMUNITY
 const generateCommunity = (communityId) => {
-  // Invoking generate users so that it occurs first
-  generateAllUsers(users.length);
   // Looking at specific user
   const singleCommunity = community[communityId - 1];
 
@@ -130,6 +128,8 @@ const generateCommunity = (communityId) => {
 };
 
 const generateAllCommunities = (numberOfCommunities) => {
+  // Invoking generate users so that it occurs first
+  generateAllUsers(users.length);
   let id = numberOfCommunities;
   while (id > 0) {
     allCommunities.push(generateCommunity(id));
