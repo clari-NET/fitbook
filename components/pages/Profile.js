@@ -26,17 +26,6 @@ export default function Profile() {
   useEffect(() => {
     getProfile('test1');
   }, []);
-<<<<<<< HEAD
-
-  // useEffect(() => {
-  //   getProfile('test1')
-  //     .then((data) => {
-  //       setUserData(data);
-  //     })
-  //     .catch((e) => console.error('error getting data', e));
-  // }, []);
-=======
->>>>>>> main
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
