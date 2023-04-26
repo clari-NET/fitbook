@@ -1,22 +1,27 @@
-import { Provider as PaperProvider, adaptNavigationTheme } from 'react-native-paper';
+import React, { useEffect, useRef } from 'react';
+import {
+  Provider as PaperProvider,
+  adaptNavigationTheme,
+  MD3DarkTheme,
+  MD3LightTheme,
+} from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignUp from './components/pages/SignUp';
-import Login from './components/pages/Login';
-import Interests from './components/pages/Interests';
-import Main from './components/pages/Main';
-import AppHeader from './components/utility/AppHeader';
-import { useSelector } from 'react-redux';
-
 import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
-import {
-  MD3DarkTheme,
-  MD3LightTheme,
-} from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
 import merge from 'deepmerge';
+import SignUp from './components/pages/SignUp';
+import Login from './components/pages/Login';
+import Interests from './components/pages/Interests';
+import Main from './components/pages/Main';
+import AppHeader from './components/utility/AppHeader';
+import SplashScreen from './components/utility/SplashScreen';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { userStatus, loaded } from './redux/user/userSlice';
+import * as SecureStore from 'expo-secure-store';
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -34,7 +39,7 @@ const CustomDarkTheme = {
     surface: '#141729',
     primary: '#FF6000',
     secondary: '#5ACDED',
-  }
+  },
 };
 
 const CustomDefaultTheme = {
@@ -45,26 +50,77 @@ const CustomDefaultTheme = {
     surface: '#FFF6C7',
     primary: '#5ACDED',
     secondary: '#FF6000',
-  }
+  },
 };
 
 // Create Stack.Navigator component
 const Stack = createNativeStackNavigator();
 
-
-export default function Fitbook({ navigation }) {
+export default function Fitbook() {
   const { dark } = useSelector((state) => state.theme);
+  const { isSignedIn, isLoading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const auth = getAuth();
+  const isMounted = useRef(true);
+
+  async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      return result;
+    }
+    return false;
+  }
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const email = await getValueFor('FitbookEmail');
+        const password = await getValueFor('FitbookPassword');
+        if (email && password) {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          if (userCredential.user) {
+            dispatch(userStatus(true));
+          }
+          dispatch(loaded());
+        } else {
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              dispatch(userStatus(!!user));
+            }
+            dispatch(loaded());
+          });
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    };
+    getUser();
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [isMounted, isSignedIn, isLoading]);
+
+  if (isLoading) {
+    return <SplashScreen />;
+  }
 
   return (
     <PaperProvider theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
       <NavigationContainer theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
-        <Stack.Navigator initialRouteName="Main"  screenOptions={{
-          header: (props) => <AppHeader {...props} />,
-        }}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="Interests" component={Interests} />
-          <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+        <Stack.Navigator
+          initialRouteName={isSignedIn ? 'Main' : 'Login'}
+          screenOptions={{ header: () => <AppHeader /> }}
+        >
+          {isSignedIn ? (
+            <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="Interests" component={Interests} />
+            </>
+          )}
 
         </Stack.Navigator>
       </NavigationContainer>
