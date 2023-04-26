@@ -22,7 +22,6 @@ export default function ForgotPassword({ navigation }) {
     try {
       const auth = getAuth();
       await sendPasswordResetEmail(auth, email);
-
     } catch (error) {
       console.log(error);
     }
@@ -33,6 +32,7 @@ export default function ForgotPassword({ navigation }) {
       <Text>Reset your password</Text>
       <TextInput
         label="Email"
+        autoCapitalize='none'
         value={email}
         onChangeText={(email) => setEmail(email)}
         mode="flat"

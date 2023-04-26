@@ -74,6 +74,7 @@ export default function Login({ navigation }) {
       <Text>Hello, Fit Bros/Sis!</Text>
       <TextInput
         label="Email"
+        autoCapitalize='none'
         value={email}
         onChangeText={(email) => setEmail(email)}
         mode="flat"
