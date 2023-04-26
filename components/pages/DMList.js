@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { FlatList, Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import Conversation from './Conversation';
+import DMCard from '../cards/DMCard';
 
 const sampleData = [
   {
@@ -37,38 +38,18 @@ export default function MessageList() {
   const [currConvo, setCurrConvo] = useState('DMList');
   const { colors } = useTheme();
 
-  const renderMessage = ({ item }) => (
-    <>
-      <TouchableOpacity
-        onPress={() => {
-          //console.log(item.id, ' profile img was pressed');
-        }}
-      >
-        <Text>profile img </Text>
-      </TouchableOpacity>
-      {/* date in an inline block */}
-      <TouchableOpacity
-        onPress={() => {
-          //console.log(item.id, ' text was pressed');
-          setCurrConvo(item.name.toString());
-        }}
-      >
-        <View style={[styles.container, { backgroundColor: colors.surface }]}>
-          <Text>{item.name}</Text>
-          <Text>
-            {item.body /* this will be a preview of the latest message */}
-            ...
-          </Text>
-        </View>
-      </TouchableOpacity>
-    </>
-  );
+  function handlePress(user) {
+    const username = user.name.toString();
+    setCurrConvo(username);
+  }
 
   return currConvo === 'DMList' ? (
     <FlatList
-      data={messages}
-      renderItem={renderMessage}
+      data={sampleData}
+      renderItem={({ item }) => <DMCard user={item} handlePress={handlePress} />}
       keyExtractor={(item) => item.id.toString()}
     />
-  ) : <Conversation currConvo={currConvo} setCurrConvo={setCurrConvo} />;
+  ) : (
+    <Conversation currConvo={currConvo} setCurrConvo={setCurrConvo} />
+  );
 }
