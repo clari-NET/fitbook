@@ -84,7 +84,7 @@ export default function SignUp({ navigation }) {
       >
         Error creating user: please use a valid email and more than 6 characters in the password!
       </Snackbar>
-      <Text>Sign up, Swole Bro/Sis!</Text>
+      <Text style={{ color: colors.primary }}>Sign up, Swole Bro/Sis!</Text>
       <TextInput
         label="Email"
         autoCapitalize='none'
@@ -95,7 +95,7 @@ export default function SignUp({ navigation }) {
         activeUnderlineColor="#000"
       />
       <TextInput
-        label="firstName"
+        label="First Name"
         value={firstName}
         onChangeText={firstName => setFirstName(firstName)}
         mode="flat"
@@ -103,7 +103,7 @@ export default function SignUp({ navigation }) {
         activeUnderlineColor="#000"
       />
       <TextInput
-        label="lastName"
+        label="Last Name"
         value={lastName}
         onChangeText={lastName => setLastName(lastName)}
         mode="flat"
@@ -137,7 +137,7 @@ export default function SignUp({ navigation }) {
           handleSignUp();
         }}
       >Sign Up!</Button>
-      <Text>Already have an account?</Text>
+      <Text style={{ color: colors.primary }}>Already have an account?</Text>
       <Button
         style={styles.btn}
         mode="outlined"
