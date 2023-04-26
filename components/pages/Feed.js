@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { FAB, Modal, Portal } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PostList from '../lists/PostList';
-import Comment from './Comment';
 import EventList from '../lists/EventList';
 import PostForm from '../forms/PostForm';
 import EventForm from '../forms/EventForm';
@@ -196,18 +194,7 @@ const filterList = [
   { value: 'allTime', label: 'All Time' },
 ];
 
-<<<<<<< HEAD
-function PostListWrapper(postData) {
-  return function PostListWrapperComponent(props) {
-    return <PostList {...props} posts={postData} />;
-  };
-}
-
-
-export default function Feed({ section }) {
-=======
-export default function Feed() {
->>>>>>> main
+export default function Feed({ onPostSelected }) {
   const [filter, setFilter] = useState('Recent');
   const [showDropDown, setShowDropDown] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -222,16 +209,13 @@ export default function Feed() {
     setShowModal(false);
   }
 
-  const PostStack = createNativeStackNavigator();
-  const PostListWrapperComponent = PostListWrapper(posts);
-
   return (
     <>
       <ScrollView>
         <EventList events={new Array(5).fill(0)} />
         <DropDown
           label={filter}
-          mode='outlined'
+          mode="outlined"
           list={filterList}
           value={filter}
           setValue={setFilter}
@@ -239,8 +223,8 @@ export default function Feed() {
           showDropDown={() => setShowDropDown(true)}
           onDismiss={() => setShowDropDown(false)}
         />
-        <View>
-          <PostList posts={posts} />
+        <View style={styles.posts}>
+          <PostList posts={posts} onPostSelected={onPostSelected} />
         </View>
       </ScrollView>
       <FAB.Group
@@ -268,18 +252,6 @@ export default function Feed() {
         ]}
         onStateChange={() => setOpen(!open)}
       />
-<<<<<<< HEAD
-      <View style={styles.posts}>
-        <PostStack.Navigator>
-          <PostStack.Screen
-            name="PostList"
-            component={PostListWrapperComponent}
-          />
-          <PostStack.Screen name="Comment" component={Comment} />
-        </PostStack.Navigator>
-      </View>
-    </ScrollView>
-=======
       <Modal
         visible={showModal}
         onDismiss={() => setShowModal(false)}
@@ -289,6 +261,5 @@ export default function Feed() {
         {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} />}
       </Modal>
     </>
->>>>>>> main
   );
 }

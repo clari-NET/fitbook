@@ -1,5 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
 import { FlatList, View, Text } from 'react-native';
 import Post from '../cards/Post';
 
@@ -21,7 +20,10 @@ export default function PostList({ posts }) {
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-=======
+    </View>
+  );
+}
+import React from 'react';
 import { View } from 'react-native';
 import Post from '../cards/Post';
 
@@ -29,7 +31,6 @@ export default function PostList({ posts }) {
   return (
     <View>
       {posts.length > 0 && posts.map((post) => (<Post post={post} key={post.id} />))}
->>>>>>> main
     </View>
   );
 }
