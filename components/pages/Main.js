@@ -17,6 +17,7 @@ import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
 import { userStatus } from '../../redux/user/userSlice';
 import Comment from './Comment';
+import Community from './Community';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -101,6 +102,8 @@ export default function Main({ navigation }) {
           options={{ headerShown: false }}
         />
         <TabStack.Screen name="Comment" component={Comment} />
+        <TabStack.Screen name="Profile" component={Profile} />
+        <TabStack.Screen name="Community" component={Community} />
       </TabStack.Navigator>
     </>
   );
