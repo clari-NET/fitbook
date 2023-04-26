@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Text } from 'react-native-paper';
 import {
-  View, ScrollView, Text, StyleSheet, Image, Button,
+  View, ScrollView, StyleSheet, Image, Button,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Post from '../cards/Post';
 import EventList from '../lists/EventList';
+import Feed from './Feed';
 
 const sampleData = {
   id: 1,
@@ -32,13 +33,6 @@ export default function Community() {
     setJoined(!joined);
   };
 
-  const postFilterList = [
-    { key: 1, value: 'Recent' },
-    { key: 2, value: 'Hot' },
-    { key: 3, value: 'Most upvoted' },
-
-  ];
-
   return (
     <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
       <View style={styles.bannerImage_container}>
@@ -61,13 +55,11 @@ export default function Community() {
         </ScrollView>
       </View>
       <View style={styles.posts}>
-        <SelectList
-          setSelected={(val) => setFilter(val)}
-          data={postFilterList}
-          save='value'
-          search={false}
-          // onSelect={filter function}
-        />
+        <ScrollView>
+          <Feed
+            section='community'
+          />
+        </ScrollView>
         <ScrollView>
           <Post communities={new Array(3).fill(0)} />
         </ScrollView>
