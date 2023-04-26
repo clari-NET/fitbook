@@ -74,23 +74,29 @@ const sampleData = [{
   ],
 }];
 
-export default function ProfileSub({ navigation, setProfileSubPage }) {
+export default function ProfileSub({ navigation, user }) {
   const [userData, setUserData] = useState(sampleData);
   const [isLoaded, setIsLoaded] = useState(true);
   const [value, setValue] = useState('');
 
-  async function getProfile(username) {
-    const docRef = query(collection(db, 'tests'), where('username', '==', username));
-    const result = [];
+  useEffect(() => {
+    if (user) {
+      setUserData({ user });
+    }
+  }, [user]);
 
-    const userInfo = await getDocs(docRef);
-    // console.log(userInfo);
-    userInfo.forEach((d) => {
-      result.push({ ...d.data(), id: d.id });
-      // console.log(d.id);
-    });
-    setUserData(result);
-  }
+  // async function getProfile(username) {
+  //   const docRef = query(collection(db, 'tests'), where('username', '==', username));
+  //   const result = [];
+
+  //   const userInfo = await getDocs(docRef);
+  //   // console.log(userInfo);
+  //   userInfo.forEach((d) => {
+  //     result.push({ ...d.data(), id: d.id });
+  //     // console.log(d.id);
+  //   });
+  //   setUserData(result);
+  // }
 
   // useEffect(() => {
   //   getProfile('testOne');
@@ -107,7 +113,7 @@ export default function ProfileSub({ navigation, setProfileSubPage }) {
     <View>
       <View style={[styles.header]}>
         <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
-        <IconButton icon="cog" size={50} onPress={() => navigation.navigate('ProfileSettings')} />
+        <IconButton icon="cog" size={40} onPress={() => navigation.navigate('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">

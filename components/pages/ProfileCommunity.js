@@ -58,6 +58,7 @@ function ProfileCommunity() {
     </View>
   );
 }
+console.log('hello from community');
 
 export default ProfileCommunity;
 
