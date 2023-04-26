@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useTheme, Button, Surface } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   postContainer: {
@@ -52,10 +53,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Post({ post, navigation }) {
+export default function Post({ post }) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.lifts);
   const theme = useTheme();
+  const navigation = useNavigation();
 
   const handleLike = () => {
     setLiked(!liked);
@@ -95,8 +97,9 @@ export default function Post({ post, navigation }) {
             });
           }}
         >
-          Comment
+          {`Comment ${post.comments.length}`}
         </Button>
+
         <Button mode="text" onPress={() => {}}>
           Share
         </Button>

@@ -1,36 +1,13 @@
 import React from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import Post from '../cards/Post';
 
-export default function PostList({ posts }) {
-  const renderItem = ({ item }) => <Post post={item} />;
-
-  if (posts.length === 0) {
-    return (
-      <View>
-        <Text>No posts found.</Text>
-      </View>
-    );
-  }
-
+export default function PostList({ posts, onPostSelected }) {
   return (
-    <View>
-      <FlatList
-        data={posts}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
-  );
-}
-import React from 'react';
-import { View } from 'react-native';
-import Post from '../cards/Post';
-
-export default function PostList({ posts }) {
-  return (
-    <View>
-      {posts.length > 0 && posts.map((post) => (<Post post={post} key={post.id} />))}
-    </View>
+    <FlatList
+      data={posts}
+      renderItem={({ item }) => <Post post={item} onPress={onPostSelected} />}
+      keyExtractor={(item) => item.id.toString()}
+    />
   );
 }
