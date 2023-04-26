@@ -10,6 +10,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  username: {
+    fontWeight: 'bold',
+    marginRight: 5,
+    flex: 1,
+    marginLeft: 20,
+  },
+  cardRow: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 60,
+    alignItems: 'center',
+  },
 });
 
 export default function Conversation({ currConvo, setCurrConvo }) {
@@ -38,21 +50,13 @@ export default function Conversation({ currConvo, setCurrConvo }) {
 
   return (
     <>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      <View style={styles.cardRow}>
         <Appbar.BackAction onPress={() => { setCurrConvo('DMList'); }} />
         <Avatar.Image
             size={50}
             source={{ uri: 'https://picsum.photos/700' }}
-          />
-        <TouchableOpacity
-          onPress={() => {
-            //console.log('profile img was pressed');
-          }}
-        >
-          <Text>
-            {currConvo}
-          </Text>
-        </TouchableOpacity>
+        />
+        <Text style={styles.username}>{currConvo}</Text>
       </View>
       <GiftedChat
         messages={messages}
