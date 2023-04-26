@@ -1,6 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { View, TouchableOpacity, StyleSheet} from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Text, useTheme, Avatar } from 'react-native-paper';
+import { GiftedChat } from 'react-native-gifted-chat';
+import { Appbar } from 'react-native-paper';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,37 +10,61 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  username: {
+    fontWeight: 'bold',
+    marginRight: 5,
+    flex: 1,
+    marginLeft: 20,
+  },
+  cardRow: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 60,
+    alignItems: 'center',
+  },
 });
 
 export default function Conversation({ currConvo, setCurrConvo }) {
   const { colors } = useTheme();
 
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello friend',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'Example user',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      },
+    ]);
+  }, []);
+
+  const onSend = useCallback((messages = []) => {
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+  }, []);
+
   return (
     <>
-      <TouchableOpacity
-        onPress={() => {
-          //console.log('back button was pressed');
-          setCurrConvo('DMList');
-        }}
-      >
-        <Text>Back Button</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          //console.log('profile img was pressed');
-        }}
-      >
-        <Text>
-          profile img:
-          {currConvo}
-        </Text>
-      </TouchableOpacity>
-      <View style={[styles.container, { backgroundColor: colors.surface }]}>
-        <Text>Conversation Page</Text>
+      <View style={styles.cardRow}>
+        <Appbar.BackAction onPress={() => { setCurrConvo('DMList'); }} />
+        <Avatar.Image
+            size={50}
+            source={{ uri: 'https://picsum.photos/700' }}
+        />
+        <Text style={styles.username}>{currConvo}</Text>
       </View>
-      <View>
-        <Text>Keyboard</Text>
-      </View>
+      <GiftedChat
+        messages={messages}
+        onSend={messages => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+      />
     </>
   );
 }
