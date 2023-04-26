@@ -14,7 +14,6 @@ import db from '../../firebaseFiles/firebase.config';
 export default function Profile() {
   const { colors } = useTheme();
   const [userData, setUserData] = useState([]);
-  // const details = [];
 
   async function getProfile(username) {
     const docRef = query(collection(db, 'users'), where('username', '==', username));
@@ -27,6 +26,7 @@ export default function Profile() {
   useEffect(() => {
     getProfile('test1');
   }, []);
+<<<<<<< HEAD
 
   // useEffect(() => {
   //   getProfile('test1')
@@ -35,6 +35,8 @@ export default function Profile() {
   //     })
   //     .catch((e) => console.error('error getting data', e));
   // }, []);
+=======
+>>>>>>> main
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
