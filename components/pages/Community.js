@@ -4,7 +4,7 @@ import {
   View, ScrollView, Text, StyleSheet, Image, Button,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import Post from '../cards/Post';
+import PostList from '../lists/PostList';
 import EventList from '../lists/EventList';
 
 const sampleData = {
@@ -22,6 +22,25 @@ const sampleData = {
   ],
 };
 
+const posts = [
+  {
+    id: '1',
+    profilePhotoUrl: 'https://example.com/profile-photo-url1.jpg',
+    username: 'User1',
+    community: 'Community1',
+    date: '2023-04-24T10:30:00.000Z',
+    content: 'Post content 1',
+  },
+  {
+    id: '2',
+    profilePhotoUrl: 'https://example.com/profile-photo-url2.jpg',
+    username: 'User2',
+    community: 'Community2',
+    date: '2023-04-24T11:00:00.000Z',
+    content: 'Post content 2',
+  },
+];
+
 export default function Community() {
   const [joined, setJoined] = useState(false);
   const [filter, setFilter] = useState('Recent');
@@ -36,7 +55,6 @@ export default function Community() {
     { key: 1, value: 'Recent' },
     { key: 2, value: 'Hot' },
     { key: 3, value: 'Most upvoted' },
-
   ];
 
   return (
@@ -69,7 +87,7 @@ export default function Community() {
           // onSelect={filter function}
         />
         <ScrollView>
-          <Post communities={new Array(3).fill(0)} />
+          <PostList posts={posts} />
         </ScrollView>
       </View>
     </View>
