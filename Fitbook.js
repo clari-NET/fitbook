@@ -97,8 +97,8 @@ export default function Fitbook() {
             dispatch(loaded());
           });
         }
-      } catch(err) {
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
     };
     getUser();

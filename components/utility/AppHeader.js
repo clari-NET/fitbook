@@ -11,11 +11,14 @@ import { toggle } from '../../redux/theme/themeSlice';
 export default function AppHeader({ onLogout }) {
   const theme = useTheme();
   const { dark } = useSelector((state) => state.theme);
+  const { isSignedIn } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   return (
     <Appbar.Header style={{ justifyContent: 'space-between' }}>
-      <Button mode='outlined' onPress={onLogout}>Logout</Button>
+      {isSignedIn
+        ? <Button mode='outlined' onPress={onLogout}>Logout</Button>
+        : null}
       <Appbar.Content title='Fitbook' />
       <Switch
         color={theme?.colors.primary}

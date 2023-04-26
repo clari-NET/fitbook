@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   View, TextInput, Button,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import FriendsList from '../lists/FriendsList';
+import { change } from '../../redux/conversation/conversationSlice';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 
 const sampleData = [
   {
@@ -14,10 +17,12 @@ const sampleData = [
   },
 ];
 
-function Friends() {
+function Friends({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilterdFriendsList] = useState([]);
+  const dispatch = useDispatch();
+  console.log('Friends', navigation)
 
   useEffect(() => {
     // get request to fetch friends list
@@ -36,6 +41,8 @@ function Friends() {
   };
 
   const handleSendMessage = (username) => {
+    dispatch(change(username));
+    navigation.navigate('Messages');
     console.log(`started DM with: ${username}`);
   };
 
