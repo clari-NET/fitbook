@@ -3,6 +3,8 @@ import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import Conversation from './Conversation';
 import DMCard from '../cards/DMCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { change } from '../../redux/conversation/conversationSlice';
 
 const sampleData = [
   {
@@ -35,12 +37,14 @@ const styles = StyleSheet.create({
 
 export default function MessageList() {
   const [messages, setMessages] = useState(sampleData);
-  const [currConvo, setCurrConvo] = useState('DMList');
+  //const [currConvo, setCurrConvo] = useState('DMList');
   const { colors } = useTheme();
+  const { currConvo } = useSelector((state) => state.conversation);
+  const dispatch = useDispatch();
 
   function handlePress(user) {
     const username = user.name.toString();
-    setCurrConvo(username);
+    dispatch(change(username));
   }
 
   return currConvo === 'DMList' ? (
@@ -50,6 +54,6 @@ export default function MessageList() {
       keyExtractor={(item) => item.id.toString()}
     />
   ) : (
-    <Conversation currConvo={currConvo} setCurrConvo={setCurrConvo} />
+    <Conversation currConvo={currConvo} />
   );
 }
