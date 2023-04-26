@@ -48,9 +48,9 @@ const CustomDefaultTheme = {
   roundness: 2,
   colors: {
     ...CombinedDefaultTheme.colors,
-    surface: '#FFF6C7',
-    primary: '#5ACDED',
-    secondary: '#FF6000',
+    surface: '#f0f0f0',
+    primary: '#FF6000',
+    secondary: '#212121',
     tertiary: '#141729',
   },
 };

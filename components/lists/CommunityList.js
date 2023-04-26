@@ -6,20 +6,27 @@ import db from '../../firebaseFiles/firebase.config';
 import CommunityCard from '../cards/CommunityCard';
 import TextBanner from '../utility/TextBanner';
 
-const fakeDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...';
+const fakeDescription =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...';
 
 const communityFakeData = [
   {
     name: 'Community 1',
     description: fakeDescription,
+    banner: 'https://picsum.photos/700',
+    icon: 'U+1F6F9',
   },
   {
     name: 'Community 2',
     description: fakeDescription,
+    banner: 'https://picsum.photos/700',
+    icon: 'U+1F6F9',
   },
   {
     name: 'Community 3',
     description: fakeDescription,
+    banner: 'https://picsum.photos/700',
+    icon: 'U+1F6F9',
   },
 ];
 
@@ -31,7 +38,7 @@ async function getCommunities() {
   return communities;
 }
 
-export default function CommunityList() {
+export default function CommunityList({ navigation }) {
   const [text, setText] = useState('');
   const [communities, setCommunities] = useState([]);
   useEffect(() => {
@@ -42,6 +49,10 @@ export default function CommunityList() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  function handlePress(community) {
+    navigation.navigate('Community', { community });
+  }
 
   function handleSearch(val) {
     setText(val);
@@ -56,13 +67,13 @@ export default function CommunityList() {
         onChangeText={(val) => handleSearch(val)}
       />
       <TextBanner text='Based on your search' />
-      {communities.length !== 0
-        && communities.map((community) => (
-          <CommunityCard community={community} key={community.name} />
+      {communities.length !== 0 &&
+        communities.map((community) => (
+          <CommunityCard community={community} key={community.name} handlePress={handlePress} />
         ))}
       <TextBanner text='Recommendations' />
-      {communities.length !== 0
-        && communities.map((community) => (
+      {communities.length !== 0 &&
+        communities.map((community) => (
           <CommunityCard community={community} key={community.name} />
         ))}
     </ScrollView>
