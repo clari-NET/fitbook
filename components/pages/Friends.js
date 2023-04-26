@@ -50,7 +50,7 @@ function Friends() {
   };
 
   const handleSendMessage = (event) => {
-    console.log(`started DM with: ${event.name}`);
+    //console.log(`started DM with: ${event.name}`);
   };
 
   return (
@@ -62,14 +62,7 @@ function Friends() {
           onChangeText={handleSearch}
         />
       </View>
-      <View>
-        <Button title='Event' onPress />
-        <Button title="Friends" onPress />
-        <Button title="Community" onPress />
-        <Button title="Profile" onPress />
-      </View>
       <FriendsList friends={friends} handleSendMessage={handleSendMessage} />
-
     </View>
   );
 }

@@ -3,16 +3,17 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import {
   useTheme, Avatar, Text, IconButton, SegmentedButtons, MD3Colors,
 } from 'react-native-paper';
+import Friends from './Friends';
+import Feed from './Feed';
+
 import {
   getDocs,
   collection,
   query,
   where,
 } from 'firebase/firestore';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import db from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
-import Friends from './Friends';
 import ProfileSettings from './ProfileSettings';
 
 const Stack = createNativeStackNavigator();
@@ -80,7 +81,18 @@ export default function Profile({ navigation }) {
   const [userData, setUserData] = useState(sampleData);
   const [isLoaded, setIsLoaded] = useState(true);
   const [value, setValue] = useState('');
-  // const details = [];
+  const [profileSubPage, setProfileSubPage] = useState('Activity');
+
+  useEffect(() => {
+    // fetch data for
+    // Events
+    // Friends
+    // Community
+    // Profile
+    // fetchData(profileSubpage)
+    console.log(`${profileSubPage} was loaded`);
+  }, [profileSubPage]);
+
 
   async function getProfile(username) {
     const docRef = query(collection(db, 'tests'), where('username', '==', username));
@@ -106,14 +118,28 @@ export default function Profile({ navigation }) {
   //   }
   // }, []);
 
+  function SubPage({ page }) {
+    return {
+      Activity: <Feed />,
+      Friends: <Friends />,
+      Community: <Text>Community sub-page</Text>,
+      Profile: <Text>Profile sub-page</Text>,
+    }[page];
+  }
+
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.surface }]}>
+    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Button title='Activity' onPress={() => setProfileSubPage('Activity')} />
+        <Button title="Friends" onPress={() => setProfileSubPage('Friends')} />
+        <Button title="Community" onPress={() => setProfileSubPage('Community')} />
+        <Button title="Profile" onPress={() => setProfileSubPage('Profile')} />
+      </View>
+      <SubPage page={profileSubPage} />
       <View style={[styles.header]}>
         <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
         <IconButton icon="cog" size={50} onPress={() => navigation.navigate('Settings')} />
       </View>
-      {/* </View>
-      <View style={[styles.settingsIcon]}> */}
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
           Welcome
@@ -123,7 +149,14 @@ export default function Profile({ navigation }) {
         </Text>
       </View>
       {isLoaded ? <StatList stats={userData[0].fitnessStats} /> : null}
-      {/* {userData.fitnessStats && userData.fitnessStats[0]} */}
-    </ScrollView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+});

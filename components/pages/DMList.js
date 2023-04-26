@@ -41,14 +41,14 @@ export default function MessageList() {
     <>
       <TouchableOpacity
         onPress={() => {
-          console.log(item.id, ' profile img was pressed');
+          //console.log(item.id, ' profile img was pressed');
         }}
       >
         <Text>profile img </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          console.log(item.id, ' text was pressed');
+          //console.log(item.id, ' text was pressed');
           setCurrConvo(item.name.toString());
         }}
       >

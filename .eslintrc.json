@@ -20,6 +20,8 @@
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/prop-types": "off",
-        "jsx-quotes":"off"
+        "jsx-quotes":"off",
+        "react/jsx-no-bind":"off",
+        "react/jsx-props-no-spreading":"off"
     }
 }

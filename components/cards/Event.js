@@ -3,9 +3,9 @@ import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-export default function Event({ event }) {
+export default function Event({ event, handlePress }) {
   return (
-    <Card>
+    <Card onPress={() => handlePress(event)}>
       <Card.Content>
         <View style={{ flexDirection: 'row', width: '100%', height: '100%' }}>
           <Card.Cover style={{ width: '50%', height: 120, resizeMode: 'cover' }} source={{ uri: 'https://picsum.photos/700' }} />
