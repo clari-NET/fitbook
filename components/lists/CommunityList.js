@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { getDocs, collection, query, where } from 'firebase/firestore';
 import db from '../../firebaseFiles/firebase.config';
 import CommunityCard from '../cards/CommunityCard';
 import TextBanner from '../utility/TextBanner';
+
+const fakeDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...';
+
+const communityFakeData = [
+  {
+    name: 'Community 1',
+    description: fakeDescription,
+  },
+  {
+    name: 'Community 2',
+    description: fakeDescription,
+  },
+  {
+    name: 'Community 3',
+    description: fakeDescription,
+  },
+];
 
 async function getCommunities(searchVal) {
   const q = query(collection(db, 'testCommunities'));
@@ -20,10 +37,10 @@ export default function CommunityList() {
   useEffect(() => {
     getCommunities()
       .then((coms) => {
-        setCommunities(coms);
-        console.log('is this it?');
+        // setCommunities(coms);
+        setCommunities(communityFakeData);
       })
-      .catch((err) => console.log('or is it err?'));
+      .catch((err) => console.error(err));
   }, []);
 
   function handleSearch(val) {
@@ -31,7 +48,7 @@ export default function CommunityList() {
     // TODO: search functionality
   }
   return (
-    <View>
+    <ScrollView>
       <TextInput
         label='Search for a community'
         mode='outlined'
@@ -39,12 +56,15 @@ export default function CommunityList() {
         onChangeText={(val) => handleSearch(val)}
       />
       <TextBanner text='Based on your search' />
-      {/* {communities.length !== 0 &&
-        communities.map((community) => <Text>{community.name}</Text>)} */}
+      {communities.length !== 0 &&
+        communities.map((community) => (
+          <CommunityCard community={community} key={community.name} />
+        ))}
       <TextBanner text='Recommendations' />
-      {/* {communities.map((community) => (
-        <CommunityCard key={community.id} community={community} />
-      ))} */}
-    </View>
+      {communities.length !== 0 &&
+        communities.map((community) => (
+          <CommunityCard community={community} key={community.name} />
+        ))}
+    </ScrollView>
   );
 }
