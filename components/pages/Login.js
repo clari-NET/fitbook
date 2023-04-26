@@ -74,6 +74,7 @@ export default function Login({ navigation }) {
       <Text>Hello, Fit Bros/Sis!</Text>
       <TextInput
         label="Email"
+        autoCapitalize='none'
         value={email}
         onChangeText={(email) => setEmail(email)}
         mode="flat"
@@ -118,7 +119,7 @@ export default function Login({ navigation }) {
         textColor={colors.primary}
         buttonColor={colors.surface}
         onPress={() => {
-          console.log('reset')
+          navigation.navigate('ForgotPassword');
         }}
       >
         Forgot password?
