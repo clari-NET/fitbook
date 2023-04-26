@@ -46,6 +46,7 @@ export default function MessageList() {
       >
         <Text>profile img </Text>
       </TouchableOpacity>
+      {/* date in an inline block */}
       <TouchableOpacity
         onPress={() => {
           //console.log(item.id, ' text was pressed');
@@ -55,7 +56,7 @@ export default function MessageList() {
         <View style={[styles.container, { backgroundColor: colors.surface }]}>
           <Text>{item.name}</Text>
           <Text>
-            {item.body}
+            {item.body /* this will be a preview of the latest message */}
             ...
           </Text>
         </View>
