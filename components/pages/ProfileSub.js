@@ -74,7 +74,7 @@ const sampleData = [{
   ],
 }];
 
-export default function ProfileSub({ navigation }) {
+export default function ProfileSub({ navigation, setProfileSubPage }) {
   const [userData, setUserData] = useState(sampleData);
   const [isLoaded, setIsLoaded] = useState(true);
   const [value, setValue] = useState('');
@@ -102,11 +102,12 @@ export default function ProfileSub({ navigation }) {
   //     setIsLoaded(false);
   //   }
   // }, []);
+
   return (
-    <ScrollView>
+    <View>
       <View style={[styles.header]}>
         <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
-        <IconButton icon="cog" size={50} onPress={() => navigation.navigate('Settings')} />
+        <IconButton icon="cog" size={50} onPress={() => navigation.navigate('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
@@ -117,6 +118,6 @@ export default function ProfileSub({ navigation }) {
         </Text>
       </View>
       {isLoaded ? <StatList stats={userData[0].fitnessStats} /> : null}
-    </ScrollView>
+    </View>
   );
 }
