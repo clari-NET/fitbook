@@ -42,12 +42,13 @@ export default function SignUp({ navigation }) {
       await setDoc(doc(db, 'users', userData.user.uid), {
         name,
         email,
+        username,
         timeStamp,
       });
       await save('FitbookEmail', email);
       await save('FitbookPassword', password);
 
-      navigation.navigate('Interests');
+      // navigation.navigate('Interests');
     } catch (error) {
       setFailure(true);
     }
@@ -82,6 +83,7 @@ export default function SignUp({ navigation }) {
       <Text>Sign up, Swole Bro/Sis!</Text>
       <TextInput
         label="Email"
+        autoCapitalize='none'
         value={email}
         onChangeText={email => setEmail(email)}
         mode="flat"
@@ -98,6 +100,7 @@ export default function SignUp({ navigation }) {
       />
       <TextInput
         label="Username"
+        autoCapitalize='none'
         value={username}
         onChangeText={username => setUsername(username)}
         mode="flat"

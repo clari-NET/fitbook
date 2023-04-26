@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, Button,
+  View, Text, Button,
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Friends from './Friends';
@@ -17,35 +17,27 @@ export default function Profile() {
     // Community
     // Profile
     // fetchData(profileSubpage)
-    console.log(`${profileSubPage} was loaded`);
+    // console.log(`${profileSubPage} was loaded`);
   }, [profileSubPage]);
 
   function SubPage({ page }) {
     return {
       Activity: <Feed />,
       Friends: <Friends />,
-      Community: <Text>Community sub-page</Text>,
+      Communities: <Text>Communities sub-page</Text>,
       Profile: <Text>Profile sub-page</Text>,
     }[page];
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Button title='Activity' onPress={() => setProfileSubPage('Activity')} />
         <Button title="Friends" onPress={() => setProfileSubPage('Friends')} />
-        <Button title="Community" onPress={() => setProfileSubPage('Community')} />
+        <Button title="Communities" onPress={() => setProfileSubPage('Communities')} />
         <Button title="Profile" onPress={() => setProfileSubPage('Profile')} />
       </View>
       <SubPage page={profileSubPage} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
-});
