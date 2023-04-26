@@ -19,3 +19,5 @@ app.json
 
 # firebase
 **/keys.js
+firebaseFiles/*clarinet*
+.env

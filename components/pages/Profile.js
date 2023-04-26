@@ -1,68 +1,129 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
-// import getProfile from '../firebaseFiles/API';
-import db from '../../firebaseFiles/firebase.config';
-
-/* eslint-disable import/no-extraneous-dependencies */
-
+import { View, StyleSheet, ScrollView } from 'react-native';
 import {
-  getFirestore,
+  useTheme, Avatar, Text, IconButton, SegmentedButtons, MD3Colors,
+} from 'react-native-paper';
+import {
   getDocs,
   collection,
   query,
   where,
 } from 'firebase/firestore';
-import firebaseConfig from '../../firebaseFiles/keys';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import db from '../../firebaseFiles/firebase.config';
+import StatList from '../lists/StatList';
+import Friends from './Friends';
+import ProfileSettings from './ProfileSettings';
 
-export default function Profile() {
-  const { colors } = useTheme();
-  const [userData, setUserData] = useState([]);
-  // const details = [];
-
-  async function getProfile(username) {
-    const docRef = query(collection(db, 'users'), where('username', '==', username));
-    const userInfo = await getDocs(docRef);
-    userInfo.forEach((d) => {
-      setUserData({ ...d.data(), id: d.id });
-    });
-  }
-
-  useEffect(() => {
-    getProfile('test1');
-  });
-
-  // useEffect(() => {
-  //   getProfile('test1')
-  //     .then((data) => {
-  //       setUserData(data);
-  //     })
-  //     .catch((e) => console.error('error getting data', e));
-  // }, []);
-
-  return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      <Text>Hello from Profile page! This is where you'll see your profile or that of another user, depending on how you got here. we love props!</Text>
-      <Text>
-        UserData:
-        {' '}
-        {userData ? userData.username : null}
-      </Text>
-      <Text>
-        Friends:
-        {' '}
-        {userData.friends ? userData.friends[0] : null}
-        {userData.friends ? userData.friends[1] : null}
-        {userData.friends ? userData.friends[2] : null}
-      </Text>
-    </View>
-  );
-}
+const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    gap: 25,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 120,
+  },
+  body: {
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });
+
+const sampleData = [{
+  username: 'testOne',
+  fitnessStats: [
+    {
+      category: 'Swimming',
+      field: '100 meters',
+      record: '2 minutes',
+    },
+    {
+      category: 'Bench Press',
+      field: 'Max weight',
+      record: '150 lbs',
+    },
+    {
+      category: 'Cycling',
+      field: '3 miles',
+      record: '16 minutes',
+
+    },
+    {
+      category: 'Basketball',
+      field: 'Most 3-pointers',
+      record: '4',
+    },
+    {
+      category: 'Volleyball',
+      field: 'Most jump serves',
+      record: '8',
+    },
+    {
+      category: 'Soccer',
+      field: 'Most goals (per game)',
+      record: '2',
+
+    },
+    {
+      category: 'Golf',
+      field: '18 holes',
+      record: '84',
+    },
+  ],
+}];
+
+export default function Profile({ navigation }) {
+  const { colors } = useTheme();
+  const [userData, setUserData] = useState(sampleData);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [value, setValue] = useState('');
+  // const details = [];
+
+  async function getProfile(username) {
+    const docRef = query(collection(db, 'tests'), where('username', '==', username));
+    const result = [];
+
+    const userInfo = await getDocs(docRef);
+    // console.log(userInfo);
+    userInfo.forEach((d) => {
+      result.push({ ...d.data(), id: d.id });
+      // console.log(d.id);
+    });
+    setUserData(result);
+  }
+
+  // useEffect(() => {
+  //   getProfile('testOne');
+  //   console.log(userData);
+  //   // console.log(userData[0].fitnessStats[0].stat1);
+  //   if (userData.length > 0) {
+  //     setIsLoaded(true);
+  //   } else {
+  //     setIsLoaded(false);
+  //   }
+  // }, []);
+
+  return (
+    <ScrollView style={[styles.container, { backgroundColor: colors.surface }]}>
+      <View style={[styles.header]}>
+        <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
+        <IconButton icon="cog" size={50} onPress={() => navigation.navigate('Settings')} />
+      </View>
+      {/* </View>
+      <View style={[styles.settingsIcon]}> */}
+      <View style={[styles.body]}>
+        <Text variant="headlineLarge">
+          Welcome
+          {' '}
+          {isLoaded ? userData[0].username : null}
+          !
+        </Text>
+      </View>
+      {isLoaded ? <StatList stats={userData[0].fitnessStats} /> : null}
+      {/* {userData.fitnessStats && userData.fitnessStats[0]} */}
+    </ScrollView>
+  );
+}

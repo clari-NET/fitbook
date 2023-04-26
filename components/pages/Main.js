@@ -7,11 +7,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import Home from './Home';
-import Profile from './Profile';
+import ProfileMain from './ProfileMain';
 import Community from './Community';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
 import Friends from './Friends';
+import ProfileSettings from './ProfileSettings';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -32,7 +33,7 @@ export default function Main({ navigation }) {
     <>
       <AppHeader />
       <View style={[styles.container, { backgroundColor: colors.surface }]}>
-        <Text>Welcome to the main app</Text>
+        {/* <Text>Welcome to the main app</Text> */}
         <Button
           title="Logout"
           onPress={() => { navigation.navigate('Login'); }}
@@ -50,8 +51,8 @@ export default function Main({ navigation }) {
           )}}
         />
         <Tab.Screen
-          name="Profile"
-          component={Profile}
+          name="ProfileMain"
+          component={ProfileMain}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => (
