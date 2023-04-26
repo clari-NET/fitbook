@@ -40,6 +40,7 @@ const CustomDarkTheme = {
     surface: '#141729',
     primary: '#FF6000',
     secondary: '#5ACDED',
+    tertiary: '#000',
   },
 };
 
@@ -51,11 +52,16 @@ const CustomDefaultTheme = {
     surface: '#FFF6C7',
     primary: '#5ACDED',
     secondary: '#FF6000',
+    tertiary: '#141729',
   },
 };
 
 // Create Stack.Navigator component
 const Stack = createNativeStackNavigator();
+
+function getAppHeader(props) {
+  return <AppHeader {...props} />;
+}
 
 export default function Fitbook() {
   const { dark } = useSelector((state) => state.theme);
@@ -111,7 +117,7 @@ export default function Fitbook() {
       <NavigationContainer theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
         <Stack.Navigator
           initialRouteName={isSignedIn ? 'Main' : 'Login'}
-          screenOptions={{ header: () => <AppHeader /> }}
+          screenOptions={{ header: getAppHeader }}
         >
           {isSignedIn ? (
             <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />

@@ -2,13 +2,13 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Button } from 'react-native';
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text, BottomNavigation, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import Home from './Home';
 import Profile from './Profile';
-import Community from './Community';
+import CommunityList from '../lists/CommunityList';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
 import Friends from './Friends';
@@ -19,15 +19,16 @@ import * as SecureStore from 'expo-secure-store';
 
 const Tab = createMaterialBottomTabNavigator();
 
-// const Tab = createBottomTabNavigator();
-
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
+
+function ColoredIcon(name, color) {
+  return <Icon name={name} color={color} size={20} />;
+}
 
 export default function Main({ navigation }) {
   const { colors } = useTheme();
@@ -52,44 +53,40 @@ export default function Main({ navigation }) {
             dispatch(userStatus(false));
           }}
         />
-        <StatusBar style="auto" />
+        <StatusBar />
       </View>
       <Tab.Navigator>
         <Tab.Screen
-          name="Home"
+          name='Home'
           component={Home}
           options={{
             tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => (
-              <Icon name='home' color={color} size={20} />
-          )}}
+            tabBarIcon: ({ color }) => ColoredIcon('home', color),
+          }}
         />
         <Tab.Screen
-          name="Profile"
+          name='Profile'
           component={Profile}
           options={{
             tabBarLabel: 'Profile',
-            tabBarIcon: ({ color }) => (
-            <Icon name='bell' color={color} size={20} />
-          )}}
+            tabBarIcon: ({ color }) => ColoredIcon('bell', color),
+          }}
         />
         <Tab.Screen
-          name="Community"
-          component={Community}
+          name='Community'
+          component={CommunityList}
           options={{
             tabBarLabel: 'Communities',
-            tabBarIcon: ({ color }) => (
-            <Icon name='account-group' color={color} size={20} />
-          )}}
+            tabBarIcon: ({ color }) => ColoredIcon('account-group', color),
+          }}
         />
         <Tab.Screen
-          name="Messages"
+          name='Messages'
           component={DMList}
           options={{
             tabBarLabel: 'Messages',
-            tabBarIcon: ({ color }) => (
-            <Icon name='chat' color={color} size={20} />
-          )}}
+            tabBarIcon: ({ color }) => ColoredIcon('chat', color),
+          }}
         />
       </Tab.Navigator>
     </>
