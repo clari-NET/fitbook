@@ -50,23 +50,32 @@ const styles = StyleSheet.create({
 async function getCommunities() {
   const q = query(collection(db, 'testCommunities'));
   const comDocs = await getDocs(q);
-  // console.log(communities);
-  const communities = comDocs.docs.map((doc) => doc.data);
+  const communities = comDocs.docs.map((doc) => doc.data());
   return communities;
 }
 
 export default function CommunityList({ navigation }) {
-  const [text, setText] = useState('');
+  const [searchVal, setSearchVal] = useState('');
   const [communities, setCommunities] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
-    getCommunities()
+    getCommunities(searchVal)
       .then((coms) => {
-        // setCommunities(coms);
-        setCommunities(communityFakeData);
+        setCommunities(coms);
+        setFiltered(coms);
       })
       .catch((err) => console.error(err));
   }, []);
+
+  function handleSearch(val) {
+    setSearchVal(val);
+    setFiltered(
+      communities.filter((community) => (
+        community.name.toLowerCase().includes(val.toLowerCase())
+      )),
+    );
+  }
 
   function handlePress(community) {
     // navigation.navigate('Community', { community });
@@ -75,10 +84,6 @@ export default function CommunityList({ navigation }) {
     console.log('Navigate to Community X')
   }
 
-  function handleSearch(val) {
-    setText(val);
-    // TODO: search functionality
-  }
   function handleSubmit() {
     // POST request
     // upon success
@@ -91,13 +96,17 @@ export default function CommunityList({ navigation }) {
       <TextInput
         label='Search for a community'
         mode='outlined'
-        value={text}
+        value={searchVal}
         onChangeText={(val) => handleSearch(val)}
       />
       <TextBanner text='Based on your search' />
-      {communities.length !== 0 &&
-        communities.map((community) => (
-          <CommunityCard community={community} key={community.name} handlePress={handlePress} />
+      {filtered.length !== 0 &&
+        filtered.map((community) => (
+          <CommunityCard
+            community={community}
+            key={community.name}
+            handlePress={handlePress}
+          />
         ))}
       <TextBanner text='Recommendations' />
       {communities.length !== 0 &&
