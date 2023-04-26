@@ -50,7 +50,7 @@ function Friends() {
   };
 
   const handleSendMessage = (event) => {
-    console.log(`started DM with: ${event.name}`);
+    //console.log(`started DM with: ${event.name}`);
   };
 
   return (
