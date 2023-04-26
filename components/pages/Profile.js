@@ -4,7 +4,6 @@ import { useTheme } from 'react-native-paper';
 // import getProfile from '../firebaseFiles/API';
 
 import {
-  getFirestore,
   getDocs,
   collection,
   query,
@@ -27,7 +26,7 @@ export default function Profile() {
 
   useEffect(() => {
     getProfile('test1');
-  });
+  }, []);
 
   // useEffect(() => {
   //   getProfile('test1')
