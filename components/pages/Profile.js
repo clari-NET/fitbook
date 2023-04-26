@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 // import getProfile from '../firebaseFiles/API';
-import db from '../../firebaseFiles/firebase.config';
-
-/* eslint-disable import/no-extraneous-dependencies */
 
 import {
   getFirestore,
@@ -13,12 +10,11 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import firebaseConfig from '../../firebaseFiles/keys';
+import db from '../../firebaseFiles/firebase.config';
 
 export default function Profile() {
   const { colors } = useTheme();
   const [userData, setUserData] = useState([]);
-  // const details = [];
 
   async function getProfile(username) {
     const docRef = query(collection(db, 'users'), where('username', '==', username));
@@ -30,15 +26,7 @@ export default function Profile() {
 
   useEffect(() => {
     getProfile('test1');
-  });
-
-  // useEffect(() => {
-  //   getProfile('test1')
-  //     .then((data) => {
-  //       setUserData(data);
-  //     })
-  //     .catch((e) => console.error('error getting data', e));
-  // }, []);
+  }, []);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
