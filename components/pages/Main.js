@@ -15,6 +15,7 @@ import Friends from './Friends';
 import { userStatus } from '../../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import {getAuth } from 'firebase/auth';
+import * as SecureStore from 'expo-secure-store';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -33,6 +34,10 @@ export default function Main({ navigation }) {
   const dispatch = useDispatch();
   const auth = getAuth();
 
+  async function deleteStore(key) {
+    await SecureStore.deleteItemAsync(key);
+  }
+
   return (
     <>
       <AppHeader />
@@ -40,8 +45,10 @@ export default function Main({ navigation }) {
         <Text>Welcome to the main app</Text>
         <Button
           title="Logout"
-          onPress={() => {
+          onPress={async() => {
             auth.signOut();
+            await deleteStore('FitbookEmail');
+            await deleteStore('FitbookPassword');
             dispatch(userStatus(false));
           }}
         />
