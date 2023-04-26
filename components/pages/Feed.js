@@ -1,8 +1,27 @@
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { FAB, Modal, Portal } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import PostList from '../lists/PostList';
 import EventList from '../lists/EventList';
+import PostForm from '../forms/PostForm';
+import EventForm from '../forms/EventForm';
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    padding: 0,
+    margin: 0,
+    bottom: -35,
+    right: -5,
+    borderRadius: 30,
+  },
+  modal: {
+    width: '80%',
+    margin: 20,
+    justifyContent: 'flex-end',
+  },
+});
 
 const posts = [
   {
@@ -17,7 +36,8 @@ const posts = [
       id: 1,
       name: 'Roller Demons',
     },
-    content: 'Rollerblading is the best! Plus, it is great for relieving stress and improving your mood. If you have not tried it yet, give it a go and feel the wind in your hair! #rollerblading #fitness #outdoors',
+    content:
+      'Rollerblading is the best! Plus, it is great for relieving stress and improving your mood. If you have not tried it yet, give it a go and feel the wind in your hair! #rollerblading #fitness #outdoors',
     date: '2023-04-24T10:30:00.000Z',
     lifts: 20,
     comments: [
@@ -29,7 +49,8 @@ const posts = [
           username: 'gymbro5',
           name: 'Gym Bro',
         },
-        comment: 'Wow, I totally forgot about rollerblading, we should do it sometime together!',
+        comment:
+          'Wow, I totally forgot about rollerblading, we should do it sometime together!',
         date: '2023-04-24T12:33:00.000Z',
         lifts: 3,
         report: false,
@@ -48,7 +69,8 @@ const posts = [
       id: 2,
       name: 'Yoga Enthusiasts',
     },
-    content: 'Just completed a 60-minute power yoga session! Feeling energized and ready to take on the day! #yoga #fitness #mindfulness',
+    content:
+      'Just completed a 60-minute power yoga session! Feeling energized and ready to take on the day! #yoga #fitness #mindfulness',
     date: '2023-04-24T12:15:00.000Z',
     lifts: 45,
     comments: [
@@ -60,7 +82,8 @@ const posts = [
           username: 'yoga_lover',
           name: 'Yoga Lover',
         },
-        comment: 'Power yoga is so invigorating! I love starting my day with it too.',
+        comment:
+          'Power yoga is so invigorating! I love starting my day with it too.',
         date: '2023-04-24T13:10:00.000Z',
         lifts: 10,
         report: false,
@@ -73,7 +96,8 @@ const posts = [
           username: 'gymbro5',
           name: 'Gym Bro',
         },
-        comment: 'Yoga seems like a great way to improve flexibility. Might have to give it a try!',
+        comment:
+          'Yoga seems like a great way to improve flexibility. Might have to give it a try!',
         date: '2023-04-24T14:00:00.000Z',
         lifts: 5,
         report: false,
@@ -92,7 +116,8 @@ const posts = [
       id: 'community_1',
       name: 'Cardio Lovers',
     },
-    content: 'Jogging in the morning is my favorite way to start the day! The fresh air and beautiful sunrise are simply unbeatable. #jogging #morning #nature',
+    content:
+      'Jogging in the morning is my favorite way to start the day! The fresh air and beautiful sunrise are simply unbeatable. #jogging #morning #nature',
     date: '2023-04-24T08:15:00.000Z',
     lifts: 15,
     comments: [
@@ -123,7 +148,8 @@ const posts = [
       id: 'community_2',
       name: 'Yoga Masters',
     },
-    content: 'Yoga has changed my life in so many ways. It has helped me become more mindful, patient, and flexible. If you haven\'t tried it yet, I highly recommend giving it a shot! #yoga #mindfulness #wellness',
+    content:
+      "Yoga has changed my life in so many ways. It has helped me become more mindful, patient, and flexible. If you haven't tried it yet, I highly recommend giving it a shot! #yoga #mindfulness #wellness",
     date: '2023-04-24T16:45:00.000Z',
     lifts: 30,
     comments: [
@@ -135,7 +161,8 @@ const posts = [
           username: 'speed_demon_1',
           name: 'Mike Johnson',
         },
-        comment: 'I\'ve been thinking about trying yoga for a while now. Maybe it\'s time to finally give it a shot!',
+        comment:
+          "I've been thinking about trying yoga for a while now. Maybe it's time to finally give it a shot!",
         date: '2023-04-24T17:30:00.000Z',
         lifts: 4,
         report: false,
@@ -170,23 +197,69 @@ const filterList = [
 export default function Feed() {
   const [filter, setFilter] = useState('Recent');
   const [showDropDown, setShowDropDown] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [postType, setPostType] = useState('');
+
+  function handlePostSubmit() {
+    setShowModal(false);
+  }
+
+  function handleEventSubmit() {
+    setShowModal(false);
+  }
 
   return (
-    <ScrollView>
-      <EventList events={new Array(5).fill(0)} />
-      <DropDown
-        label={filter}
-        mode='outlined'
-        list={filterList}
-        value={filter}
-        setValue={setFilter}
-        visible={showDropDown}
-        showDropDown={() => setShowDropDown(true)}
-        onDismiss={() => setShowDropDown(false)}
+    <>
+      <ScrollView>
+        <EventList events={new Array(5).fill(0)} />
+        <DropDown
+          label={filter}
+          mode='outlined'
+          list={filterList}
+          value={filter}
+          setValue={setFilter}
+          visible={showDropDown}
+          showDropDown={() => setShowDropDown(true)}
+          onDismiss={() => setShowDropDown(false)}
+        />
+        <View>
+          <PostList posts={posts} />
+        </View>
+      </ScrollView>
+      <FAB.Group
+        open={open}
+        visible
+        icon={open ? 'arrow-up' : 'plus'}
+        style={styles.fab}
+        actions={[
+          {
+            icon: 'chat',
+            label: 'Post',
+            onPress: () => {
+              setPostType('post');
+              setShowModal(true);
+            },
+          },
+          {
+            icon: 'calendar-today',
+            label: 'Event',
+            onPress: () => {
+              setPostType('event');
+              setShowModal(true);
+            },
+          },
+        ]}
+        onStateChange={() => setOpen(!open)}
       />
-      <View>
-        <PostList posts={posts} />
-      </View>
-    </ScrollView>
+      <Modal
+        visible={showModal}
+        onDismiss={() => setShowModal(false)}
+        style={styles.modal}
+      >
+        {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} />}
+        {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} />}
+      </Modal>
+    </>
   );
 }
