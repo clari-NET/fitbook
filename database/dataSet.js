@@ -1,18 +1,4 @@
-// Complied sets of data
-const users = [];
-const communities = [];
-const events = [];
-const posts = [];
-
-// Randomized seed data
-// let user_id = [];
-// let communities = [];
-// let events = [];
-// let posts = [];
-
 exports.boolean = [true, false];
-
-exports.gender = ['men', 'women'];
 
 exports.firstName = [
   'Liam', 'Emma', 'Noah', 'Olivia', 'William', 'Ava', 'James', 'Isabella', 'Oliver', 'Sophia', 'Benjamin', 'Charlotte', 'Elijah', 'Mia', 'Lucas', 'Amelia', 'Mason', 'Harper', 'Logan', 'Evelyn', 'Alexander', 'Abigail', 'Ethan', 'Emily', 'Jackson', 'Elizabeth', 'Sebastian', 'Avery', 'Michael', 'Ella', 'Aiden', 'Scarlett', 'Daniel', 'Grace', 'Matthew', 'Chloe', 'Samuel', 'Victoria', 'David', 'Madison', 'Joseph', 'Lily', 'Carter', 'Riley', 'Owen', 'Zoey', 'Wyatt', 'Penelope', 'Isabella', 'Nora', 'Henry', 'Eleanor', 'Leo', 'Hannah',

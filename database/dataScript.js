@@ -231,7 +231,8 @@ const generatePost = (postId) => {
 
   // Randomly put post in a community
   const generateSingleCommunity = () => {
-    const singleCommunity = allCommunities[Math.floor(Math.random() * (allCommunities.length - 1) + 1)];
+    const singleCommunity = allCommunities[Math.floor(Math.random()
+      * (allCommunities.length - 1) + 1)];
     return {
       id: singleCommunity.id,
       name: singleCommunity.name,
