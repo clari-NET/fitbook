@@ -11,7 +11,7 @@ import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation }) {
   const { colors } = useTheme();
-  const [profileSubPage, setProfileSubPage] = useState('Activity');
+  const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
   // console.log('Profile', navigation);
 
   // useEffect(() => {
