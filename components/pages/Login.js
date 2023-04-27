@@ -71,7 +71,7 @@ export default function Login({ navigation }) {
       >
         Incorrect user credentials
       </Snackbar>
-      <Text>Hello, Fit Bros/Sis!</Text>
+      <Text style={{ color: colors.primary }}>Hello, Fit Bros/Sis!</Text>
       <TextInput
         label="Email"
         autoCapitalize='none'
@@ -101,18 +101,6 @@ export default function Login({ navigation }) {
       >
         Login
       </Button>
-      <Text>Need to create an account?</Text>
-      <Button
-        style={styles.btn}
-        mode="outlined"
-        textColor={colors.primary}
-        buttonColor={colors.surface}
-        onPress={() => {
-          navigation.navigate('SignUp');
-        }}
-      >
-        Sign-up
-      </Button>
       <Button
         style={styles.btn}
         mode="outlined"
@@ -123,6 +111,18 @@ export default function Login({ navigation }) {
         }}
       >
         Forgot password?
+      </Button>
+      <Text style={{ color: colors.primary }}>Need to create an account?</Text>
+      <Button
+        style={styles.btn}
+        mode="outlined"
+        textColor={colors.primary}
+        buttonColor={colors.surface}
+        onPress={() => {
+          navigation.navigate('SignUp');
+        }}
+      >
+        Sign-up
       </Button>
       <StatusBar style="auto" />
     </View>
