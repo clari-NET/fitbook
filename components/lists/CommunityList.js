@@ -28,7 +28,7 @@ export default function CommunityList({ navigation }) {
   const [filtered, setFiltered] = useState([]);
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
-    docQuery('testCommunities')
+    docQuery('communities')
       .then((coms) => {
         setCommunities(coms);
         setFiltered(coms);
