@@ -22,3 +22,5 @@ app.json
 .env
 # firebase
 **/keys.js
+firebaseFiles/clarinet*.json
+firebaseFiles/*admin.js
