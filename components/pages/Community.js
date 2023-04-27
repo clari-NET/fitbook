@@ -20,6 +20,9 @@ import Feed from './Feed';
 //   ],
 // };
 
+const defaultImage = 'https://picsum.photos/700';
+const defaultIcon = 'U+1F6F9';
+
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
@@ -62,12 +65,12 @@ export default function Community({ route }) {
       <View style={styles.bannerImage_container}>
         <Image
           style={styles.bannerImage}
-          source={{ uri: community.banner }}
+          source={{ uri: community.banner || defaultImage }}
         />
       </View>
       <View style={styles.banner_container}>
         <Text style={styles.bannerName}>
-          {community.icon}
+          {community.icon || defaultIcon}
           {community.name}
         </Text>
         {joined
