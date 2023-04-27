@@ -5,6 +5,7 @@ import {
   Text,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import { useTheme, Button, Surface } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -67,12 +68,33 @@ export default function Post({ post }) {
   return (
     <Surface style={styles.postContainer}>
       <View style={styles.postHeader}>
-        <Image
-          style={styles.profilePhoto}
-          source={{ uri: post.user.profilePhoto }}
-        />
-        <Text style={styles.username}>{post.user.username}</Text>
-        <Text style={styles.community}>{post.community.name}</Text>
+        <TouchableOpacity onPress={() => {
+          navigation.navitgate('Profile', {
+            user: post.user,
+          });
+        }}
+        >
+          <Image
+            style={styles.profilePhoto}
+            source={{ uri: post.user.profilePhoto }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          navigation.navitgate('Profile', {
+            user: post.user,
+          });
+        }}
+        >
+          <Text style={styles.username}>{post.user.username}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          navigation.navitgate('Community', {
+            community: post.community,
+          });
+        }}
+        >
+          <Text style={styles.community}>{post.community.name}</Text>
+        </TouchableOpacity>
         <View style={styles.dateContainer}>
           <Text style={styles.date}>
             {formatDistanceToNow(new Date(post.date), { addSuffix: true })}
