@@ -4,15 +4,16 @@ const {
   users,
   statistics,
   activities,
-  messages,
+  posts,
   emojis,
   locations,
   events,
+  comments,
 } = require('./dataSet');
 
 // Storing all collections of data
 const communityAdmins = new Set();
-let userPosts = Array.from(new Array(messages.length), (x, i) => i);
+let userPosts = Array.from(new Array(posts.length), (x, i) => i);
 const allUsers = [];
 const allCommunities = [];
 const allEvents = [];
@@ -24,11 +25,6 @@ const createArray = (mostOutputWanted, dataLength) => (
     { length: Math.floor(Math.random() * (mostOutputWanted - 1) + 1) },
     () => Math.floor(Math.random() * dataLength),
   )
-);
-
-// Create array on entire length
-const createFullArrayOfIds = (dataLength) => (
-  Array.from(new Array(dataLength), (x, i) => i)
 );
 
 // Randomizing selection from the data
@@ -46,12 +42,12 @@ const generateUser = (userId) => {
   // Generating random data using functions above for each section
   const friendData = createArray(10, 48);
   const communityData = createArray(10, 18);
+  const favoriteCommunityData = createArray(3, 18);
   const interestsArray = createArray(10, 48);
   const interestsData = createDataFromArray(interestsArray, activities);
   const statsArray = createArray(3, 24);
   const statsData = createDataFromArray(statsArray, statistics);
-  const messagesArray = createFullArrayOfIds(messages.length);
-  const messagesData = createDataFromArray(messagesArray, messages);
+  // const messagesData = createDataFromArray(messagesArray, messages);
 
   // Assigning admin to each community
   const assignAdmin = (communityDataLength) => {
@@ -68,7 +64,7 @@ const generateUser = (userId) => {
 
   // Assigning message to specific user
   const assignMessage = () => {
-    // Getting up to four random values then removing it from the list of available messages
+    // Getting up to four random message Ids then removing it from the list of available messages
     const userMessages = userPosts.sort(
       () => Math.random() - Math.random(),
     ).slice(0, Math.floor(Math.random() * (4 - 1) + 1));
@@ -81,7 +77,7 @@ const generateUser = (userId) => {
     return userMessages;
   };
 
-  const isPosterOfMessage = assignMessage(messages.length);
+  const isPosterOfMessage = assignMessage();
 
   // Returning the data object
   return {
@@ -92,7 +88,7 @@ const generateUser = (userId) => {
     },
     username: singleUser.username,
     interests: interestsData,
-    profile_photo: `https://randomuser.me/api/portraits/${singleUser.gender}/${Math.floor(Math.random() * (50 - 1) + 1)}.jpg`,
+    profile_photo: `https://randomuser.me/api/portraits/${singleUser.gender}/${userId}.jpg`,
     settings: {
       dark_mode: boolean[Math.round(Math.random())],
     },
@@ -101,8 +97,9 @@ const generateUser = (userId) => {
       community_id: isAdminOfCommunity,
     },
     communities: communityData,
+    favoriteCommunities: favoriteCommunityData,
     stats: statsData,
-    messages: messagesData,
+    messages: isPosterOfMessage,
   };
 };
 
@@ -154,8 +151,6 @@ const generateCommunity = (communityId) => {
 };
 
 const generateAllCommunities = (numberOfCommunities) => {
-  // Invoking generate users so that it occurs first
-  generateAllUsers(users.length);
   let id = numberOfCommunities;
   while (id > 0) {
     allCommunities.push(generateCommunity(id));
@@ -163,8 +158,6 @@ const generateAllCommunities = (numberOfCommunities) => {
   }
   return allCommunities;
 };
-
-generateAllCommunities(community.length);
 
 // SINGLE EVENT
 const generateEvent = (eventId) => {
@@ -190,8 +183,6 @@ const generateEvent = (eventId) => {
 };
 
 const generateAllEvents = (numberOfEvents) => {
-  // Invoking generate users so that it occurs first
-  generateAllUsers(users.length);
   let id = numberOfEvents;
   while (id > 0) {
     allEvents.push(generateEvent(id));
@@ -202,40 +193,79 @@ const generateAllEvents = (numberOfEvents) => {
 
 // SINGLE POST
 const generatePost = (postId) => {
+  // Looking at specific post
+  const singlePost = posts[postId - 1];
+
+  // Identify who posted the message
   const findPoster = () => {
     const poster = allUsers.filter((user) => user.messages.includes(postId));
     return poster[0];
   };
+  // Grab user data from the right person
+  const savePoster = findPoster();
+
+  // Pulling from list of comments and adding to each post
+  const commentsArray = createArray(6, 19);
+  const commentsData = createDataFromArray(commentsArray, comments);
+
+  const generateComments = () => {
+    const singleUser = allUsers[Math.floor(Math.random() * (allUsers.length - 1) + 1)];
+    return commentsData.map((singleComment) => (
+      {
+        comment_id: singleComment.comment_id,
+        user: {
+          id: singleUser.id,
+          profilePhoto: singleUser.profile_photo,
+          username: singleUser.username,
+          name: `${singleUser.name.first} ${singleUser.name.last}`,
+        },
+        comment: singleComment.comment,
+        date: singleComment.date,
+        lifts: singleComment.lifts,
+        report: singleComment.report,
+      }
+    ));
+  };
+
+  const commentsPerPost = generateComments();
+
+  // Randomly put post in a community
+  const generateSingleCommunity = () => {
+    const singleCommunity = allCommunities[Math.floor(Math.random() * (allCommunities.length - 1) + 1)];
+    return {
+      id: singleCommunity.id,
+      name: singleCommunity.name,
+    };
+  };
+
+  const selectedCommunity = generateSingleCommunity();
 
   return {
-  id: 'number',
-  user: {
-    user_id: 'number',
-    profilePhoto: 'url',
-    username: 'string',
-    name: 'string',
-  },
-  community: {
-    id: 'number',
-    name: 'string',
-  },
-  content: 'string',
-  date: 'date',
-  lifts: 'number',
-  comments: [
-    {
-      comment_id: 'number',
-      user: {
-        id: 'number',
-        profilePhoto: 'url',
-        username: 'string',
-        name: 'string',
-      },
-      comment: 'string',
-      date: 'date',
-      lifts: 'number',
-      report: 'boolean',
+    id: postId,
+    user: {
+      user_id: savePoster.id,
+      profilePhoto: savePoster.profile_photo,
+      username: savePoster.username,
+      name: `${savePoster.name.first} ${savePoster.name.last}`,
     },
-  ],
- };
-}
+    community: selectedCommunity,
+    content: singlePost.text,
+    date: singlePost.createdAt,
+    lifts: singlePost.lifts,
+    comments: commentsPerPost,
+  };
+};
+
+const generateAllPosts = (numberOfPosts) => {
+  let id = numberOfPosts;
+  while (id > 0) {
+    allPosts.push(generatePost(id));
+    id -= 1;
+  }
+  return allPosts;
+};
+
+generateAllUsers(users.length);
+generateAllCommunities(community.length);
+generateAllEvents(events.length);
+generateAllPosts(posts.length - 1);
