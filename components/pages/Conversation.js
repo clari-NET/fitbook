@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Conversation({ currConvo, setCurrConvo }) {
+export default function Conversation({ currConvo }) {
   const { colors } = useTheme();
   const dispatch = useDispatch();
 
@@ -36,12 +36,12 @@ export default function Conversation({ currConvo, setCurrConvo }) {
     setMessages([
       {
         _id: 1,
-        text: 'Hello friend',
+        text: `Yo, it's ${currConvo}`,
         createdAt: new Date(),
         user: {
           _id: 2,
-          name: 'Example user',
-          avatar: 'https://placeimg.com/140/140/any',
+          name: currConvo,
+          avatar: 'https://picsum.photos/700',
         },
       },
     ]);
