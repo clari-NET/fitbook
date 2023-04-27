@@ -37,7 +37,7 @@ export default function ForgotPassword({ navigation }) {
           timestamp: serverTimestamp(),
         });
       } else if (existingName !== user.displayName) {
-        if (window.confirm('This email already exists, would you like update your display name to that of the google account?')) {
+        if (window.confirm('This email already exists, would you like to update your display name to that of the google account?')) {
           updateDoc(docRef, { name: user.displayName });
         }
       }

@@ -1,13 +1,3 @@
-// Import the functions you need from the SDKs you need
-import {
-  API_KEY,
-  AUTH_DOMAIN,
-  PROJECT_ID,
-  STORAGE_BUCKET,
-  MESSAGING_SENDER_ID,
-  APP_ID,
-  MEASUREMENT_ID,
-} from '@env';
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
@@ -29,6 +19,9 @@ const firebaseConfig = {
   appId: APP_ID,
   measurementId: MEASUREMENT_ID,
 };
+
+// import firebaseConfig from './keys';
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
