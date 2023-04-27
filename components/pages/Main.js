@@ -12,12 +12,16 @@ import * as SecureStore from 'expo-secure-store';
 
 import Home from './Home';
 import Profile from './Profile';
+import ProfileTab from './ProfileTab';
+import ProfileSettings from './ProfileSettings';
 import CommunityTab from './CommunityTab';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
 import { userStatus } from '../../redux/user/userSlice';
 import Comment from './Comment';
 import Community from './Community';
+import Activity from './Feed';
+import Friends from './Friends';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -102,8 +106,11 @@ export default function Main({ navigation }) {
           options={{ headerShown: false }}
         />
         <TabStack.Screen name="Comment" component={Comment} />
-        <TabStack.Screen name="Profile" component={Profile} />
+        <TabStack.Screen name="Activity" component={Activity} />
+        <TabStack.Screen name="Friends" component={Friends} />
         <TabStack.Screen name="Community" component={Community} />
+        <TabStack.Screen name="ProfileTab" component={ProfileTab} />
+        <TabStack.Screen name="ProfileSettings" component={ProfileSettings} />
       </TabStack.Navigator>
     </>
   );
