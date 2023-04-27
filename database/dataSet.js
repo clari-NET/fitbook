@@ -1,18 +1,20 @@
-exports.boolean = [true, false];
+const data = {};
 
-exports.firstName = [
+data.boolean = [true, false];
+
+data.firstName = [
   'Liam', 'Emma', 'Noah', 'Olivia', 'William', 'Ava', 'James', 'Isabella', 'Oliver', 'Sophia', 'Benjamin', 'Charlotte', 'Elijah', 'Mia', 'Lucas', 'Amelia', 'Mason', 'Harper', 'Logan', 'Evelyn', 'Alexander', 'Abigail', 'Ethan', 'Emily', 'Jackson', 'Elizabeth', 'Sebastian', 'Avery', 'Michael', 'Ella', 'Aiden', 'Scarlett', 'Daniel', 'Grace', 'Matthew', 'Chloe', 'Samuel', 'Victoria', 'David', 'Madison', 'Joseph', 'Lily', 'Carter', 'Riley', 'Owen', 'Zoey', 'Wyatt', 'Penelope', 'Isabella', 'Nora', 'Henry', 'Eleanor', 'Leo', 'Hannah',
 ];
 
-exports.lastName = [
+data.lastName = [
   'Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Perez', 'Taylor', 'Anderson', 'Wilson', 'Moore', 'Jackson', 'Martin', 'Lee', 'Thompson', 'White', 'Harris', 'Sanchez', 'Clark', 'Lewis', 'Robinson', 'Walker', 'Mitchell', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Flores', 'Morris', 'Murphy', 'Bailey', 'Rivera', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray',
 ];
 
-exports.activities = [
+data.activities = [
   'Running', 'Swimming', 'Cycling', 'Basketball', 'Football', 'Baseball', 'Volleyball', 'Tennis', 'Golf', 'Soccer', 'Hiking', 'Boxing', 'Wrestling', 'Martial Arts', 'Gymnastics', 'Dancing', 'Yoga', 'Pilates', 'Surfing', 'Skiing', 'Snowboarding', 'Skateboarding', 'Rock Climbing', 'Kayaking', 'Canoeing', 'Rowing', 'Sailing', 'Fishing', 'Horseback Riding', 'Archery', 'Shooting', 'Fencing', 'Badminton', 'Table Tennis', 'Hockey', 'Ice Skating', 'Figure Skating', 'Crossfit', 'Powerlifting', 'Weightlifting', 'Bodybuilding', 'Circuit Training', 'HIIT', 'Zumba', 'Pole Dancing', 'Aerial Yoga', 'Acro Yoga', 'Kickboxing', 'Taekwondo', 'Judo', 'Karate', 'Capoeira', 'Parkour', 'Trampoline', 'Bouldering', 'Highlining', 'Paragliding', 'Skydiving',
 ];
 
-exports.community = [
+data.community = [
   {
     id: 1,
     name: 'FitFam Community',
@@ -104,7 +106,7 @@ exports.community = [
     description: 'A tribe of surfers who share a love for the ocean, come together to catch waves, have fun and support each other in their surfing journey.',
   }];
 
-exports.users = [
+data.users = [
   {
     id: 1,
     firstName: 'Emma',
@@ -443,7 +445,7 @@ exports.users = [
   },
 ];
 
-exports.statistics = [
+data.statistics = [
   {
     category: 'Swimming',
     field: 'Butterfly',
@@ -566,7 +568,7 @@ exports.statistics = [
   },
 ];
 
-exports.posts = [
+data.posts = [
   {
     id: 1,
     text: 'Remember to listen to your body and take breaks when needed during your workouts.',
@@ -869,15 +871,15 @@ exports.posts = [
   },
 ];
 
-exports.emojis = [
+data.emojis = [
   'U+1F436', 'U+1F338', 'U+1F680', 'U+1F355', 'U+1F393', 'U+1F3B8', 'U+1F341', 'U+1F981', 'U+1F30A', 'U+1F984', 'U+1F3A8', 'U+1F6B2', 'U+1F418', 'U+1F368', 'U+1F4DA', 'U+1F30B', 'U+1F3A2', 'U+1F420', 'U+1F308',
 ];
 
-exports.locations = [
+data.locations = [
   'Miami, FL', 'Honolulu, HI', 'Denver, CO', 'Chicago, IL', 'Boston, MA', 'San Francisco, CA', 'Kansas City, MO', 'Charleston, SC', 'Baltimore, MD', 'Portland, OR', 'New Orleans, LA', 'Austin, TX', 'Portland, ME', 'Seattle, WA', 'Nashville, TN', 'Las Vegas, NV', 'Anchorage, AK', 'Atlanta, GA', 'Phoenix, AZ', 'St. Louis, MO',
 ];
 
-exports.events = [
+data.events = [
   {
     id: 1,
     name: 'Morning Yoga',
@@ -1067,7 +1069,7 @@ exports.events = [
   },
 ];
 
-exports.comments = [
+data.comments = [
   {
     comment_id: 1,
     comment: 'Great workout! I love how challenging it was.',
@@ -1202,3 +1204,5 @@ exports.comments = [
     report: false,
   },
 ];
+
+export default data;

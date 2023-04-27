@@ -1,3 +1,8 @@
+import { collection, doc, setDoc } from 'firebase/firestore';
+
+import data from './dataSet';
+import db from '../firebaseFiles/firebase.config';
+
 const {
   boolean,
   community,
@@ -9,7 +14,7 @@ const {
   locations,
   events,
   comments,
-} = require('./dataSet');
+} = data;
 
 // Storing all collections of data
 const communityAdmins = new Set();
@@ -20,17 +25,14 @@ const allEvents = [];
 const allPosts = [];
 
 // Creating array based on data
-const createArray = (mostOutputWanted, dataLength) => (
+const createArray = (mostOutputWanted, dataLength) =>
   Array.from(
     { length: Math.floor(Math.random() * (mostOutputWanted - 1) + 1) },
-    () => Math.floor(Math.random() * dataLength),
-  )
-);
+    () => Math.floor(Math.random() * dataLength)
+  );
 
-// Randomizing selection from the data
-const createDataFromArray = (array, data) => (
-  array.map((item) => (data[item]))
-);
+// Randomizing selection from the array of data
+const createDataFromArray = (array, data) => array.map((item) => data[item]);
 
 // SINGLE USER
 
@@ -52,7 +54,7 @@ const generateUser = (userId) => {
   // Assigning one admin to each community
   const assignAdmin = (communityDataLength) => {
     const allComms = createArray(communityDataLength, communityDataLength);
-    const communityId = allComms[Math.floor(Math.random() * (allComms.length) + 1)];
+    const communityId = allComms[Math.floor(Math.random() * allComms.length)];
     if (!communityAdmins.has(communityId) && communityId !== 0) {
       communityAdmins.add(communityId);
       return communityId;
@@ -63,11 +65,11 @@ const generateUser = (userId) => {
   const isAdminOfCommunity = assignAdmin(community.length);
 
   // Assigning message to specific user
-  const assignMessage = () => {
+  const assignMessage = (mostOutputWanted) => {
     // Getting up to four random message Ids then removing it from the list of available messages
-    const userMessages = userPosts.sort(
-      () => Math.random() - Math.random(),
-    ).slice(0, Math.floor(Math.random() * (4 - 1) + 1));
+    const userMessages = userPosts
+      .sort(() => Math.random() - Math.random())
+      .slice(0, Math.floor(Math.random() * mostOutputWanted));
     for (let i = 0; i < userMessages.length; i += 1) {
       const index = userPosts.indexOf(userMessages[i]);
       if (index > -1) {
@@ -77,7 +79,7 @@ const generateUser = (userId) => {
     return userMessages;
   };
 
-  const isPosterOfMessage = assignMessage();
+  const isPosterOfMessage = assignMessage(5);
 
   // Returning the data object
   return {
@@ -134,7 +136,9 @@ const generateCommunity = (communityId) => {
 
   // Searching users for who is a member
   const findMembers = () => {
-    const members = allUsers.filter((user) => user.communities.includes(communityId));
+    const members = allUsers.filter((user) =>
+      user.communities.includes(communityId)
+    );
     return members.map((user) => ({ user_id: user.id }));
   };
 
@@ -145,9 +149,9 @@ const generateCommunity = (communityId) => {
     name: singleCommunity.name,
     description: singleCommunity.description,
     banner: 'https://picsum.photos/700',
-    icon: emojis[[Math.floor(Math.random() * (emojis.length) + 1)]],
+    icon: emojis[[Math.floor(Math.random() * emojis.length)]],
     admin: isAdmin,
-    location: locations[[Math.floor(Math.random() * (locations.length) + 1)]],
+    location: locations[[Math.floor(Math.random() * locations.length)]],
     members: allMembers,
     favorite: boolean[Math.round(Math.random())],
   };
@@ -171,7 +175,10 @@ const generateEvent = (eventId) => {
   // Filling data with functions made at the top
   const membersArray = createArray(10, users.length);
   const membersData = createDataFromArray(membersArray, users);
-  const eventMembers = membersData.map((user) => ({ user_id: user.id, username: `${user.firstName} ${user.lastName}` }));
+  const eventMembers = membersData.map((user) => ({
+    user_id: user.id,
+    username: `${user.firstName} ${user.lastName}`,
+  }));
 
   return {
     id: eventId,
@@ -182,7 +189,7 @@ const generateEvent = (eventId) => {
       date: singleEvent.date_time.date,
       time: singleEvent.date_time.time,
     },
-    community: community[[Math.floor(Math.random() * (community.length) + 1)]],
+    community: community[[Math.floor(Math.random() * community.length)]],
     members: eventMembers,
   };
 };
@@ -215,30 +222,31 @@ const generatePost = (postId) => {
   const commentsData = createDataFromArray(commentsArray, comments);
 
   const generateComments = () => {
-    const singleUser = allUsers[Math.floor(Math.random() * (allUsers.length - 1) + 1)];
-    return commentsData.map((singleComment) => (
-      {
-        comment_id: singleComment.comment_id,
-        user: {
-          id: singleUser.id,
-          profilePhoto: singleUser.profile_photo,
-          username: singleUser.username,
-          name: `${singleUser.name.first} ${singleUser.name.last}`,
-        },
-        comment: singleComment.comment,
-        date: singleComment.date,
-        lifts: singleComment.lifts,
-        report: singleComment.report,
-      }
-    ));
+    const singleUser =
+      allUsers[Math.floor(Math.random() * (allUsers.length ))];
+    return commentsData.map((singleComment) => ({
+      comment_id: singleComment.comment_id,
+      user: {
+        id: singleUser.id,
+        profilePhoto: singleUser.profile_photo,
+        username: singleUser.username,
+        name: `${singleUser.name.first} ${singleUser.name.last}`,
+      },
+      comment: singleComment.comment,
+      date: singleComment.date,
+      lifts: singleComment.lifts,
+      report: singleComment.report,
+    }));
   };
 
   const commentsPerPost = generateComments();
 
   // Randomly put post in a community
   const generateSingleCommunity = () => {
-    const singleCommunity = allCommunities[Math.floor(Math.random()
-      * (allCommunities.length - 1) + 1)];
+    const singleCommunity =
+      allCommunities[
+        Math.floor(Math.random() * (allCommunities.length))
+      ];
     return {
       id: singleCommunity.id,
       name: singleCommunity.name,
@@ -272,7 +280,35 @@ const generateAllPosts = (numberOfPosts) => {
   return allPosts;
 };
 
-generateAllUsers(users.length);
-generateAllCommunities(community.length);
-generateAllEvents(events.length);
-generateAllPosts(posts.length - 1);
+export default function generateData() {
+  generateAllUsers(users.length);
+  generateAllCommunities(community.length);
+  generateAllEvents(events.length);
+  generateAllPosts(posts.length - 1);
+
+  // const usersRef = collection(db, 'users');
+  // const communitiesRef = collection(db, 'communities');
+  // const eventsRef = collection(db, 'events');
+  // const postsRef = collection(db, 'posts');
+
+  const promises = [];
+  // console.log('\n\n\n HELLOOOOOO \n\n', allUsers.slice());
+
+  allUsers.forEach((user) => {
+    promises.push(setDoc(doc(db, 'users', user.id.toString()), user));
+  });
+
+  allCommunities.forEach((asf) => {
+    promises.push(setDoc(doc(db, 'communities', asf.id.toString()), asf));
+  });
+
+  allEvents.forEach(async (event) => {
+    promises.push(setDoc(doc(db, 'events', event.id.toString()), event));
+  });
+
+  allPosts.forEach(async (post) => {
+    promises.push(setDoc(doc(db, 'posts', post.id.toString()), post));
+  });
+
+  return Promise.all(promises).catch(console.error);
+}
