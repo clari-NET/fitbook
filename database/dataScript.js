@@ -49,7 +49,7 @@ const generateUser = (userId) => {
   const statsData = createDataFromArray(statsArray, statistics);
   // const messagesData = createDataFromArray(messagesArray, messages);
 
-  // Assigning admin to each community
+  // Assigning one admin to each community
   const assignAdmin = (communityDataLength) => {
     const allComms = createArray(communityDataLength, communityDataLength);
     const communityId = allComms[Math.floor(Math.random() * (allComms.length) + 1)];
@@ -114,10 +114,12 @@ const generateAllUsers = (numberOfUsers) => {
 };
 
 // SINGLE COMMUNITY
+
 const generateCommunity = (communityId) => {
   // Looking at specific community
   const singleCommunity = community[communityId - 1];
 
+  // Searching users for the community admin
   const findAdmin = () => {
     let admin;
     allUsers.forEach((user) => {
@@ -130,6 +132,7 @@ const generateCommunity = (communityId) => {
 
   const isAdmin = findAdmin();
 
+  // Searching users for who is a member
   const findMembers = () => {
     const members = allUsers.filter((user) => user.communities.includes(communityId));
     return members.map((user) => ({ user_id: user.id }));
@@ -160,10 +163,12 @@ const generateAllCommunities = (numberOfCommunities) => {
 };
 
 // SINGLE EVENT
+
 const generateEvent = (eventId) => {
   // Looking at specific event
   const singleEvent = events[eventId - 1];
 
+  // Filling data with functions made at the top
   const membersArray = createArray(10, users.length);
   const membersData = createDataFromArray(membersArray, users);
   const eventMembers = membersData.map((user) => ({ user_id: user.id, username: `${user.firstName} ${user.lastName}` }));
@@ -192,6 +197,7 @@ const generateAllEvents = (numberOfEvents) => {
 };
 
 // SINGLE POST
+
 const generatePost = (postId) => {
   // Looking at specific post
   const singlePost = posts[postId - 1];
