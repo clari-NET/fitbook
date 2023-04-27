@@ -7,6 +7,7 @@ import Friends from './Friends';
 import ProfileCommunity from './ProfileCommunity';
 import Feed from './Feed';
 import ProfileSub from './ProfileSub';
+import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation }) {
   const { colors } = useTheme();
@@ -26,9 +27,10 @@ export default function Profile({ navigation }) {
   function SubPage({ page }) {
     return {
       Activity: <Feed />,
-      Friends: <Friends navigation={navigation} />,
+      Friends: <Friends />,
       ProfileCommunity: <ProfileCommunity />,
-      ProfileSub: <ProfileSub navigation={navigation} user={user} />,
+      ProfileSub: <ProfileSub setProfileSubPage={setProfileSubPage} />,
+      ProfileSettings: <ProfileSettings />,
     }[page];
   }
 

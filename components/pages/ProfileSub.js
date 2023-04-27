@@ -74,7 +74,7 @@ const sampleData = [{
   ],
 }];
 
-export default function ProfileSub({ navigation, user }) {
+export default function ProfileSub({ setProfileSubPage, user }) {
   const [userData, setUserData] = useState(sampleData);
   const [isLoaded, setIsLoaded] = useState(true);
   const [value, setValue] = useState('');
@@ -113,7 +113,7 @@ export default function ProfileSub({ navigation, user }) {
     <View>
       <View style={[styles.header]}>
         <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
-        <IconButton icon="cog" size={40} onPress={() => navigation.navigate('ProfileSettings')} />
+        <IconButton icon="cog" size={40} onPress={() => setProfileSubPage('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
