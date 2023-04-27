@@ -12,6 +12,7 @@ const {
 
 // Storing all collections of data
 const communityAdmins = new Set();
+let userPosts = Array.from(new Array(messages.length), (x, i) => i);
 const allUsers = [];
 const allCommunities = [];
 const allEvents = [];
@@ -23,6 +24,11 @@ const createArray = (mostOutputWanted, dataLength) => (
     { length: Math.floor(Math.random() * (mostOutputWanted - 1) + 1) },
     () => Math.floor(Math.random() * dataLength),
   )
+);
+
+// Create array on entire length
+const createFullArrayOfIds = (dataLength) => (
+  Array.from(new Array(dataLength), (x, i) => i)
 );
 
 // Randomizing selection from the data
@@ -44,7 +50,7 @@ const generateUser = (userId) => {
   const interestsData = createDataFromArray(interestsArray, activities);
   const statsArray = createArray(3, 24);
   const statsData = createDataFromArray(statsArray, statistics);
-  const messagesArray = createArray(10, 24);
+  const messagesArray = createFullArrayOfIds(messages.length);
   const messagesData = createDataFromArray(messagesArray, messages);
 
   // Assigning admin to each community
@@ -59,6 +65,23 @@ const generateUser = (userId) => {
   };
 
   const isAdminOfCommunity = assignAdmin(community.length);
+
+  // Assigning message to specific user
+  const assignMessage = () => {
+    // Getting up to four random values then removing it from the list of available messages
+    const userMessages = userPosts.sort(
+      () => Math.random() - Math.random(),
+    ).slice(0, Math.floor(Math.random() * (4 - 1) + 1));
+    for (let i = 0; i < userMessages.length; i += 1) {
+      const index = userPosts.indexOf(userMessages[i]);
+      if (index > -1) {
+        userPosts.splice(index, 1);
+      }
+    }
+    return userMessages;
+  };
+
+  const isPosterOfMessage = assignMessage(messages.length);
 
   // Returning the data object
   return {
@@ -177,34 +200,42 @@ const generateAllEvents = (numberOfEvents) => {
   return allEvents;
 };
 
-// const posts = {
-//   id: 'number',
-//   user: {
-//     user_id: 'number',
-//     profilePhoto: 'url',
-//     username: 'string',
-//     name: 'string',
-//   },
-//   community: {
-//     id: 'number',
-//     name: 'string',
-//   },
-//   content: 'string',
-//   date: 'date',
-//   lifts: 'number',
-//   comments: [
-//     {
-//       comment_id: 'number',
-//       user: {
-//         id: 'number',
-//         profilePhoto: 'url',
-//         username: 'string',
-//         name: 'string',
-//       },
-//       comment: 'string',
-//       date: 'date',
-//       lifts: 'number',
-//       report: 'boolean',
-//     },
-//   ],
-// };
+// SINGLE POST
+const generatePost = (postId) => {
+  const findPoster = () => {
+    const poster = allUsers.filter((user) => user.messages.includes(postId));
+    return poster[0];
+  };
+
+  return {
+  id: 'number',
+  user: {
+    user_id: 'number',
+    profilePhoto: 'url',
+    username: 'string',
+    name: 'string',
+  },
+  community: {
+    id: 'number',
+    name: 'string',
+  },
+  content: 'string',
+  date: 'date',
+  lifts: 'number',
+  comments: [
+    {
+      comment_id: 'number',
+      user: {
+        id: 'number',
+        profilePhoto: 'url',
+        username: 'string',
+        name: 'string',
+      },
+      comment: 'string',
+      date: 'date',
+      lifts: 'number',
+      report: 'boolean',
+    },
+  ],
+ };
+}
