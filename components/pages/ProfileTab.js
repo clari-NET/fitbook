@@ -9,7 +9,10 @@ import {
   collection,
   query,
   where,
+  doc,
 } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import * as SecureStore from 'expo-secure-store';
 import db from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
 // import ProfileSettings from './ProfileSettings';
@@ -17,14 +20,11 @@ import StatList from '../lists/StatList';
 // const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    gap: 25,
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 120,
+    marginTop: 20,
   },
   body: {
     alignItems: 'center',
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 });
 
 const sampleData = [{
-  username: 'testOne',
+  username: 'Swolebraham Lincoln',
   fitnessStats: [
     {
       category: 'Swimming',
@@ -74,16 +74,29 @@ const sampleData = [{
   ],
 }];
 
-export default function ProfileSub({ setProfileSubPage, user }) {
-  const [userData, setUserData] = useState(sampleData);
+export default function ProfileTab({ navigation, user }) {
+  const { colors } = useTheme();
+  const [userData, setUserData] = useState('');
   const [isLoaded, setIsLoaded] = useState(true);
-  const [value, setValue] = useState('');
 
-  useEffect(() => {
-    if (user) {
-      setUserData({ user });
-    }
-  }, [user]);
+  async function getUser() {
+    const auth = getAuth();
+    // console.log(auth.currentUser)
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    return userRef;
+  }
+  // const [username, setUsername] = useState('');
+
+  // async function getUser(key) {
+  //   if (!user) {
+  //     const result = await SecureStore.getItemAsync(key);
+  //     if (result) {
+  //       return result;
+  //     }
+  //     return sampleData;
+  //   }
+  //   return user;
+  // }
 
   // async function getProfile(username) {
   //   const docRef = query(collection(db, 'tests'), where('username', '==', username));
@@ -99,31 +112,30 @@ export default function ProfileSub({ setProfileSubPage, user }) {
   // }
 
   // useEffect(() => {
-  //   getProfile('testOne');
-  //   console.log(userData);
-  //   // console.log(userData[0].fitnessStats[0].stat1);
-  //   if (userData.length > 0) {
-  //     setIsLoaded(true);
-  //   } else {
-  //     setIsLoaded(false);
-  //   }
+  //   const current = getUser();
+  //   console.log(current);
+  //   // getProfile('testOne');
+  //   // console.log(userData);
+  //   // // console.log(userData[0].fitnessStats[0].stat1);
+  //   // if (userData.length > 0) {
+  //   //   setIsLoaded(true);
+  //   // } else {
+  //   //   setIsLoaded(false);
+  //   // }
   // }, []);
 
   return (
-    <View>
+    <ScrollView>
       <View style={[styles.header]}>
         <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
-        <IconButton icon="cog" size={40} onPress={() => setProfileSubPage('ProfileSettings')} />
+        <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
-          Welcome
-          {' '}
-          {isLoaded ? userData[0].username : null}
-          !
+          {userData ? userData[0].username : null}
         </Text>
       </View>
-      {isLoaded ? <StatList stats={userData[0].fitnessStats} /> : null}
-    </View>
+      {userData ? <StatList stats={userData[0].fitnessStats} /> : null}
+    </ScrollView>
   );
 }
