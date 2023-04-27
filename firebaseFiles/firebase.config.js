@@ -9,7 +9,13 @@ import {
   MEASUREMENT_ID,
 } from '@env';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  query,
+  where,
+} from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -27,3 +33,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export default db;
+
+export async function docQuery(collectionName, conditions = []) {
+  const whereClauses = conditions.map((condition) => where(...condition));
+  const q = query(collection(db, collectionName), ...whereClauses);
+  const resultDocs = await getDocs(q);
+  const results = resultDocs.docs.map((doc) => doc.data());
+  return results;
+}
