@@ -76,7 +76,7 @@ const sampleData = [{
 
 export default function ProfileTab({ navigation, user }) {
   const { colors } = useTheme();
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState(sampleData);
   const [isLoaded, setIsLoaded] = useState(true);
 
   async function getUser() {
