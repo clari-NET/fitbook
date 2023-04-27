@@ -20,19 +20,19 @@ const sampleData = [
 function Friends({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
-  const [filteredFriends, setFilterdFriendsList] = useState([]);
+  const [filteredFriends, setFilteredFriendsList] = useState([]);
   const dispatch = useDispatch();
-  console.log('Friends', navigation)
+  console.log('Friends', navigation);
 
   useEffect(() => {
     // get request to fetch friends list
     setFriendsList(sampleData);
-    setFilterdFriendsList(sampleData);
+    setFilteredFriendsList(sampleData);
   }, []);
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
-    setFilterdFriendsList([...friendsList
+    setFilteredFriendsList([...friendsList
       .filter((friend) => friend.name.first.toLowerCase().includes(query.toLowerCase())
       || friend.name.last.toLowerCase().includes(query.toLowerCase())
       || friend.username.toLowerCase().includes(query.toLowerCase()))]);
