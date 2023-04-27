@@ -63,11 +63,11 @@ const generateUser = (userId) => {
   const isAdminOfCommunity = assignAdmin(community.length);
 
   // Assigning message to specific user
-  const assignMessage = () => {
+  const assignMessage = (mostOutputWanted) => {
     // Getting up to four random message Ids then removing it from the list of available messages
     const userMessages = userPosts.sort(
       () => Math.random() - Math.random(),
-    ).slice(0, Math.floor(Math.random() * (4 - 1) + 1));
+    ).slice(0, Math.floor(Math.random() * (mostOutputWanted - 1) + 1));
     for (let i = 0; i < userMessages.length; i += 1) {
       const index = userPosts.indexOf(userMessages[i]);
       if (index > -1) {
@@ -77,7 +77,7 @@ const generateUser = (userId) => {
     return userMessages;
   };
 
-  const isPosterOfMessage = assignMessage();
+  const isPosterOfMessage = assignMessage(4);
 
   // Returning the data object
   return {
@@ -177,6 +177,7 @@ const generateEvent = (eventId) => {
     id: eventId,
     name: singleEvent.name,
     category: singleEvent.category,
+    description: singleEvent.description,
     location: singleEvent.location,
     date_time: {
       date: singleEvent.date_time.date,
