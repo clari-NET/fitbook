@@ -10,26 +10,26 @@ import CommunityForm from '../forms/CommunityForm';
 const fakeDescription =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...';
 
-const communityFakeData = [
-  {
-    name: 'Community 1',
-    description: fakeDescription,
-    banner: 'https://picsum.photos/700',
-    icon: 'U+1F6F9',
-  },
-  {
-    name: 'Community 2',
-    description: fakeDescription,
-    banner: 'https://picsum.photos/700',
-    icon: 'U+1F6F9',
-  },
-  {
-    name: 'Community 3',
-    description: fakeDescription,
-    banner: 'https://picsum.photos/700',
-    icon: 'U+1F6F9',
-  },
-];
+// const communityFakeData = [
+//   {
+//     name: 'Community 1',
+//     description: fakeDescription,
+//     banner: 'https://picsum.photos/700',
+//     icon: 'U+1F6F9',
+//   },
+//   {
+//     name: 'Community 2',
+//     description: fakeDescription,
+//     banner: 'https://picsum.photos/700',
+//     icon: 'U+1F6F9',
+//   },
+//   {
+//     name: 'Community 3',
+//     description: fakeDescription,
+//     banner: 'https://picsum.photos/700',
+//     icon: 'U+1F6F9',
+//   },
+// ];
 
 const styles = StyleSheet.create({
   fab: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 async function getCommunities() {
-  const q = query(collection(db, 'testCommunities'));
+  const q = query(collection(db, 'communities'));
   const comDocs = await getDocs(q);
   const communities = comDocs.docs.map((doc) => doc.data());
   return communities;
