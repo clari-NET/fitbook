@@ -38,7 +38,7 @@ export default function SignUp({ navigation }) {
     try {
       const auth = getAuth();
       const userData = await createUserWithEmailAndPassword(auth, email, password);
-      updateProfile(auth.currentUser, { username });
+      updateProfile(auth.currentUser, { displayName: username });
       const timeStamp = serverTimestamp();
       await setDoc(doc(db, 'users', userData.user.uid), {
         name: {
@@ -48,6 +48,7 @@ export default function SignUp({ navigation }) {
         email,
         username,
         timeStamp,
+        DMs: [],
       });
       await save('FitbookEmail', email);
       await save('FitbookPassword', password);

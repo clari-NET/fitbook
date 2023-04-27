@@ -38,9 +38,9 @@ export default function Login({ navigation }) {
         navigation.navigate('Main');
       }
 
-      const getName = await auth.currentUser.displayName;
-      setName(getName);
-      setSuccess(true);
+      // const getName = await auth.currentUser.displayName;
+      // setName(getName);
+      // setSuccess(true);
     } catch (error) {
       console.log(error);
       setFailure(true);
