@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text } from 'react-native';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -9,7 +7,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 
 import db from '../../firebaseFiles/firebase.config';
 import Home from './Home';
@@ -19,7 +16,7 @@ import ProfileSettings from './ProfileSettings';
 import CommunityTab from './CommunityTab';
 import DMList from './DMList';
 import AppHeader from '../utility/AppHeader';
-import { userStatus, updateUser } from '../../redux/user/userSlice';
+import { updateUser } from '../../redux/user/userSlice';
 import Comment from './Comment';
 import Community from './Community';
 import Activity from './Feed';
@@ -33,9 +30,9 @@ function ColoredIcon(name, color) {
 }
 
 function TabNavigator() {
-  const { data } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user).data;
   return (
-    data !== undefined && (
+    user !== undefined && (
       <Tab.Navigator>
         <Tab.Screen
           name='Home'
@@ -48,6 +45,7 @@ function TabNavigator() {
         <Tab.Screen
           name='Profile'
           component={Profile}
+          initialParams={{ userId: getAuth().currentUser.uid }}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => ColoredIcon('bell', color),
@@ -92,22 +90,10 @@ export default function Main({ navigation }) {
       .catch(console.error);
   }, []);
 
-  const user = useSelector((state) => state.user);
-
-  async function deleteStore(key) {
-    await SecureStore.deleteItemAsync(key);
-  }
-
   return (
     <>
-      <AppHeader
-        onLogout={async () => {
-          auth.signOut();
-          await deleteStore('FitbookEmail');
-          await deleteStore('FitbookPassword');
-          dispatch(userStatus(false));
-        }}
-      />
+      <AppHeader navigation={navigation} />
+      {/* <View style={[styles.container, { backgroundColor: colors.surface }]}> */}
       <StatusBar />
       <TabStack.Navigator>
         <TabStack.Screen

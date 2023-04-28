@@ -80,9 +80,9 @@ export default function MessageList() {
 
   if (Object.keys(messages).length === 0) {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>
-          Loading...
+          No conversations yet, Start One!
         </Text>
       </View>
 );
