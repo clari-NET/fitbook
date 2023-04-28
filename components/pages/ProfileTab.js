@@ -85,12 +85,8 @@ export default function ProfileTab({ navigation, user, refresh }) {
   const [reload, setReload] = useState(false);
 
   const selfData = useSelector((state) => state.user.data);
-
-  // console.log(user.username);
-  console.log(refresh);
   const userSelf = selfData.username === user.username;
-  // userSelf = false;
-  // username = 'CharCharm';
+
   useEffect(() => {
     // if it's themselves
     if (userSelf) {
@@ -124,7 +120,6 @@ export default function ProfileTab({ navigation, user, refresh }) {
       .then(() => 'Success')
       .then(() => refresh())
       .catch((err) => console.log(err));
-
   }
 
   return (

@@ -31,7 +31,6 @@ export default function Profile({ navigation, route }) {
       docQuery('events', eventQueryConditions),
     ]);
   }
-  // console.log(route.params.userId);
 
   function refresh() {
     console.log('refreshed!')
@@ -39,15 +38,12 @@ export default function Profile({ navigation, route }) {
   }
 
   useEffect(() => {
-    // getDoc(doc(db, 'users', route.params.userId))
-    getDoc(doc(db, 'users', '1'))
+    getDoc(doc(db, 'users', route.params.userId))
       .then((u) => {
         const data = u.data();
-        // console.log(u)
         return data;
       })
       .then((data) => {
-        // console.log('QQ',data)
         setUser(data);
         return getPostsAndEvents(data);
       })
