@@ -51,7 +51,8 @@ export default function Feed({ posts, events, onPostSelected }) {
 
   function handleDropDownChange(value) {
     // TODO: change this to use a fresh query, pass down query lists instead of posts/events
-    // const newPosts = [...posts].sort((a, b) => );
+    const newPosts = [...posts].sort((a, b) => a.lifts - b.lifts);
+    setSorted(newPosts);
     setFilter(value);
   }
   // console.log('inside feed', posts);

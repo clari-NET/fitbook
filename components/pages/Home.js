@@ -23,6 +23,8 @@ export default function Home() {
     return Promise.all([
       postQueryConditions.length === 0 ? [] : docOrQuery('posts', postQueryConditions, 'date'),
       eventQueryConditions.length === 0 ? [] : docQuery('events', eventQueryConditions, 'date_time.date'),
+      // postQueryConditions.length === 0 ? [] : docOrQuery('posts', postQueryConditions),
+      // eventQueryConditions.length === 0 ? [] : docQuery('events', eventQueryConditions),
     ]);
   }
 
