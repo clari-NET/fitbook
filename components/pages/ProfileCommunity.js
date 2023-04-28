@@ -4,6 +4,8 @@ import {
 } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
 import ProfileCommunityList from '../lists/ProfileCommunityList';
+import { doc, getDoc } from 'firebase/firestore';
+import db from '../../firebaseFiles/firebase.config';
 
 const sampleData = [
   {
@@ -20,16 +22,29 @@ const sampleData = [
   },
 ];
 
-function ProfileCommunity() {
+function ProfileCommunity({ navigation, user}) {
   const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
-  const [communityList, setCommunityList] = useState([]);
-  const [filteredCommunityList, setFilteredCommunityList] = useState([]);
+  const [communitiesList, setCommunitiesList] = useState([]);
+  const [filteredCommunities, setFilterdCommunities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     // get request to fetch friends list
-    setCommunityList(sampleData);
-    setFilteredCommunityList(sampleData);
+    Promise.all(user.communities.map(id => getDoc(doc(db, 'communities', String(id)))))
+      .then((resArray) => {
+        const data = resArray.map(res => res.data());
+        setCommunitiesList(data);
+        setFilterdCommunities(data);
+        setIsLoading(false);
+        setIsError(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
+        console.log(err);
+      });
   }, []);
 
   const handleSearch = (query) => {
@@ -53,7 +68,7 @@ function ProfileCommunity() {
           onChangeText={handleSearch}
         />
       </View>
-      <ProfileCommunityList communityList={filteredCommunityList}
+      <ProfileCommunityList communityList={filteredCommunities}
         handleFavorite={handleFavorite} styles={styles}/>
     </View>
   );

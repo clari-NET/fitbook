@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import DropDown from 'react-native-paper-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { Timestamp, collection } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { setDoc, doc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { docQuery } from '../../firebaseFiles/firebase.config';
 import {
   Text, TextInput, Surface, Button,
 } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import db from '../../firebaseFiles/firebase.config';
+import uuid from 'react-native-uuid';
 
 const styles = StyleSheet.create({
   surface: {
@@ -21,28 +29,98 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
-export default function EventForm() {
+export default function EventForm({ open }) {
+  const data = useSelector((state) => state.user).data;
+  const [calendarDate, setCalendarDate] = useState(new Date());
+  const firebaseDate = Timestamp.fromDate(calendarDate);
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [filter, setFilter] = useState('-');
+  const [filterList, setFilterList] = useState([]);
+  const [currentComs, setCurrentComs] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    datetime: new Date(),
+    date: firebaseDate,
+    user: { name: `${data.name.first} ${data.name.last}`, user_id: data.id },
+    id: '',
+    lifts: 0,
+    members: [],
+    community: { id: '', name: '' },
+    content: '',
+    location: '',
   });
 
-  function handleCreate() {
-    // NEED TO CONNECT TO THE DB
-    // NEED TO CHANGE datetime to firestore timestamp format before POST
-    console.log(formData);
+  const getCommunities = async () => {
+    try {
+      const { communities } = data;
+      const comsRef = collection(db, 'communities');
+      const q = query(comsRef, where('id', 'in', communities));
+      const allComs = await getDocs(q);
+      const comsArr = [];
+      allComs.forEach((doc) => {
+        comsArr.push(doc.data());
+      });
+      if (comsArr.length > 0) {
+        setCurrentComs(comsArr);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCommunities();
+  }, []);
+
+  useEffect(() => {
+    const filtered = currentComs.map((com) => (
+      { value: com.name, label: com.name }
+    ));
+
+    setFilterList(filtered);
+  }, [currentComs]);
+
+  useEffect(() => {
+    currentComs.forEach((com) => {
+      if (com.name === filter) {
+        const selectedCom = { id: com.id, name: com.name };
+        setFormData({ ...formData, community: selectedCom });
+      }
+    });
+  }, [filter]);
+
+  const handleCreate = async () => {
+    try {
+      await setDoc(doc(db, 'events', uuid.v4()), {
+        ...formData,
+        id: uuid.v4(),
+        image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+        name: formData.title,
+        date_time: {
+          date: calendarDate.toLocaleString().split(',')[0],
+          time: calendarDate.toTimeString(),
+        },
+      });
+    } catch (error) {
+      console.log('errorrrrrrr', error)
+    } finally {
+      open(false);
+    }
   }
 
-  function handleFormChange(event, value, item) {
+  function handleFormChange(value, item) {
     setFormData({
       ...formData,
       [item]: value,
     });
+  }
+
+  function handleDateChange(event, dateInput) {
+    setCalendarDate(dateInput);
   }
 
   return (
@@ -54,7 +132,7 @@ export default function EventForm() {
         placeholder='e.g. "Run with Ronnie"'
         style={styles.textInput}
         value={formData.title}
-        onChangeText={(value) => handleFormChange(null, value, 'title')}
+        onChangeText={(value) => handleFormChange(value, 'title')}
       />
       <TextInput
         label='Event Description'
@@ -63,13 +141,32 @@ export default function EventForm() {
         placeholder='e.g. "Easy run in the Golden Gate Park"'
         style={styles.textInput}
         value={formData.description}
-        onChangeText={(value) => handleFormChange(null, value, 'description')}
+        onChangeText={(value) => handleFormChange(value, 'description')}
+      />
+      <TextInput
+        label='Location (City, State)'
+        mode='outlined'
+        multiline
+        placeholder='e.g. "Miami, FL"'
+        style={styles.textInput}
+        value={formData.location}
+        onChangeText={(value) => handleFormChange(value, 'location')}
+      />
+      <DropDown
+        label='Community'
+        mode='outlined'
+        list={filterList}
+        value={filter}
+        setValue={setFilter}
+        visible={showDropDown}
+        showDropDown={() => setShowDropDown(true)}
+        onDismiss={() => setShowDropDown(false)}
       />
       <View style={styles.datePicker}>
         <Text variant="labelLarge">Date:</Text>
         <DateTimePicker
-          value={formData.datetime}
-          onChange={(event, selectedDate) => handleFormChange(event, selectedDate, 'datetime')}
+          value={calendarDate}
+          onChange={(event, selectedDate) => handleDateChange(event, selectedDate)}
           mode='datetime'
           minimumDate={new Date()}
         />

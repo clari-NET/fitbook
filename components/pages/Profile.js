@@ -10,7 +10,7 @@ import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation, route }) {
-  const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
+  const [profileSubPage, setProfileSubPage] = useState('Friends');
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
@@ -27,8 +27,8 @@ export default function Profile({ navigation, route }) {
       ],
     ];
     return Promise.all([
-      docQuery('posts', postQueryConditions),
-      docQuery('events', eventQueryConditions),
+      docQuery('posts', postQueryConditions, 'date'),
+      docQuery('events', eventQueryConditions, 'date_time.date'),
     ]);
   }
 
@@ -60,7 +60,7 @@ export default function Profile({ navigation, route }) {
       Activity: <Feed posts={thisPost} events={thisEvent} />,
       Friends: <Friends navigation={thisNavigation} user={thisUser} />,
       ProfileCommunity: (
-        <ProfileCommunity navigation={thisNavigation} user={thisUser}/>
+        <ProfileCommunity navigation={thisNavigation} user={thisUser} />
       ),
       ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} refresh={refresh} />,
       ProfileSettings: (
@@ -70,7 +70,7 @@ export default function Profile({ navigation, route }) {
   }
 
   if (isLoading) {
-    return <Text>Loading...</Text>
+    return <Text>Loading...</Text>;
   }
 
   return (

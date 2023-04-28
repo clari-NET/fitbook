@@ -19,66 +19,10 @@ import * as SecureStore from 'expo-secure-store';
 import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
 import { useSelector } from 'react-redux';
+const auth = getAuth();
+// const { currUser } = useSelector((state) => state.data.user);
 
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 120,
-    marginTop: 20,
-  },
-  body: {
-    // alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 120,
-  },
-});
-
-const sampleData = [{
-  username: 'Swolebraham Lincoln',
-  fitnessStats: [
-    {
-      category: 'Swimming',
-      field: '100 meters',
-      record: '2 minutes',
-    },
-    {
-      category: 'Bench Press',
-      field: 'Max weight',
-      record: '150 lbs',
-    },
-    {
-      category: 'Cycling',
-      field: '3 miles',
-      record: '16 minutes',
-
-    },
-    {
-      category: 'Basketball',
-      field: 'Most 3-pointers',
-      record: '4',
-    },
-    {
-      category: 'Volleyball',
-      field: 'Most jump serves',
-      record: '8',
-    },
-    {
-      category: 'Soccer',
-      field: 'Most goals (per game)',
-      record: '2',
-
-    },
-    {
-      category: 'Golf',
-      field: '18 holes',
-      record: '84',
-    },
-  ],
-}];
-
-export default function ProfileTab({ navigation, user, refresh }) {
+export default function ProfileTab({ navigation: { goBack }, user, refresh }) {
   const { colors } = useTheme();
   const [userData, setUserData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -97,10 +41,6 @@ export default function ProfileTab({ navigation, user, refresh }) {
       setIsLoaded(true);
     }
   }, [reload]);
-
-  if (isLoaded === false) {
-    return <Text>Loading...</Text>;
-  }
 
   function addFriend(id) {
     const targetRef = doc(db, 'users', String(id));
@@ -123,21 +63,42 @@ export default function ProfileTab({ navigation, user, refresh }) {
   }
 
   return (
-    <ScrollView>
-      <View style={[styles.header]}>
-        <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
-        {userSelf && <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />}
-      </View>
-      <View style={[styles.body]}>
-        <Text variant="headlineLarge">
-          {userData ? userData.username : null}
+    !userData.name ? <Text>Loading...</Text> : (
+      <ScrollView>
+        <View style={[styles.header]}>
+          <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
+        </View>
+        <View style={[styles.body]}>
+          <Text variant="headlineMedium">{userData.username}</Text>
           {!userSelf && (userData.friends.includes(selfData.id)
             ? <IconButton icon="account-minus" size={40} iconColor={colors.primary} onPress={() => unfriend(userData.id)} />
             : <IconButton icon="account-plus" size={40} iconColor={colors.primary} onPress={() => addFriend(userData.id)} />)
           }
-        </Text>
-      </View>
-      {userData && <StatList stats={userData.stats} />}
-    </ScrollView>
+        </View>
+        <View style={[styles.username]}>
+          <Text variant="headlineMedium">
+            {`${userData.name.first} ${userData.name.last}`}
+          </Text>
+        </View>
+        <StatList stats={userData.stats} />
+      </ScrollView>
+    )
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 120,
+    margin: 20,
+  },
+  body: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 120,
+  },
+  username: {
+    alignItems: 'center',
+  },
+});

@@ -8,7 +8,7 @@ import Stat from '../cards/Stat';
 export default function StatList({ stats }) {
   return (
     <List.Section>
-      {stats.map((stat) => <Stat key={stat.category} stat={stat} />)}
+      {stats && stats.map((stat) => <Stat key={stat.category} stat={stat} />)}
     </List.Section>
   );
 }

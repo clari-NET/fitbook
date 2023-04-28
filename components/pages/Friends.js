@@ -15,10 +15,10 @@ const sampleData = [
   {
     profilePhoto: 'https://nickelodeonuniverse.com/wp-content/uploads/Squidward.png',
     fitnessStats: {},
-    friends: ['abMZ06958kM43IA3YKBMbV1tzWi1'],
+    friends: ['DFQabUS8x3Ym9fbhoZX3qAp4Goy1'],
     name: { first: 'Mo', last: 'Akbari' },
-    username: 'testuser',
-    id: 'abMZ06958kM43IA3YKBMbV1tzWi1',
+    username: 'thicc',
+    id: 'DFQabUS8x3Ym9fbhoZX3qAp4Goy1',
   },
 ];
 
@@ -26,14 +26,26 @@ function Friends({ navigation, user }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilterdFriendsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
   const auth = getAuth();
 
   useEffect(() => {
     // get request to fetch friends list
-    console.log(user.id);
-    setFriendsList(sampleData);
-    setFilterdFriendsList(sampleData);
+    Promise.all(user.friends.map(id => getDoc(doc(db, 'users', String(id)))))
+      .then((resArray) => {
+        const data = resArray.map(res => res.data());
+        setFriendsList(data);
+        setFilterdFriendsList(data);
+        setIsLoading(false);
+        setIsError(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
+        console.log(err);
+      });
   }, []);
 
   const handleSearch = (query) => {
