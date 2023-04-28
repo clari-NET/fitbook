@@ -3,9 +3,12 @@ import {
   View, TextInput, Button,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import FriendsList from '../lists/FriendsList';
 import { change } from '../../redux/conversation/conversationSlice';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import db, { docQuery } from '../../firebaseFiles/firebase.config';
 
 const sampleData = [
   {
@@ -22,12 +25,28 @@ function Friends({ navigation }) {
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilteredFriendsList] = useState([]);
   const dispatch = useDispatch();
-  console.log('Friends', navigation);
+  const auth = getAuth();
+  // console.log('Friends', navigation);
 
   useEffect(() => {
     // get request to fetch friends list
-    setFriendsList(sampleData);
-    setFilteredFriendsList(sampleData);
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    getDoc(userRef)
+      .then((coms) => {
+        const { friends } = coms.data();
+        const friendData = [];
+        friends.forEach((friendId) => {
+          const friendRef = doc(db, 'users', friendId);
+          getDoc(friendRef)
+            .then((friend) => {
+              const individual = friend.data();
+              friendData.push(individual);
+            })
+            .catch((err) => console.error(err));
+        });
+        setFriendsList(friendData);
+        setFilteredFriendsList(friendData);
+      }).catch((err) => console.error(err));
   }, []);
 
   const handleSearch = (query) => {
