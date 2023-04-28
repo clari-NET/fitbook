@@ -3,8 +3,11 @@ import { View, TouchableOpacity, StyleSheet} from 'react-native';
 import { Text, useTheme, Avatar } from 'react-native-paper';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Appbar } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { reset } from '../../redux/conversation/conversationSlice';
+import { setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion, getAll, map, onSnapshot } from 'firebase/firestore';
+import db from '../../firebaseFiles/firebase.config';
+import { getAuth } from 'firebase/auth';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,31 +29,61 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Conversation({ route, setCurrConvo }) {
+export default function Conversation({ route }) {
   const { colors } = useTheme();
   const dispatch = useDispatch();
+  const auth = getAuth();
+  let user;
+  let friend;
 
-  const [messages, setMessages] = useState([]);
-  const { currConvo } = route.params;
+  const { currConvo } = useSelector((state) => state.conversation);
+  console.log(currConvo)
+
+  const [convo, setConvo] = useState({});
+
+  const fetchConvo = async () => {
+    try {
+      const convoRef = doc(db, 'DMs', currConvo);
+      const unsubscribe = onSnapshot(convoRef, (snap) => {
+        if (typeof snap.data() === 'object') {
+          setConvo(snap.data());
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello friend',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'Example user',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
+    fetchConvo();
   }, []);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-  }, []);
+  const onSend = async (messages) => {
+    const message = messages[0];
+    message.createdAt = Date.now();
+    try {
+      const convoRef = doc(db, 'DMs', convo.id);
+      await updateDoc(convoRef, {
+        messages: arrayUnion(message),
+        latest: message.text,
+        lastUpdate: message.createdAt,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (Object.keys(convo).length === 0) {
+    return null;
+  }
+
+  if (convo.user1.uid === auth.currentUser.uid) {
+    user = convo.user2;
+    friend = convo.user1;
+  } else {
+    user = convo.user1;
+    friend = convo.user2;
+  }
 
   return (
     <>
@@ -58,18 +91,18 @@ export default function Conversation({ route, setCurrConvo }) {
         <Appbar.BackAction onPress={() => { dispatch(reset()); }} />
         <Avatar.Image
             size={50}
-            source={{ uri: 'https://picsum.photos/700' }}
+            source={{ uri: friend.photo }}
         />
-        <Text style={styles.username}>{currConvo}</Text>
-        <Text>asdf</Text>
+        <Text style={styles.username}>{friend.username}</Text>
       </View>
       <GiftedChat
-        messages={messages}
+        messages={convo.messages}
         onSend={messages => onSend(messages)}
         user={{
-          _id: 1,
+          _id: user.uid,
         }}
       />
     </>
   );
 }
+
