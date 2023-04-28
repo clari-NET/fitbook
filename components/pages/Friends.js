@@ -15,13 +15,14 @@ const sampleData = [
   {
     profilePhoto: 'https://nickelodeonuniverse.com/wp-content/uploads/Squidward.png',
     fitnessStats: {},
-    friends: [],
+    friends: ['abMZ06958kM43IA3YKBMbV1tzWi1'],
     name: { first: 'Mo', last: 'Akbari' },
-    username: 'EmmyPop',
+    username: 'testuser',
+    id: 'abMZ06958kM43IA3YKBMbV1tzWi1',
   },
 ];
 
-function Friends({ navigation }) {
+function Friends({ navigation, user }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilterdFriendsList] = useState([]);
@@ -30,6 +31,7 @@ function Friends({ navigation }) {
 
   useEffect(() => {
     // get request to fetch friends list
+    console.log(user.id);
     setFriendsList(sampleData);
     setFilterdFriendsList(sampleData);
   }, []);
@@ -86,6 +88,8 @@ function Friends({ navigation }) {
             uid: friend.id,
             username: friend.data.username,
           },
+          latest: 'no messages yet',
+          lastUpdate: Date.now(),
         });
         dispatch(change(currentId));
         const currentUserRef = doc(db, 'users', auth.currentUser.uid);

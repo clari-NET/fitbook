@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
@@ -23,6 +23,10 @@ export default function EventList({ events }) {
     setViewEvent(event);
     setIsVisible(true);
   }
+
+  // useEffect(() => {
+  //   console.log('in eventsList: ', events);
+  // }, [events]);
 
   return (
     <>
