@@ -4,21 +4,7 @@ import {
   View, StyleSheet, Image, Button,
 } from 'react-native';
 import Feed from './Feed';
-
-// const sampleData = {
-//   id: 1,
-//   name: 'Roller Demons',
-//   banner: 'https://picsum.photos/700',
-//   icon: 'U+1F6F9',
-//   user: {
-//     user_id: 12,
-//     username: 'swolebraham',
-//   },
-//   location: 'San Diego, CA',
-//   members: [
-//     1, 2, 3, 4, 5,
-//   ],
-// };
+import JoinCommunity from '../buttons/JoinCommunity';
 
 const defaultImage = 'https://picsum.photos/700';
 const defaultIcon = 'U+1F6F9';
@@ -30,7 +16,6 @@ const styles = StyleSheet.create({
   bannerImage_container: {
     width: '100%',
     height: 100,
-    // flex: 2,
   },
   bannerImage: {
     width: '100%',
@@ -51,11 +36,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Community({ route }) {
-  const [joined, setJoined] = useState(false);
   const { colors } = useTheme();
-  const joinCommunityToggle = () => {
-    setJoined(!joined);
-  };
 
   const { community } = route.params;
 
@@ -72,9 +53,7 @@ export default function Community({ route }) {
           {community.icon || defaultIcon}
           {community.name}
         </Text>
-        {joined
-          ? <Button title='Joined' onPress={joinCommunityToggle} />
-          : <Button title='Join' onPress={joinCommunityToggle} />}
+        <JoinCommunity communityId='placeholder' />
       </View>
       <Feed />
     </View>
