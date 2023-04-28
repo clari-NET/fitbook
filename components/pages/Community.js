@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   bannerImage_container: {
     width: '100%',
     height: 100,
+    flex: 1,
   },
   bannerImage: {
     width: '100%',
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: '100%',
     flexDirection: 'row',
-    flex: 1,
+    flex: 0.5,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#FF6000',
@@ -34,12 +35,14 @@ const styles = StyleSheet.create({
   bannerName: {
     color: '#FFF',
   },
+  feed: {
+    flex: 6,
+  },
 });
 
 export default function Community({ route }) {
   const [communityPosts, setCommunityPosts] = useState([]);
   const [communityEvents, setCommunityEvents] = useState([]);
-  const [communityData, setCommunityData] = useState([]);
   const { colors } = useTheme();
 
   const { community } = route.params;
@@ -51,14 +54,10 @@ export default function Community({ route }) {
 
       const events = await docQuery('events', [['community.id', '==', community.id]]);
       setCommunityEvents(events);
-
-      const communityDataObj = await docQuery('communities', [['id', '==', community.id]]);
-      setCommunityData(communityDataObj);
     }
     fetchCommunityData();
   }, [community.id]);
 
-  console.log('communityData: ', communityData);
   return (
     <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
       <View style={styles.bannerImage_container}>
@@ -74,7 +73,9 @@ export default function Community({ route }) {
         </Text>
         <JoinCommunity communityId={community.id} />
       </View>
-      <Feed posts={communityPosts} events={communityEvents} />
+      <View style={styles.feed}>
+        <Feed posts={communityPosts} events={communityEvents} />
+      </View>
     </View>
   );
 }
