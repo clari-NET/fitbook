@@ -90,7 +90,13 @@ export default function MessageList() {
 
   return currConvo === 'DMList' ? (
     <FlatList
-      data={Object.keys(messages)}
+      data={Object.keys(messages)
+        .sort((a, b) => {
+          if (messages[a].lastUpdate > messages[b].lastUpdate) {
+            return -1;
+          }
+          return 1;
+        })}
       renderItem={({ item }) => <DMCard convo={messages[item]} handlePress={handlePress} />}
       keyExtractor={(item) => item.toString()}
     />
