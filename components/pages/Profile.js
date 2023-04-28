@@ -70,7 +70,7 @@ export default function Profile({ navigation, route }) {
   }
 
   if (isLoading) {
-    return <Text>Loading...</Text>
+    return <Text>Loading...</Text>;
   }
 
   return (
