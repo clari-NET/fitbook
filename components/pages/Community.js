@@ -56,7 +56,6 @@ export default function Community({ route }) {
   const [communityPosts, setCommunityPosts] = useState([]);
   const [communityEvents, setCommunityEvents] = useState([]);
   const { colors } = useTheme();
-
   const joinCommunityToggle = () => {
     setJoined(!joined);
   };

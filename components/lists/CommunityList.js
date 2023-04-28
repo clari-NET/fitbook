@@ -5,6 +5,7 @@ import { docQuery } from '../../firebaseFiles/firebase.config';
 import CommunityCard from '../cards/CommunityCard';
 import TextBanner from '../utility/TextBanner';
 import CommunityForm from '../forms/CommunityForm';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   fab: {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function CommunityList({ navigation }) {
+export default function CommunityList() {
   const [searchVal, setSearchVal] = useState('');
   const [communities, setCommunities] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -35,6 +36,7 @@ export default function CommunityList({ navigation }) {
       })
       .catch((err) => console.error(err));
   }, []);
+  const navigation = useNavigation();
 
   function handleSearch(val) {
     setSearchVal(val);
