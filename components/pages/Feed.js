@@ -35,6 +35,7 @@ const filterList = [
 
 export default function Feed({ posts, events, onPostSelected }) {
   const [filter, setFilter] = useState('Recent');
+  const [sorted, setSorted] = useState(posts);
   const [showDropDown, setShowDropDown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
@@ -46,6 +47,12 @@ export default function Feed({ posts, events, onPostSelected }) {
 
   function handleEventSubmit() {
     setShowModal(false);
+  }
+
+  function handleDropDownChange(value) {
+    // TODO: change this to use a fresh query, pass down query lists instead of posts/events
+    // const newPosts = [...posts].sort((a, b) => );
+    setFilter(value);
   }
   // console.log('inside feed', posts);
   return (
@@ -72,7 +79,7 @@ export default function Feed({ posts, events, onPostSelected }) {
                   mode='outlined'
                   list={filterList}
                   value={filter}
-                  setValue={setFilter}
+                  setValue={handleDropDownChange}
                   visible={showDropDown}
                   showDropDown={() => setShowDropDown(true)}
                   onDismiss={() => setShowDropDown(false)}

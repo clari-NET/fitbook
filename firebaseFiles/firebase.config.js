@@ -6,6 +6,7 @@ import {
   query,
   where,
   or,
+  orderBy,
 } from 'firebase/firestore';
 import {
   API_KEY,
@@ -37,17 +38,28 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export default db;
 
-export async function docQuery(collectionName, conditions = []) {
+export async function docQuery(collectionName, conditions = [], sortBy = null) {
   const whereClauses = conditions.map((condition) => where(...condition));
-  const q = query(collection(db, collectionName), ...whereClauses);
+  let q;
+  if (sortBy) {
+    q = query(collection(db, collectionName), ...whereClauses, orderBy(sortBy));
+  } else {
+    q = query(collection(db, collectionName), ...whereClauses);
+  }
   const resultDocs = await getDocs(q);
   const results = resultDocs.docs.map((doc) => doc.data());
   return results;
 }
 
-export async function docOrQuery(collectionName, conditions = []) {
+export async function docOrQuery(collectionName, conditions = [], sortBy = null) {
   const whereClauses = conditions.map((condition) => where(...condition));
-  const q = query(collection(db, collectionName), or(...whereClauses));
+  let q;
+  if (sortBy) {
+    q = query(collection(db, collectionName), or(...whereClauses), orderBy(sortBy));
+  } else {
+    q = query(collection(db, collectionName), or(...whereClauses));
+  }
+  // const q = query(collection(db, collectionName), or(...whereClauses));
   const resultDocs = await getDocs(q);
   const results = resultDocs.docs.map((doc) => doc.data());
   return results;
