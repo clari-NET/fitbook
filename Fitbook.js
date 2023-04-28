@@ -37,7 +37,7 @@ const CustomDarkTheme = {
   roundness: 2,
   colors: {
     ...CombinedDarkTheme.colors,
-    surface: '#141729',
+    surface: '#222025',
     primary: '#FF6000',
     secondary: '#5ACDED',
     tertiary: '#000',
@@ -49,10 +49,11 @@ const CustomDefaultTheme = {
   roundness: 2,
   colors: {
     ...CombinedDefaultTheme.colors,
-    surface: '#f0f0f0',
+    surface: '#F6F1F8',
     primary: '#FF6000',
     secondary: '#212121',
     tertiary: '#141729',
+    secondaryContainer: '#FFD9C1',
   },
 };
 
