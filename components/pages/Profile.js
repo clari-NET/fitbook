@@ -12,8 +12,12 @@ import { useSelector } from 'react-redux';
 
 export default function Profile({ navigation }) {
   const { colors } = useTheme();
-  const [profileSubPage, setProfileSubPage] = useState('Activity');
+  const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
   const { data } = useSelector((state) => state.user);
+
+  // useEffect(() => {
+
+  // })
   // console.log(data);
   // // console.log('Profile', navigation);
   // useEffect(() => {
