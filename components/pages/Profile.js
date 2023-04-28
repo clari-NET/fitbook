@@ -27,8 +27,8 @@ export default function Profile({ navigation, route }) {
       ],
     ];
     return Promise.all([
-      docQuery('posts', postQueryConditions),
-      docQuery('events', eventQueryConditions),
+      docQuery('posts', postQueryConditions, 'date'),
+      docQuery('events', eventQueryConditions, 'date_time.date'),
     ]);
   }
 
@@ -60,7 +60,7 @@ export default function Profile({ navigation, route }) {
       Activity: <Feed posts={thisPost} events={thisEvent} />,
       Friends: <Friends navigation={thisNavigation} user={thisUser} />,
       ProfileCommunity: (
-        <ProfileCommunity navigation={thisNavigation} user={thisUser}/>
+        <ProfileCommunity navigation={thisNavigation} user={thisUser} />
       ),
       ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} refresh={refresh} />,
       ProfileSettings: (
