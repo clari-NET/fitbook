@@ -4,8 +4,8 @@ import {
   getDocs,
   collection,
   query,
-  where,
   or,
+  where,
 } from 'firebase/firestore';
 import {
   API_KEY,
