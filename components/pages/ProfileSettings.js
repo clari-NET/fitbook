@@ -36,42 +36,49 @@ export default function ProfileSettings({ route, user }) {
   }, []);
   // const userInfo = get
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
-      <View style={[styles.header]}>
-        {userData && <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />}
-        <IconButton
-          icon="plus-circle"
-          iconColor={theme.colors.primary}
-          size={50}
-          style={{
-            position: 'absolute', marginTop: -5, marginLeft: 115, backgroundColor: 'transparent',
-          }}
-          onPress={() => console.log('Pressed')}
-        />
+    !userData.username ? <Text>Loading...</Text> : (
+      <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
+        <View style={[styles.header]}>
+          <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
+          <IconButton
+            icon="plus-circle"
+            iconColor={theme.colors.primary}
+            size={50}
+            style={{
+              position: 'absolute', marginTop: -5, marginLeft: 115, backgroundColor: 'transparent',
+            }}
+            onPress={() => console.log('Pressed')}
+          />
+        </View>
+        <View style={[styles.body]}>
+          <Text variant="headlineMedium">{userData.username}</Text>
+          <Text variant="headlineMedium">
+            {`${userData.name.first} ${userData.name.last}`}
+          </Text>
+          <View style={[styles.setting]}>
+            <Text variant="headlineMedium">Light/Dark Mode:</Text>
+            <Switch
+              color={theme?.colors.primary}
+              value={dark}
+              onValueChange={() => dispatch(toggle())}
+            />
+          </View>
+          <View style={[styles.body]}>
+            <Button
+              mode='contained'
+              onPress={async () => {
+                auth.signOut();
+                await deleteStore('FitbookEmail');
+                await deleteStore('FitbookPassword');
+                dispatch(userStatus(false));
+              }}
+            >
+              Logout
+            </Button>
+          </View>
+        </View>
       </View>
-      <View style={[styles.body]}>
-        <Text variant="headlineLarge">Light/Dark Mode:</Text>
-        <Switch
-          color={theme?.colors.primary}
-          value={dark}
-          onValueChange={() => dispatch(toggle())}
-        />
-      </View>
-      <View style={[styles.body]}>
-        <Button
-          mode='contained'
-          onPress={async () => {
-            auth.signOut();
-            await deleteStore('FitbookEmail');
-            await deleteStore('FitbookPassword');
-            dispatch(userStatus(false));
-          }}
-        >
-          Logout
-
-        </Button>
-      </View>
-    </View>
+    )
   );
 }
 
@@ -83,11 +90,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 120,
-    marginTop: 50,
+    marginTop: 20,
+    marginBottom: 30,
   },
   body: {
-    marginTop: 50,
+    alignItems: 'center',
+    flexDirection: 'column',
+    gap: 25,
+  },
+  setting: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    gap: 50,
   },
 });

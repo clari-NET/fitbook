@@ -10,7 +10,6 @@ import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation, route }) {
-  const { colors } = useTheme();
   const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);

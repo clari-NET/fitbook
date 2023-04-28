@@ -5,17 +5,8 @@ import { getAuth } from 'firebase/auth';
 import {
   useTheme, Avatar, Text, IconButton, Button, Surface,
 } from 'react-native-paper';
-import {
-  getDoc,
-  getDocs,
-  setDoc,
-  collection,
-  query,
-  where,
-  doc,
-} from 'firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
-import db, { docQuery } from '../../firebaseFiles/firebase.config';
+import { docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
 
 const styles = StyleSheet.create({
@@ -33,40 +24,37 @@ const styles = StyleSheet.create({
 // const { currUser } = useSelector((state) => state.data.user);
 const auth = getAuth();
 
-export default function ProfileTab({ currProfile }) {
+export default function ProfileTab({ user }) {
   const { colors } = useTheme();
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // console.log(user, auth.currentUser.uid);
   useEffect(() => {
-    if (currProfile) {
-      setUserData(currProfile.data);
+    if (user) {
+      setUserData(user);
     } else {
       docQuery('users', [['id', '==', auth.currentUser.uid]])
         .then((res) => {
-          setUserData(res[0]);
+          setUserData(res);
         });
     }
-    setIsLoaded(true);
   }, []);
 
-  if (isLoaded === false) {
-    return <Text>Loading...</Text>;
-  }
   return (
-    <ScrollView>
-      <View style={[styles.header]}>
-        <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
-      </View>
-      <View style={[styles.body]}>
-        <Text variant="headlineMedium">
-          {isLoaded ? userData.username : null}
-        </Text>
-        <Text variant="headlineMedium">
-          {isLoaded ? `${userData.name.first} ${userData.name.last}` : null}
-        </Text>
-      </View>
-      {isLoaded ? <StatList stats={userData.stats} /> : null}
-    </ScrollView>
+    !userData.name ? <Text>Loading...</Text> : (
+      <ScrollView>
+        <View style={[styles.header]}>
+          <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
+        </View>
+        <View style={[styles.body]}>
+          <Text variant="headlineMedium">{userData.username}</Text>
+          <Text variant="headlineMedium">
+            {`${userData.name.first} ${userData.name.last}`}
+          </Text>
+        </View>
+        <StatList stats={userData.stats} />
+      </ScrollView>
+    )
   );
 }
