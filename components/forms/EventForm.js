@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function EventForm() {
+export default function EventForm({ open }) {
   const data = useSelector((state) => state.user).data;
   const [calendarDate, setCalendarDate] = useState(new Date());
   const firebaseDate = Timestamp.fromDate(calendarDate);
@@ -100,12 +100,15 @@ export default function EventForm() {
         id: uuid.v4(),
         image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
         name: formData.title,
-        date_time: formData.date,
+        date_time: {
+          date: calendarDate.toLocaleString().split(',')[0],
+          time: calendarDate.toTimeString(),
+        },
       });
     } catch (error) {
-      console.log(error)
+      console.log('errorrrrrrr', error)
     } finally {
-      console.log('end')
+      open(false);
     }
   }
 

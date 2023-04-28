@@ -113,7 +113,7 @@ export default function Feed({ posts, events, onPostSelected }) {
         style={styles.modal}
       >
         {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} />}
-        {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} />}
+        {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} open={setShowModal} />}
       </Modal>
     </>
   );
