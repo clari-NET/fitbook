@@ -16,15 +16,7 @@ export default function AppHeader({ onLogout }) {
 
   return (
     <Appbar.Header style={{ justifyContent: 'space-between' }}>
-      {isSignedIn
-        ? <Button mode='outlined' onPress={onLogout}>Logout</Button>
-        : null}
       <Appbar.Content title='Fitbook' />
-      <Switch
-        color={theme?.colors.primary}
-        value={dark}
-        onValueChange={() => dispatch(toggle())}
-      />
     </Appbar.Header>
   );
 }

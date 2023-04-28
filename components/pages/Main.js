@@ -88,14 +88,7 @@ export default function Main({ navigation }) {
 
   return (
     <>
-      <AppHeader
-        onLogout={async () => {
-          auth.signOut();
-          await deleteStore('FitbookEmail');
-          await deleteStore('FitbookPassword');
-          dispatch(userStatus(false));
-        }}
-      />
+      <AppHeader />
       {/* <View style={[styles.container, { backgroundColor: colors.surface }]}> */}
       <StatusBar />
       {/* </View> */}
@@ -110,7 +103,16 @@ export default function Main({ navigation }) {
         <TabStack.Screen name="Friends" component={Friends} />
         <TabStack.Screen name="Community" component={Community} />
         <TabStack.Screen name="ProfileTab" component={ProfileTab} />
-        <TabStack.Screen name="ProfileSettings" component={ProfileSettings} />
+        <TabStack.Screen
+          name="ProfileSettings"
+          component={ProfileSettings}
+          onLogout={async () => {
+            auth.signOut();
+            await deleteStore('FitbookEmail');
+            await deleteStore('FitbookPassword');
+            dispatch(userStatus(false));
+          }}
+        />
       </TabStack.Navigator>
     </>
   );

@@ -5,7 +5,9 @@ import {
 } from 'react-native-paper';
 
 import {
+  getDoc,
   getDocs,
+  setDoc,
   collection,
   query,
   where,
@@ -16,6 +18,8 @@ import * as SecureStore from 'expo-secure-store';
 import db from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
 // import ProfileSettings from './ProfileSettings';
+
+const auth = getAuth().currentUser;
 
 // const Stack = createNativeStackNavigator();
 
@@ -31,9 +35,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const sampleData = [{
-  username: 'Swolebraham Lincoln',
-  fitnessStats: [
+const sampleData = {
+  email: 'test@ai.com',
+  name: {
+    first: 'Test',
+    last: 'Ai',
+  },
+  timeStamp: new Date(),
+  username: 'Test AI',
+  stats: [
     {
       category: 'Swimming',
       field: '100 meters',
@@ -72,57 +82,30 @@ const sampleData = [{
       record: '84',
     },
   ],
-}];
+};
+
+// const some = useSelector(state => state.data.user)
 
 export default function ProfileTab({ navigation, user }) {
   const { colors } = useTheme();
-  const [userData, setUserData] = useState(sampleData);
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [userData, setUserData] = useState({});
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  async function getUser() {
-    const auth = getAuth();
-    // console.log(auth.currentUser)
-    const userRef = doc(db, 'users', auth.currentUser.uid);
-    return userRef;
-  }
-  // const [username, setUsername] = useState('');
+  useEffect(() => {
+    // setDoc(doc(db, 'users', auth.currentUser.uid), sampleData);
+    const userRef = doc(db, 'users', auth.uid);
+    getDoc(userRef)
+      .then((coll) => {
+        setUserData({ ...coll.data(), id: coll.id });
+      });
 
-  // async function getUser(key) {
-  //   if (!user) {
-  //     const result = await SecureStore.getItemAsync(key);
-  //     if (result) {
-  //       return result;
-  //     }
-  //     return sampleData;
-  //   }
-  //   return user;
-  // }
-
-  // async function getProfile(username) {
-  //   const docRef = query(collection(db, 'tests'), where('username', '==', username));
-  //   const result = [];
-
-  //   const userInfo = await getDocs(docRef);
-  //   // console.log(userInfo);
-  //   userInfo.forEach((d) => {
-  //     result.push({ ...d.data(), id: d.id });
-  //     // console.log(d.id);
-  //   });
-  //   setUserData(result);
-  // }
-
-  // useEffect(() => {
-  //   const current = getUser();
-  //   console.log(current);
-  //   // getProfile('testOne');
-  //   // console.log(userData);
-  //   // // console.log(userData[0].fitnessStats[0].stat1);
-  //   // if (userData.length > 0) {
-  //   //   setIsLoaded(true);
-  //   // } else {
-  //   //   setIsLoaded(false);
-  //   // }
-  // }, []);
+    console.log(userData);
+    if (userData.username) {
+      setIsLoaded(true);
+    } else {
+      setIsLoaded(false);
+    }
+  }, []);
 
   return (
     <ScrollView>
@@ -132,10 +115,10 @@ export default function ProfileTab({ navigation, user }) {
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
-          {userData ? userData[0].username : null}
+          {isLoaded ? userData.username : null}
         </Text>
       </View>
-      {userData ? <StatList stats={userData[0].fitnessStats} /> : null}
+      {isLoaded ? <StatList stats={userData.stats} /> : null}
     </ScrollView>
   );
 }
