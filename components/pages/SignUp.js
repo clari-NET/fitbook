@@ -1,6 +1,5 @@
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Image } from 'react-native';
 import {
-  useTheme,
   TextInput,
   Button,
   Text,
@@ -14,7 +13,6 @@ import db from '../../firebaseFiles/firebase.config';
 import * as SecureStore from 'expo-secure-store';
 
 export default function SignUp({ navigation }) {
-  const { colors } = useTheme();
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -40,6 +38,7 @@ export default function SignUp({ navigation }) {
       const userData = await createUserWithEmailAndPassword(auth, email, password);
       updateProfile(auth.currentUser, { displayName: username });
       const timeStamp = serverTimestamp();
+      const picNum = Math.round(Math.random() * 50);
       await setDoc(doc(db, 'users', userData.user.uid), {
         name: {
           first: firstName,
@@ -50,6 +49,7 @@ export default function SignUp({ navigation }) {
         timeStamp,
         DMs: [],
         id: auth.currentUser.uid,
+        profile_photo: `https://randomuser.me/api/portraits/men/${picNum}.jpg`,
       });
       await save('FitbookEmail', email);
       await save('FitbookPassword', password);
@@ -66,7 +66,7 @@ export default function SignUp({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.secondary }]}>
+    <View style={styles.container}>
       <Snackbar
         style={styles.success}
         visible={success}
@@ -86,65 +86,87 @@ export default function SignUp({ navigation }) {
       >
         Error creating user: please use a valid email and more than 6 characters in the password!
       </Snackbar>
-      <Text style={{ color: colors.primary }}>Sign up, Swole Bro/Sis!</Text>
+      <Image
+        source={require('../../assets/LogoLogin.png')}
+        style={{ width: 50, height: 60, resizeMode: 'contain', marginBottom: 60 }} />
+      <Text style={styles.text}>Sign up, Swole Bro/Sis!</Text>
       <TextInput
         label="Email"
         autoCapitalize='none'
         value={email}
         onChangeText={email => setEmail(email)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <TextInput
         label="First Name"
         value={firstName}
         onChangeText={firstName => setFirstName(firstName)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <TextInput
         label="Last Name"
         value={lastName}
         onChangeText={lastName => setLastName(lastName)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <TextInput
         label="Username"
         autoCapitalize='none'
         value={username}
         onChangeText={username => setUsername(username)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <TextInput
         label="Password"
         secureTextEntry
         value={password}
         onChangeText={password => setPassword(password)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <Button
         style={styles.btn}
         mode="elevated"
-        buttonColor={colors.primary}
-        textColor={colors.secondary}
+        buttonColor='#FFE6C7'
+        textColor='#000'
         onPress={() => {
           handleSignUp();
         }}
       >Sign Up!</Button>
-      <Text style={{ color: colors.primary }}>Already have an account?</Text>
+      <Text style={styles.text}>Already have an account?</Text>
       <Button
         style={styles.btn}
         mode="outlined"
-        textColor={colors.primary}
-        buttonColor={colors.surface}
+        textColor='#fff'
         onPress={() => {
           navigation.navigate('Login');
         }}
@@ -159,14 +181,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FF6000',
   },
   input: {
     width: '80%',
     marginTop: 5,
+    backgroundColor: '#FF6000',
+    borderRadius: 30,
   },
   btn: {
     width: '60%',
-    marginTop: 5,
+    marginTop: 15,
     marginBottom: 5,
+    borderRadius: 30,
+    borderColor: '#fff',
+  },
+  text: {
+    color: '#fff',
   },
 });
