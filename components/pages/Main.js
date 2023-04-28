@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text } from 'react-native';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -33,9 +31,9 @@ function ColoredIcon(name, color) {
 }
 
 function TabNavigator() {
-  const { data } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user).data;
   return (
-    data !== undefined && (
+    user !== undefined && (
       <Tab.Navigator>
         <Tab.Screen
           name='Home'
@@ -48,6 +46,7 @@ function TabNavigator() {
         <Tab.Screen
           name='Profile'
           component={Profile}
+          initialParams={{ userId: getAuth().currentUser.uid }}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => ColoredIcon('bell', color),
@@ -91,8 +90,6 @@ export default function Main({ navigation }) {
       .then((uData) => dispatch(updateUser(uData)))
       .catch(console.error);
   }, []);
-
-  const user = useSelector((state) => state.user);
 
   async function deleteStore(key) {
     await SecureStore.deleteItemAsync(key);

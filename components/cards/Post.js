@@ -69,7 +69,7 @@ export default function Post({ post }) {
     <Surface style={styles.postContainer}>
       <View style={styles.postHeader}>
         <TouchableOpacity onPress={() => {
-          navigation.navitgate('Profile', {
+          navigation.navigate('Profile', {
             user: post.user,
           });
         }}
@@ -80,15 +80,15 @@ export default function Post({ post }) {
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
-          navigation.navitgate('Profile', {
-            user: post.user,
+          navigation.navigate('Profile', {
+            userId: post.user.user_id.toString(),
           });
         }}
         >
           <Text style={styles.username}>{post.user.username}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
-          navigation.navitgate('Community', {
+          navigation.navigate('Community', {
             community: post.community,
           });
         }}
