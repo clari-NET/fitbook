@@ -22,6 +22,7 @@ import Comment from './Comment';
 import Community from './Community';
 import Activity from './Feed';
 import Friends from './Friends';
+import Conversation from './Conversation';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -112,7 +113,7 @@ export default function Main({ navigation }) {
         options={{ title: 'FitBookLogo?' }}/>
         <TabStack.Screen name="ProfileTab" component={ProfileTab} />
         <TabStack.Screen name="ProfileSettings" component={ProfileSettings} />
-
+        <TabStack.Screen name="Conversation" component={Conversation} />
       </TabStack.Navigator>
     </>
   );
