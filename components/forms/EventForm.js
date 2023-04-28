@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import * as firebase from 'firebase/app';
+import DropDown from 'react-native-paper-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
 import { Timestamp } from 'firebase/firestore';
+import { docQuery } from '../../firebaseFiles/firebase.config';
 import {
   Text, TextInput, Surface, Button,
 } from 'react-native-paper';
@@ -30,13 +32,18 @@ const styles = StyleSheet.create({
 console.log(Timestamp);
 
 export default function EventForm() {
+  const { data } = useSelector((state) => state.user);
   const [calendarDate, setCalendarDate] = useState(new Date());
   const firebaseDate = Timestamp.fromDate(calendarDate);
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [filter, setFilter] = useState('-');
+  const [filterList, setFilterList] = useState([]);
+  const [currentComs, setCurrentComs] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     date: firebaseDate,
-    user: { name: '', user_id: '' },
+    user: { name: `${data.name.first} ${data.name.last}`, user_id: data.id },
     id: '',
     lifts: 0,
     comments: [],
@@ -44,9 +51,20 @@ export default function EventForm() {
     content: '',
   });
 
+  useEffect(() => {
+    docQuery('communities')
+      .then((coms) => (
+        coms.map((com) => (
+          { value: com.name, label: com.name }))
+      )).then((currComs) => {
+        setFilterList(currComs);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   function handleCreate() {
     // NEED TO CONNECT TO THE DB
-    // NEED TO CHANGE datetime to firestore timestamp format before POST
+
     console.log(formData);
   }
 
@@ -90,6 +108,16 @@ export default function EventForm() {
           minimumDate={new Date()}
         />
       </View>
+      <DropDown
+        label={filter}
+        mode='outlined'
+        list={filterList}
+        value={filter}
+        setValue={setFilter}
+        visible={showDropDown}
+        showDropDown={() => setShowDropDown(true)}
+        onDismiss={() => setShowDropDown(false)}
+      />
       <Button mode='contained' onPress={handleCreate}>Create</Button>
     </Surface>
   );
