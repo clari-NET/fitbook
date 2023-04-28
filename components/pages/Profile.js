@@ -8,11 +8,21 @@ import ProfileCommunity from './ProfileCommunity';
 import Feed from './Feed';
 import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
+import { useSelector } from 'react-redux';
 
 export default function Profile({ navigation }) {
   const { colors } = useTheme();
   const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
-  // console.log('Profile', navigation);
+  const { data } = useSelector((state) => state.user);
+  // console.log(data);
+  // // console.log('Profile', navigation);
+  // useEffect(() => {
+  //   docQuery('users')
+  //     .then((coms) => {
+  //       console.log('QQ', coms[0]);
+  //     })
+  //     .catch((err) => console.error(err));
+  // },[])
 
   // useEffect(() => {
   //   // fetch data for
@@ -29,7 +39,7 @@ export default function Profile({ navigation }) {
       Activity: <Feed />,
       Friends: <Friends navigation={navigation} />,
       ProfileCommunity: <ProfileCommunity />,
-      ProfileTab: <ProfileTab navigation={navigation} />,
+      ProfileTab: <ProfileTab navigation={navigation} userSelf username={data.username} />,
       ProfileSettings: <ProfileSettings />,
     }[page];
   }
