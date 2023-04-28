@@ -22,9 +22,6 @@ export default function JoinCommunity({ communityId }) {
     }
   };
 
-  console.log('inCommunity: ', inCommunity);
-  console.log('communityData: ', data.communities);
-
   return (
     <View>
       {inCommunity
