@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { FAB, Modal, Text } from 'react-native-paper';
 import uuid from 'react-native-uuid';
-import DropDown from 'react-native-paper-dropdown';
 import { useSelector } from 'react-redux';
 import { doc, setDoc } from 'firebase/firestore';
 import db from '../../firebaseFiles/firebase.config';
@@ -27,19 +26,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const filterList = [
-  { value: 'hot', label: 'Hot' },
-  { value: 'top', label: 'Top' },
-  { value: 'now', label: 'Now' },
-  { value: 'thisWeek', label: 'This Week' },
-  { value: 'thisMonth', label: 'This Month' },
-  { value: 'thisYear', label: 'This Year' },
-  { value: 'allTime', label: 'All Time' },
-];
+// const filterList = [
+//   { value: 'hot', label: 'Hot' },
+//   { value: 'top', label: 'Top' },
+//   { value: 'now', label: 'Now' },
+//   { value: 'thisWeek', label: 'This Week' },
+//   { value: 'thisMonth', label: 'This Month' },
+//   { value: 'thisYear', label: 'This Year' },
+//   { value: 'allTime', label: 'All Time' },
+// ];
 
 export default function Feed({ posts, events, onPostSelected }) {
-  const [filter, setFilter] = useState('Recent');
-  const [showDropDown, setShowDropDown] = useState(false);
+  // const [filter, setFilter] = useState('Recent');
+  // const [sorted, setSorted] = useState(posts);
+  // const [showDropDown, setShowDropDown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [postType, setPostType] = useState('');
@@ -76,6 +76,13 @@ export default function Feed({ posts, events, onPostSelected }) {
   function handleEventSubmit() {
     setShowModal(false);
   }
+
+  // function handleDropDownChange(value) {
+  //   // TODO: change this to use a fresh query, pass down query lists instead of posts/events
+  //   const newPosts = [...posts].sort((a, b) => a.lifts - b.lifts);
+  //   setSorted(newPosts);
+  //   setFilter(value);
+  // }
   // console.log('inside feed', posts);
   return (
     <>
@@ -96,16 +103,16 @@ export default function Feed({ posts, events, onPostSelected }) {
             events.length !== 0 && (
               <>
                 <EventList events={events} />
-                <DropDown
+                {/* <DropDown
                   label={filter}
                   mode='outlined'
                   list={filterList}
                   value={filter}
-                  setValue={setFilter}
+                  setValue={handleDropDownChange}
                   visible={showDropDown}
                   showDropDown={() => setShowDropDown(true)}
                   onDismiss={() => setShowDropDown(false)}
-                />
+                /> */}
               </>
             )
           }
