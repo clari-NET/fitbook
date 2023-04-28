@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import {
-  useTheme, Text, SegmentedButtons,
-} from 'react-native-paper';
-import { useSelector } from 'react-redux';
-import { docQuery } from '../../firebaseFiles/firebase.config';
+import { View } from 'react-native';
+import { SegmentedButtons } from 'react-native-paper';
+import { getDoc, doc } from 'firebase/firestore';
+import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import Friends from './Friends';
 import ProfileCommunity from './ProfileCommunity';
 import Feed from './Feed';
@@ -14,15 +12,53 @@ import ProfileSettings from './ProfileSettings';
 export default function Profile({ navigation, route }) {
   const { colors } = useTheme();
   const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
-  const user = useSelector((state) => state.user);
+  const [events, setEvents] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
 
-  function SubPage({ page }) {
+  function getPostsAndEvents(curUser) {
+    const postQueryConditions = [['user.user_id', '==', curUser.id]];
+    const eventQueryConditions = [
+      [
+        'members',
+        'array-contains',
+        { user_id: curUser.id, username: curUser.username },
+      ],
+    ];
+    return Promise.all([
+      docQuery('posts', postQueryConditions),
+      docQuery('events', eventQueryConditions),
+    ]);
+  }
+
+  useEffect(() => {
+    getDoc(doc(db, 'users', route.params.userId))
+      .then((u) => {
+        const data = u.data();
+        return data;
+      })
+      .then((data) => {
+        setUser(data);
+        return getPostsAndEvents(data);
+      })
+      .then(([postsData, eventsData]) => {
+        setPosts(postsData);
+        setEvents(eventsData);
+      })
+      .catch(console.error);
+  }, [route.params.userId]);
+
+  function SubPage({ page, thisPost, thisEvent, thisNavigation, thisUser }) {
     return {
-      Activity: <Feed />,
-      Friends: <Friends navigation={navigation} />,
-      ProfileCommunity: <ProfileCommunity />,
-      ProfileTab: <ProfileTab navigation={navigation} />,
-      ProfileSettings: <ProfileSettings user={user} />,
+      Activity: <Feed posts={thisPost} events={thisEvent} />,
+      Friends: <Friends navigation={thisNavigation} user={thisUser} />,
+      ProfileCommunity: (
+        <ProfileCommunity navigation={thisNavigation} user={thisUser} />
+      ),
+      ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} />,
+      ProfileSettings: (
+        <ProfileSettings navigation={thisNavigation} user={thisUser} />
+      ),
     }[page];
   }
 
@@ -50,7 +86,13 @@ export default function Profile({ navigation, route }) {
           },
         ]}
       />
-      <SubPage page={profileSubPage} />
+      <SubPage
+        page={profileSubPage}
+        thisPost={posts}
+        thisEvent={events}
+        thisNavigation={navigation}
+        thisUser={user}
+      />
     </View>
   );
 }
