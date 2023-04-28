@@ -12,7 +12,6 @@ function changeSignIn(state = initialState, action) {
   state.isSignedIn = action.payload;
 }
 function joinACommunity(state = initialState, action) {
-  console.log('dataObject: ', state.data);
   if (state.data.communities && !state.data.communities.includes(action.payload)) {
     state.data.communities.push(action.payload);
   } else {
