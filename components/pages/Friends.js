@@ -15,10 +15,10 @@ const sampleData = [
   {
     profilePhoto: 'https://nickelodeonuniverse.com/wp-content/uploads/Squidward.png',
     fitnessStats: {},
-    friends: ['abMZ06958kM43IA3YKBMbV1tzWi1'],
+    friends: ['DFQabUS8x3Ym9fbhoZX3qAp4Goy1'],
     name: { first: 'Mo', last: 'Akbari' },
-    username: 'testuser',
-    id: 'abMZ06958kM43IA3YKBMbV1tzWi1',
+    username: 'thicc',
+    id: 'DFQabUS8x3Ym9fbhoZX3qAp4Goy1',
   },
 ];
 

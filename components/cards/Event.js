@@ -3,7 +3,6 @@ import { Card, Text } from 'react-native-paper';
 import { View } from 'react-native';
 
 export default function Event({ event, handlePress }) {
-  console.log('-==-=-=-==-', event)
   return (
     <Card onPress={() => handlePress(event)}>
       <Card.Content>

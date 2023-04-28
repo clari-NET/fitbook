@@ -94,16 +94,19 @@ export default function EventForm() {
   }, [filter]);
 
   const handleCreate = async () => {
-    // NEED TO CONNECT TO THE DB
-    await setDoc(doc(db, 'events', uuid.v4()), {
-      ...formData,
-      id: uuid.v4(),
-      image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      name: formData.title,
-      date_time: formData.date,
-    });
-
-    console.log(JSON.stringify(formData), '..........');
+    try {
+      await setDoc(doc(db, 'events', uuid.v4()), {
+        ...formData,
+        id: uuid.v4(),
+        image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+        name: formData.title,
+        date_time: formData.date,
+      });
+    } catch (error) {
+      console.log(error)
+    } finally {
+      console.log('end')
+    }
   }
 
   function handleFormChange(value, item) {

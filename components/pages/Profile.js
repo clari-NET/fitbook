@@ -10,7 +10,7 @@ import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation, route }) {
-  const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
+  const [profileSubPage, setProfileSubPage] = useState('Friends');
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
