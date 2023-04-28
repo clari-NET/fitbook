@@ -80,7 +80,7 @@ export default function CommentsList({ route, navigation }) {
       user: {
         id: commenter.id,
         name: `${commenter.name.first} ${commenter.name.last}`,
-        profilePhoto: 'https://randomuser.me/api/portraits/men/44.jpg', // commenter.profilePhoto
+        profilePhoto: commenter.profile_photo,
         username: commenter.username,
       },
       comment: newComment,
