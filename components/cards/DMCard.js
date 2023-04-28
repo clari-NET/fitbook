@@ -30,7 +30,7 @@ export default function DMCard({ convo, handlePress }) {
     const currentTs = Date.now();
     const seconds = (currentTs - sec) / 1000;
 
-    if (seconds > 2*24*3600) {
+    if (seconds > 2 * 24 * 3600) {
       return "a few days ago";
     }
     if (seconds > 24*3600) {
