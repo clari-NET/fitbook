@@ -3,6 +3,8 @@ import { View, StyleSheet, Button } from 'react-native';
 import {
   useTheme, Text, SegmentedButtons,
 } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import { docQuery } from '../../firebaseFiles/firebase.config';
 import Friends from './Friends';
 import ProfileCommunity from './ProfileCommunity';
 import Feed from './Feed';
@@ -11,8 +13,21 @@ import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation }) {
   const { colors } = useTheme();
-  const [profileSubPage, setProfileSubPage] = useState('Activity');
-  // console.log('Profile', navigation);
+  const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
+  const { data } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    docQuery('')
+  })
+  // console.log(data);
+  // // console.log('Profile', navigation);
+  // useEffect(() => {
+  //   docQuery('users')
+  //     .then((coms) => {
+  //       console.log('QQ', coms[0]);
+  //     })
+  //     .catch((err) => console.error(err));
+  // },[])
 
   // useEffect(() => {
   //   // fetch data for
@@ -29,7 +44,7 @@ export default function Profile({ navigation }) {
       Activity: <Feed />,
       Friends: <Friends navigation={navigation} />,
       ProfileCommunity: <ProfileCommunity />,
-      ProfileTab: <ProfileTab navigation={navigation} />,
+      ProfileTab: <ProfileTab navigation={navigation} userSelf username={data.username} />,
       ProfileSettings: <ProfileSettings />,
     }[page];
   }
