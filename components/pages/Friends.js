@@ -21,7 +21,7 @@ const sampleData = [
   },
 ];
 
-function Friends({ navigation }) {
+function Friends({ navigation, user }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilterdFriendsList] = useState([]);
@@ -30,6 +30,7 @@ function Friends({ navigation }) {
 
   useEffect(() => {
     // get request to fetch friends list
+    console.log(user.id);
     setFriendsList(sampleData);
     setFilterdFriendsList(sampleData);
   }, []);

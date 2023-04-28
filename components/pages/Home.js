@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { docQuery, docOrQuery } from '../../firebaseFiles/firebase.config';
 import Feed from './Feed';
 
-
 export default function Home() {
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);
