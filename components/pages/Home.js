@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { docOrQuery } from '../../firebaseFiles/firebase.config';
+import { useSelector } from 'react-redux';
+import { docQuery, docOrQuery } from '../../firebaseFiles/firebase.config';
 import Feed from './Feed';
 
-export default function Home({ user }) {
+export default function Home() {
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);
+  const { data } = useSelector((state) => state.user);
 
   function getPostsAndEvents() {
+    console.log(data);
     return Promise.all([
-      docOrQuery('posts', [
-        ['community.id', 'in', user.communities],
-        ['user.id', 'in', user.friends],
+      docQuery('posts', [
+        // data?.communities?.length > 0 ? ['community.id', 'in', data.communities] : null,
+        // data?.communities?.length > 0 ? ['user.id', 'in', data.friends] : null,
       ]),
-      docOrQuery('events', ['community.id', 'in', user.communities]),
+      docQuery('events'),
+      // docQuery('events', [['community.id', 'in', data.communities]]),
     ]);
   }
 
@@ -23,7 +27,7 @@ export default function Home({ user }) {
         setEvents(eventsData);
       })
       .catch(console.error);
-  }, []);
+  }, [data]);
 
   return (
     <Feed events={events} posts={posts} />
