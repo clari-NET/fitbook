@@ -62,7 +62,7 @@ export default function Feed({ posts, events, onPostSelected }) {
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 50 }}
         >
-          <Text variant='displaySmall' style={{textAlign: 'center'}}>It's quiet in here... Check out the communities tab to start connecting!</Text>
+          <Text variant='displaySmall' style={{ textAlign: 'center' }}>It's quiet in here... Check out the communities tab to start connecting!</Text>
         </View>
       ) : (
         <FlatList
@@ -121,7 +121,7 @@ export default function Feed({ posts, events, onPostSelected }) {
         style={styles.modal}
       >
         {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} />}
-        {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} />}
+        {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} open={setShowModal} />}
       </Modal>
     </>
   );
