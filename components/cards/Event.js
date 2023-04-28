@@ -7,7 +7,7 @@ export default function Event({ event, handlePress }) {
     <Card onPress={() => handlePress(event)}>
       <Card.Content>
         <View style={{ flexDirection: 'row', width: '100%', height: '100%' }}>
-          <Card.Cover style={{ width: '50%', height: 120, resizeMode: 'cover' }} source={{ uri: 'https://picsum.photos/700' }} />
+          <Card.Cover style={{ width: '50%', height: 120, resizeMode: 'cover' }} source={{ uri: event.image }} />
           <View style={{ flex: 1, marginLeft: 20 }}>
             <Text variant='titleSmall'>{event?.location || 'any time'}</Text>
             <Text variant='bodySmall'>
