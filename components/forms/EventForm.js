@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DropDown from 'react-native-paper-dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp, collection } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { setDoc, doc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
 import { docQuery } from '../../firebaseFiles/firebase.config';
 import {
   Text, TextInput, Surface, Button,
 } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import db from '../../firebaseFiles/firebase.config';
+import uuid from 'react-native-uuid';
 
 const styles = StyleSheet.create({
   surface: {
@@ -29,11 +33,8 @@ const styles = StyleSheet.create({
   },
 });
 
-console.log(Timestamp);
-
 export default function EventForm() {
   const data = useSelector((state) => state.user).data;
-  console.log(data, '-----')
   const [calendarDate, setCalendarDate] = useState(new Date());
   const firebaseDate = Timestamp.fromDate(calendarDate);
   const [showDropDown, setShowDropDown] = useState(false);
@@ -50,20 +51,38 @@ export default function EventForm() {
     members: [],
     community: { id: '', name: '' },
     content: '',
+    location: '',
   });
 
+  const getCommunities = async () => {
+    try {
+      const { communities } = data;
+      const comsRef = collection(db, 'communities');
+      const q = query(comsRef, where('id', 'in', communities));
+      const allComs = await getDocs(q);
+      const comsArr = [];
+      allComs.forEach((doc) => {
+        comsArr.push(doc.data());
+      });
+      if (comsArr.length > 0) {
+        setCurrentComs(comsArr);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const comsRef = collection(db, 'communities');
-    docQuery('communities')
-      .then((coms) => {
-        setCurrentComs(coms);
-        return coms.map((com) => (
-          { value: com.name, label: com.name }));
-      }).then((currComs) => {
-        setFilterList(currComs);
-      })
-      .catch((err) => console.error(err));
+    getCommunities();
   }, []);
+
+  useEffect(() => {
+    const filtered = currentComs.map((com) => (
+      { value: com.name, label: com.name }
+    ));
+
+    setFilterList(filtered);
+  }, [currentComs]);
 
   useEffect(() => {
     currentComs.forEach((com) => {
@@ -74,13 +93,20 @@ export default function EventForm() {
     });
   }, [filter]);
 
-  function handleCreate() {
+  const handleCreate = async () => {
     // NEED TO CONNECT TO THE DB
+    await setDoc(doc(db, 'events', uuid.v4()), {
+      ...formData,
+      id: uuid.v4(),
+      image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+      name: formData.title,
+      date_time: formData.date,
+    });
 
-    console.log(JSON.stringify(formData));
+    console.log(JSON.stringify(formData), '..........');
   }
 
-  function handleFormChange(event, value, item) {
+  function handleFormChange(value, item) {
     setFormData({
       ...formData,
       [item]: value,
@@ -100,7 +126,7 @@ export default function EventForm() {
         placeholder='e.g. "Run with Ronnie"'
         style={styles.textInput}
         value={formData.title}
-        onChangeText={(value) => handleFormChange(null, value, 'title')}
+        onChangeText={(value) => handleFormChange(value, 'title')}
       />
       <TextInput
         label='Event Description'
@@ -109,7 +135,16 @@ export default function EventForm() {
         placeholder='e.g. "Easy run in the Golden Gate Park"'
         style={styles.textInput}
         value={formData.description}
-        onChangeText={(value) => handleFormChange(null, value, 'description')}
+        onChangeText={(value) => handleFormChange(value, 'description')}
+      />
+      <TextInput
+        label='Location (City, State)'
+        mode='outlined'
+        multiline
+        placeholder='e.g. "Miami, FL"'
+        style={styles.textInput}
+        value={formData.location}
+        onChangeText={(value) => handleFormChange(value, 'location')}
       />
       <DropDown
         label='Community'
