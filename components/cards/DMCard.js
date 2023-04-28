@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Text, Avatar } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
   cardRow: {
@@ -21,8 +22,9 @@ const styles = StyleSheet.create({
 });
 
 export default function DMCard({ user, handlePress }) {
+  const navigation = useNavigation();
   return (
-    <Card onPress={() => handlePress(user)}>
+    <Card onPress={() => navigation.navigate('Conversation', { currConvo: user.name })}>
       <Card.Content>
         <View style={styles.cardRow}>
           <Avatar.Image
