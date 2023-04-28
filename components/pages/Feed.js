@@ -47,7 +47,7 @@ export default function Feed({ posts, events, onPostSelected }) {
   function handleEventSubmit() {
     setShowModal(false);
   }
-  console.log('inside feed', posts);
+  // console.log('inside feed', posts);
   return (
     <>
       {posts.length === 0 ? (

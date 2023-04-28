@@ -34,7 +34,6 @@ export default function Profile({ navigation, route }) {
     getDoc(doc(db, 'users', route.params.userId))
       .then((u) => {
         const data = u.data();
-        console.log(data);
         return data;
       })
       .then((data) => {
@@ -42,26 +41,23 @@ export default function Profile({ navigation, route }) {
         return getPostsAndEvents(data);
       })
       .then(([postsData, eventsData]) => {
-        console.log(postsData);
-        console.log(eventsData);
         setPosts(postsData);
         setEvents(eventsData);
       })
       .catch(console.error);
   }, [route.params.userId]);
 
-  console.log('outside sub', posts);
-
-  function SubPage({ page, posty, eventy }) {
-    console.log('inside sub', posty);
+  function SubPage({ page, thisPost, thisEvent, thisNavigation, thisUser }) {
     return {
-      Activity: <Feed posts={posty} events={eventy} />,
-      Friends: <Friends navigation={navigation} user={user} />,
+      Activity: <Feed posts={thisPost} events={thisEvent} />,
+      Friends: <Friends navigation={thisNavigation} user={thisUser} />,
       ProfileCommunity: (
-        <ProfileCommunity navigation={navigation} user={user} />
+        <ProfileCommunity navigation={thisNavigation} user={thisUser} />
       ),
-      ProfileTab: <ProfileTab navigation={navigation} user={user} />,
-      ProfileSettings: <ProfileSettings navigation={navigation} user={user} />,
+      ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} />,
+      ProfileSettings: (
+        <ProfileSettings navigation={thisNavigation} user={thisUser} />
+      ),
     }[page];
   }
 
@@ -89,8 +85,13 @@ export default function Profile({ navigation, route }) {
           },
         ]}
       />
-      <SubPage page={profileSubPage} posty={posts} eventy={events} />
-      {/* <Feed posts={posts} events={events} /> */}
+      <SubPage
+        page={profileSubPage}
+        thisPost={posts}
+        thisEvent={events}
+        thisNavigation={navigation}
+        thisUser={user}
+      />
     </View>
   );
 }
