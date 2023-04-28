@@ -17,19 +17,9 @@ export default function AppHeader({ navigation }) {
   const { isSignedIn } = useSelector((state) => state.user);
 
   return (
-    <Appbar.Header style={{ justifyContent: 'center' }}>
-      {/* {isSignedIn
-        ? <Button mode='outlined' onPress={onLogout}>Logout</Button>
-        : null} */}
-      {/* <Appbar.Content style={{ fontWeight: 'bold' }} title='Fitbook' /> */}
-      <View style={{ height: 45, width: 37 }}>
-        <Image style={{ height: '90%', width: '90%' }} source={logo} />
-      </View>
-      {/* <Switch
-        color={theme?.colors.primary}
-        value={dark}
-        onValueChange={() => dispatch(toggle())}
-      /> */}
+    <Appbar.Header style={{ justifyContent: 'space-between' }}>
+      <Appbar.Content title='Fitbook' />
+      {isSignedIn ? <Appbar.Action icon="cog" iconColor={theme.colors.primary} onPress={() => navigation.navigate('ProfileSettings')} /> : null}
     </Appbar.Header>
   );
 }
