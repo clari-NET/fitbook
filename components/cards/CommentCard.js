@@ -8,16 +8,16 @@ import {
 import {
   useTheme,
   Text,
-  Button,
   Card,
   Caption,
 } from 'react-native-paper';
 import { formatDistanceToNow } from 'date-fns';
+import dropIcon from '../../assets/drop-orange.png';
+import liftIcon from '../../assets/lift-orange.png';
 
 const styles = StyleSheet.create({
   commentContainer: {
     marginBottom: 10,
-    backgroundColor: '#f5f5f5',
   },
   commentHeader: {
     flexDirection: 'row',
@@ -43,18 +43,30 @@ const styles = StyleSheet.create({
   dateContainer: {
     marginLeft: 'auto',
   },
-  commentContent: {
-    marginBottom: 10,
-    fontSize: 14,
+  commentContentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingLeft: 15,
+  },
+  commentContent: {
+    fontSize: 14,
+    flex: 1,
   },
   commentActions: {
     flexDirection: 'row',
     paddingLeft: 15,
+    position: 'absolute',
+    right: 15,
   },
   actionButton: {
     marginRight: 10,
   },
+  liftsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
 });
 
 export default function CommentCard({
@@ -94,15 +106,22 @@ export default function CommentCard({
             </Caption>
           </View>
         </View>
-        <Text style={styles.commentContent}>{comment.comment}</Text>
-        <View style={styles.commentActions}>
-          <Button
-            mode="text"
-            onPress={onLike}
-            color={liked ? theme.colors.accent : theme.colors.text}
-          >
-            {`${liked ? 'Drop' : 'Lift'} ${comment.lifts}`}
-          </Button>
+        <View style={styles.commentContentContainer}>
+          <Text style={styles.commentContent}>{comment.comment}</Text>
+          <View style={styles.liftsContainer}>
+            <TouchableOpacity onPress={onLike}>
+              <Image
+                source={liked ? dropIcon : liftIcon}
+                style={{
+                  width: 24,
+                  height: 24,
+                  tintColor: liked ? theme.colors.accent : theme.colors.text,
+                  resizeMode: 'contain',
+                }}
+              />
+            </TouchableOpacity>
+            <Text style={{ marginLeft: 5 }}>{comment.lifts}</Text>
+          </View>
         </View>
       </Card.Content>
     </Card>

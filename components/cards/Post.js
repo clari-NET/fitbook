@@ -6,16 +6,19 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import {
   useTheme,
   Text,
-  Button,
+  IconButton,
   Card,
 } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { doc, updateDoc } from 'firebase/firestore';
 import db from '../../firebaseFiles/firebase.config';
+import dropIcon from '../../assets/drop-orange.png';
+import liftIcon from '../../assets/lift-orange.png';
 
 const styles = StyleSheet.create({
   postContainer: {
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
   },
   postActions: {
     flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   actionButton: {
     marginRight: 10,
@@ -122,28 +126,37 @@ export default function Post({ post }) {
         </View>
         <Text style={styles.postContent}>{post.content}</Text>
         <View style={styles.postActions}>
-          <Button
-            mode="text"
-            onPress={handleLike}
-            color={liked ? theme.colors.accent : theme.colors.text}
-          >
-            {`${liked ? 'Drop' : 'Lift'} ${likeCount}`}
-          </Button>
-          <Button
-            mode="text"
-            onPress={() => {
-              navigation.navigate('Comment', {
-                post,
-                comments: post.comments,
-              });
-            }}
-          >
-            {`Comment ${post.comments.length}`}
-          </Button>
-
-          <Button mode="text" onPress={() => {}}>
-            Share
-          </Button>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
+            <TouchableOpacity onPress={handleLike}>
+              <Image
+                source={liked ? dropIcon : liftIcon}
+                style={{
+                  width: 24,
+                  height: 24,
+                  tintColor: liked ? theme.colors.accent : theme.colors.text,
+                  resizeMode: 'contain',
+                }}
+              />
+            </TouchableOpacity>
+            <Text style={{ marginLeft: 4 }}>{likeCount}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('Comment', {
+                  post,
+                  comments: post.comments,
+                });
+              }}
+              style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}
+            >
+              <IconButton
+                icon="chat-outline"
+                color={theme.colors.text}
+              />
+            </Pressable>
+            <Text>{post.comments.length}</Text>
+          </View>
         </View>
       </Card.Content>
     </Card>
