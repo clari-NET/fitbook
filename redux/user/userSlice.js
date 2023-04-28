@@ -10,7 +10,7 @@ function changeSignIn(state = initialState, action) {
   state.isSignedIn = action.payload;
 }
 function joinACommunity(state = initialState, action) {
-  if (state.data.communities) {
+  if (state.data.communities && !state.data.communities.includes(action.payload)) {
     state.data.communities.push(action.payload);
   } else {
     state.data.communities = [action.payload];
