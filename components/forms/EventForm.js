@@ -38,10 +38,10 @@ export default function EventForm() {
     console.log(formData);
   }
 
-  function handleFormChange(event, selectedDate, item) {
+  function handleFormChange(event, value, item) {
     setFormData({
       ...formData,
-      [item]: selectedDate,
+      [item]: value,
     });
   }
 
@@ -54,7 +54,7 @@ export default function EventForm() {
         placeholder='e.g. "Run with Ronnie"'
         style={styles.textInput}
         value={formData.title}
-        onChangeText={(value) => handleFormChange(value, 'title')}
+        onChangeText={(value) => handleFormChange(null, value, 'title')}
       />
       <TextInput
         label='Event Description'
@@ -63,7 +63,7 @@ export default function EventForm() {
         placeholder='e.g. "Easy run in the Golden Gate Park"'
         style={styles.textInput}
         value={formData.description}
-        onChangeText={(value) => handleFormChange(value, 'description')}
+        onChangeText={(value) => handleFormChange(null, value, 'description')}
       />
       <View style={styles.datePicker}>
         <Text variant="labelLarge">Date:</Text>
