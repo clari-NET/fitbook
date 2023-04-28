@@ -108,9 +108,11 @@ export default function Main({ navigation }) {
         <TabStack.Screen name="Comment" component={Comment} />
         <TabStack.Screen name="Activity" component={Activity} />
         <TabStack.Screen name="Friends" component={Friends} />
-        <TabStack.Screen name="Community" component={Community} />
+        <TabStack.Screen name="Community" component={Community}
+        options={{ title: 'FitBookLogo?' }}/>
         <TabStack.Screen name="ProfileTab" component={ProfileTab} />
         <TabStack.Screen name="ProfileSettings" component={ProfileSettings} />
+
       </TabStack.Navigator>
     </>
   );

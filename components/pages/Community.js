@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
 export default function Community({ route }) {
   const [joined, setJoined] = useState(false);
   const { colors } = useTheme();
-
   const joinCommunityToggle = () => {
     setJoined(!joined);
   };
