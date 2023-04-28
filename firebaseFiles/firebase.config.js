@@ -5,7 +5,6 @@ import {
   collection,
   query,
   where,
-  or,
 } from 'firebase/firestore';
 import {
   API_KEY,
@@ -40,14 +39,6 @@ export default db;
 export async function docQuery(collectionName, conditions = []) {
   const whereClauses = conditions.map((condition) => where(...condition));
   const q = query(collection(db, collectionName), ...whereClauses);
-  const resultDocs = await getDocs(q);
-  const results = resultDocs.docs.map((doc) => doc.data());
-  return results;
-}
-
-export async function docOrQuery(collectionName, conditions = []) {
-  const whereClauses = conditions.map((condition) => where(...condition));
-  const q = query(collection(db, collectionName), or(...whereClauses));
   const resultDocs = await getDocs(q);
   const results = resultDocs.docs.map((doc) => doc.data());
   return results;
