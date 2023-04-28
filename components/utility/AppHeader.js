@@ -12,6 +12,7 @@ import logo from '../../assets/Fitbook-logo-orange.png';
 
 export default function AppHeader({ onLogout }) {
   const theme = useTheme();
+  const { colors } = useTheme();
   const { dark } = useSelector((state) => state.theme);
   const { isSignedIn } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -22,8 +23,8 @@ export default function AppHeader({ onLogout }) {
         ? <Button mode='outlined' onPress={onLogout}>Logout</Button>
         : null} */}
       {/* <Appbar.Content style={{ fontWeight: 'bold' }} title='Fitbook' /> */}
-      <View style={{ height: 50, width: 42 }}>
-        <Image style={{ height: '100%', width: '100%' }} source={logo} />
+      <View style={{ height: 45, width: 37 }}>
+        <Image style={{ height: '90%', width: '90%' }} source={logo} />
       </View>
       {/* <Switch
         color={theme?.colors.primary}
