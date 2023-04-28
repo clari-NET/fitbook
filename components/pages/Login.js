@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import {
   useTheme,
@@ -38,9 +38,9 @@ export default function Login({ navigation }) {
         navigation.navigate('Main');
       }
 
-      // const getName = await auth.currentUser.displayName;
-      // setName(getName);
-      // setSuccess(true);
+      const getName = await auth.currentUser.displayName;
+      setName(getName);
+      setSuccess(true);
     } catch (error) {
       console.log(error);
       setFailure(true);
@@ -53,7 +53,7 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.tertiary }]}>
+    <View style={styles.container}>
       <Snackbar
         style={styles.success}
         visible={success}
@@ -71,30 +71,42 @@ export default function Login({ navigation }) {
       >
         Incorrect user credentials
       </Snackbar>
-      <Text style={{ color: colors.primary }}>Hello, Fit Bros/Sis!</Text>
+      <Image
+        source={require('../../assets/LogoLogin.png')}
+        style={{ width: 50, height: 60, resizeMode: 'contain', marginBottom: 80 }}
+      />
+      <Text style={ styles.text }>Hello, Fit Bros/Sis!</Text>
       <TextInput
         label="Email"
         autoCapitalize='none'
         value={email}
         onChangeText={(email) => setEmail(email)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <TextInput
         label="Password"
         secureTextEntry
         value={password}
         onChangeText={(password) => setPassword(password)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <Button
         style={styles.btn}
         mode="elevated"
-        buttonColor={colors.primary}
-        textColor={colors.secondary}
+        buttonColor='#FFE6C7'
+        textColor='#000'
         onPress={(e) => {
           handleLogin(e);
         }}
@@ -103,21 +115,20 @@ export default function Login({ navigation }) {
       </Button>
       <Button
         style={styles.btn}
-        mode="outlined"
-        textColor={colors.primary}
-        buttonColor={colors.surface}
+        mode="elevated"
+        buttonColor='#FFE6C7'
+        textColor='#000'
         onPress={() => {
           navigation.navigate('ForgotPassword');
         }}
       >
         Forgot password?
       </Button>
-      <Text style={{ color: colors.primary }}>Need to create an account?</Text>
+      <Text style={ styles.text }>Need to create an account?</Text>
       <Button
         style={styles.btn}
         mode="outlined"
-        textColor={colors.primary}
-        buttonColor={colors.surface}
+        textColor='#fff'
         onPress={() => {
           navigation.navigate('SignUp');
         }}
@@ -134,18 +145,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FF6000',
   },
   input: {
     width: '80%',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 5,
+    backgroundColor: '#FF6000',
+    borderRadius: 30,
   },
   btn: {
     width: '60%',
-    marginTop: 5,
+    marginTop: 15,
     marginBottom: 5,
+    borderRadius: 30,
+    borderColor: '#fff',
   },
-  success: {
-    backgroundColor: '#00A67C',
+  text: {
+    color: '#fff',
   },
 });
