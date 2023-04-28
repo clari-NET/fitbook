@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
 
 export default function DMCard({ convo, handlePress }) {
   const auth = getAuth();
+  const navigation = useNavigation();
 
   function timeAgo(sec) {
     const currentTs = Date.now();
@@ -45,14 +46,14 @@ export default function DMCard({ convo, handlePress }) {
       return Math.floor(seconds/60) + " minutes ago";
     }
     if (0 <= seconds <= 60) {
-  const navigation = useNavigation();
       return "now";
     }
 };
 
   const otherUser = convo.user1.uid === auth.currentUser.uid ? convo.user2 : convo.user1;
+
   return (
-    <Card onPress={() => navigation.navigate('Conversation', { currConvo: user.name })}>
+    <Card onPress={() => handlePress(convo)}>
       <Card.Content>
         <View style={styles.cardRow}>
           <Avatar.Image

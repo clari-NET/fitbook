@@ -53,7 +53,7 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.secondary }]}>
+    <View style={[styles.container, { backgroundColor: colors.tertiary }]}>
       <Snackbar
         style={styles.success}
         visible={success}
@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '80%',
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 10,
   },
   btn: {
     width: '60%',

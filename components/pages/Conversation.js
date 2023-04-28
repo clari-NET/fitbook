@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Conversation({ route, setCurrConvo }) {
+export default function Conversation({ route }) {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const auth = getAuth();
@@ -37,6 +37,7 @@ export default function Conversation({ route, setCurrConvo }) {
   let friend;
 
   const { currConvo } = useSelector((state) => state.conversation);
+  console.log(currConvo)
 
   const [convo, setConvo] = useState({});
 
@@ -44,7 +45,9 @@ export default function Conversation({ route, setCurrConvo }) {
     try {
       const convoRef = doc(db, 'DMs', currConvo);
       const unsubscribe = onSnapshot(convoRef, (snap) => {
-        setConvo(snap.data());
+        if (typeof snap.data() === 'object') {
+          setConvo(snap.data());
+        }
       });
     } catch (error) {
       console.log(error);

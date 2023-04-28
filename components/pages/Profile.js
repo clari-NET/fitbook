@@ -13,7 +13,7 @@ import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation }) {
   const { colors } = useTheme();
-  const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
+  const [profileSubPage, setProfileSubPage] = useState('Friends');
   const { data } = useSelector((state) => state.user);
 
   useEffect(() => {
