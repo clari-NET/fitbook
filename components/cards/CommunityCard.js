@@ -3,6 +3,7 @@ import { Card, Text } from 'react-native-paper';
 import { View } from 'react-native';
 
 export default function CommunityCard({ community, handlePress }) {
+  console.log(community)
   return (
     <Card onPress={() => handlePress(community)}>
       <Card.Content>

@@ -107,7 +107,7 @@ export default function Main({ navigation }) {
         <TabStack.Screen
           name='Community'
           component={Community}
-          options={{ title: 'FitBookLogo?' }}
+          // options={{ title: 'FitBookLogo?' }}
         />
         <TabStack.Screen name='ProfileTab' component={ProfileTab} />
         <TabStack.Screen name='ProfileSettings' component={ProfileSettings} />

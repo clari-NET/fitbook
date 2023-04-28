@@ -5,19 +5,23 @@ import {
 import {
   View, StyleSheet
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ProfileCommunityCard({ item, handleFavorite, styles }) {
+export default function ProfileCommunityCard({ item, handlePress, community, handleFavorite, styles }) {
   const {
     banner,
     favorite,
     name,
     description,
   } = item;
+  const navigation = useNavigation();
+  console.log(item)
+
   const handleImageError = () => {
     console.log('profile image load failed');
   }
   return (
-    <Card >
+    <Card onPress={() => navigation.navigate('Community', { community:item })}>
       {banner ? (
         <Card.Cover source={{ uri: banner }} />
       ) : (
