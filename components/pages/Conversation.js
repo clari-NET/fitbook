@@ -33,7 +33,9 @@ export default function Conversation() {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const auth = getAuth();
-  // const otherUser = convo.user1.uid === auth.currentUser.uid ? convo.user2 : convo.user1;
+  let user;
+  let friend;
+
   const { currConvo } = useSelector((state) => state.conversation);
 
   const [convo, setConvo] = useState({});
@@ -41,14 +43,11 @@ export default function Conversation() {
   const fetchConvo = async () => {
     try {
       const convoRef = doc(db, 'DMs', currConvo);
-      const convoSnap = await getDoc(convoRef);
-      const convoData = await convoSnap.data();
-
-      if (Object.keys(convoData).length > 0) {
-        setConvo(convoData);
-      }
+      const unsubscribe = onSnapshot(convoRef, (snap) => {
+        setConvo(snap.data());
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -57,12 +56,14 @@ export default function Conversation() {
   }, []);
 
   const onSend = async (messages) => {
+    const message = messages[0];
+    message.createdAt = Date.now();
     try {
       const convoRef = doc(db, 'DMs', convo.id);
       await updateDoc(convoRef, {
-        messages: arrayUnion(messages[0]),
-        latest: messages[0].text,
-        lastUpdate: messages[0].createdAt,
+        messages: arrayUnion(message),
+        latest: message.text,
+        lastUpdate: message.createdAt,
       });
     } catch (error) {
       console.log(error);
@@ -72,7 +73,14 @@ export default function Conversation() {
   if (Object.keys(convo).length === 0) {
     return null;
   }
-  let user = convo.user1.uid === auth.currentUser.uid ? convo.user2 : convo.user1;
+
+  if (convo.user1.uid === auth.currentUser.uid) {
+    user = convo.user2;
+    friend = convo.user1;
+  } else {
+    user = convo.user1;
+    friend = convo.user2;
+  }
 
   return (
     <>
@@ -80,9 +88,9 @@ export default function Conversation() {
         <Appbar.BackAction onPress={() => { dispatch(reset()); }} />
         <Avatar.Image
             size={50}
-            source={{ uri: 'https://picsum.photos/700' }}
+            source={{ uri: friend.photo }}
         />
-        <Text style={styles.username}>{currConvo}</Text>
+        <Text style={styles.username}>{friend.username}</Text>
       </View>
       <GiftedChat
         messages={convo.messages}
@@ -94,3 +102,4 @@ export default function Conversation() {
     </>
   );
 }
+

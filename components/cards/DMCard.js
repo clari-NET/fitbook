@@ -24,6 +24,27 @@ const styles = StyleSheet.create({
 export default function DMCard({ convo, handlePress }) {
   const auth = getAuth();
 
+  function timeAgo(sec) {
+    const currentTs = Date.now();
+    const seconds = (currentTs - sec) / 1000;
+
+    if (seconds > 2*24*3600) {
+      return "a few days ago";
+    }
+    if (seconds > 24*3600) {
+      return "yesterday";
+    }
+    if (seconds > 3600) {
+      return "a few hours ago";
+    }
+    if (seconds > 1800) {
+      return "Half an hour ago";
+    }
+    if (seconds > 60) {
+      return Math.floor(seconds/60) + " minutes ago";
+    }
+};
+
   const otherUser = convo.user1.uid === auth.currentUser.uid ? convo.user2 : convo.user1;
   return (
     <Card onPress={() => handlePress(convo)}>
@@ -36,7 +57,7 @@ export default function DMCard({ convo, handlePress }) {
           <View style={styles.cardContent}>
             <View style={styles.nameDate}>
               <Text variant='titleSmall'>{otherUser.username}</Text>
-              <Text variant='labelSmall'>{convo.lastUpdate}</Text>
+              <Text variant='labelSmall'>{timeAgo(convo.lastUpdate)}</Text>
             </View>
             <Text variant='bodySmall'>
               {convo.latest}

@@ -6,7 +6,7 @@ import DMCard from '../cards/DMCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { change } from '../../redux/conversation/conversationSlice';
 import {getAuth} from 'firebase/auth';
-import { setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion, getAll, map } from 'firebase/firestore';
+import { setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion, getAll, map, onSnapshot } from 'firebase/firestore';
 import uuid from 'react-native-uuid';
 import db from '../../firebaseFiles/firebase.config';
 
@@ -44,10 +44,10 @@ export default function MessageList() {
   const { colors } = useTheme();
   const { currConvo } = useSelector((state) => state.conversation);
   const dispatch = useDispatch();
+  const auth = getAuth();
 
   const getConversations = async () => {
     try {
-      const auth = getAuth();
       const userRef = doc(db, 'users', auth.currentUser.uid);
 
       const userSnap = await getDoc(userRef);
@@ -56,14 +56,29 @@ export default function MessageList() {
       const convos = {};
       convoIds.forEach(async (convo) => {
         const convoRef = doc(db, 'DMs', convo);
-        const convoSnap = await getDoc(convoRef);
+        // const convoSnap = await getDoc(convoRef);
+        const unsubscribe = onSnapshot(convoRef, (snap) => {
+          // setMessages(snap.data());
+          setMessages(convos => ({ ...convos, [convo]: snap.data() }));
+        });
 
-        let fetched = await convoSnap.data();
-        setMessages(convos => ({ ...convos, [convo]: fetched }));
+        //let fetched = await convoSnap.data();
+        //setMessages(convos => ({ ...convos, [convo]: fetched }));
       });
     } catch (e) {
       console.log(e);
       // dispatch(change('DMList'));
+    }
+  };
+
+  const fetchConvo = async () => {
+    try {
+      const convoRef = doc(db, 'DMs', currConvo);
+      const unsubscribe = onSnapshot(convoRef, (snap) => {
+        setConvo(snap.data());
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
