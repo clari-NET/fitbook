@@ -93,7 +93,7 @@ export default function Post({ post }) {
         <View style={styles.postHeader}>
           <TouchableOpacity onPress={() => {
             navigation.navigate('Profile', {
-              user: post.user,
+              userId: post.user.user_id.toString(),
             });
           }}
           >
@@ -104,7 +104,7 @@ export default function Post({ post }) {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
             navigation.navigate('Profile', {
-              user: post.user,
+              userId: post.user.user_id.toString(),
             });
           }}
           >
