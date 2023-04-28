@@ -34,42 +34,43 @@ function ColoredIcon(name, color) {
 
 function TabNavigator() {
   const { data } = useSelector((state) => state.user);
-  // const data = {};
   return (
-    data !== undefined && (<Tab.Navigator>
-      <Tab.Screen
-        name='Home'
-        component={Home}
-        options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => ColoredIcon('home', color),
-        }}
-      />
-      <Tab.Screen
-        name='Profile'
-        component={Profile}
-        options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ color }) => ColoredIcon('bell', color),
-        }}
-      />
-      <Tab.Screen
-        name='CommunityTab'
-        component={CommunityTab}
-        options={{
-          tabBarLabel: 'Communities',
-          tabBarIcon: ({ color }) => ColoredIcon('account-group', color),
-        }}
-      />
-      <Tab.Screen
-        name='Messages'
-        component={DMList}
-        options={{
-          tabBarLabel: 'Messages',
-          tabBarIcon: ({ color }) => ColoredIcon('chat', color),
-        }}
-      />
-    </Tab.Navigator>)
+    data !== undefined && (
+      <Tab.Navigator>
+        <Tab.Screen
+          name='Home'
+          component={Home}
+          options={{
+            tabBarLabel: 'Home',
+            tabBarIcon: ({ color }) => ColoredIcon('home', color),
+          }}
+        />
+        <Tab.Screen
+          name='Profile'
+          component={Profile}
+          options={{
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({ color }) => ColoredIcon('bell', color),
+          }}
+        />
+        <Tab.Screen
+          name='CommunityTab'
+          component={CommunityTab}
+          options={{
+            tabBarLabel: 'Communities',
+            tabBarIcon: ({ color }) => ColoredIcon('account-group', color),
+          }}
+        />
+        <Tab.Screen
+          name='Messages'
+          component={DMList}
+          options={{
+            tabBarLabel: 'Messages',
+            tabBarIcon: ({ color }) => ColoredIcon('chat', color),
+          }}
+        />
+      </Tab.Navigator>
+    )
   );
 }
 
@@ -79,7 +80,7 @@ export default function Main({ navigation }) {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const auth = getAuth();
-  // console.log(auth.currentUser.uid);
+
   useEffect(() => {
     getDoc(doc(db, 'users', auth.currentUser.uid))
       .then((u) => {
@@ -88,15 +89,12 @@ export default function Main({ navigation }) {
         return data;
       })
       .then((uData) => dispatch(updateUser(uData)))
-      // .then((data) => console.log('HI THIS IS USER STATE \n', data))
       .catch(console.error);
   }, []);
 
   const user = useSelector((state) => state.user);
-  console.log(user)
 
   async function deleteStore(key) {
-    console.log(user)
     await SecureStore.deleteItemAsync(key);
   }
 
@@ -110,23 +108,24 @@ export default function Main({ navigation }) {
           dispatch(userStatus(false));
         }}
       />
-      {/* <View style={[styles.container, { backgroundColor: colors.surface }]}> */}
       <StatusBar />
-      {/* </View> */}
       <TabStack.Navigator>
         <TabStack.Screen
-          name="TabNavigator"
+          name='TabNavigator'
           component={TabNavigator}
           options={{ headerShown: false }}
         />
-        <TabStack.Screen name="Comment" component={Comment} />
-        <TabStack.Screen name="Activity" component={Activity} />
-        <TabStack.Screen name="Friends" component={Friends} />
-        <TabStack.Screen name="Community" component={Community}
-        options={{ title: 'FitBookLogo?' }}/>
-        <TabStack.Screen name="ProfileTab" component={ProfileTab} />
-        <TabStack.Screen name="ProfileSettings" component={ProfileSettings} />
-        <TabStack.Screen name="Conversation" component={Conversation} />
+        <TabStack.Screen name='Comment' component={Comment} />
+        <TabStack.Screen name='Activity' component={Activity} />
+        <TabStack.Screen name='Friends' component={Friends} />
+        <TabStack.Screen
+          name='Community'
+          component={Community}
+          options={{ title: 'FitBookLogo?' }}
+        />
+        <TabStack.Screen name='ProfileTab' component={ProfileTab} />
+        <TabStack.Screen name='ProfileSettings' component={ProfileSettings} />
+        <TabStack.Screen name='Conversation' component={Conversation} />
       </TabStack.Navigator>
     </>
   );
