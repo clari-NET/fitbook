@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 // const some = useSelector(state => state.data.user)
 
-export default function ProfileTab({ navigation, user }) {
+export default function ProfileTab({ user }) {
   const { colors } = useTheme();
   const [userData, setUserData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -56,7 +56,6 @@ export default function ProfileTab({ navigation, user }) {
     <ScrollView>
       <View style={[styles.header]}>
         <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
-        <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
