@@ -49,6 +49,7 @@ export default function SignUp({ navigation }) {
         username,
         timeStamp,
         DMs: [],
+        id: auth.currentUser.uid,
       });
       await save('FitbookEmail', email);
       await save('FitbookPassword', password);
