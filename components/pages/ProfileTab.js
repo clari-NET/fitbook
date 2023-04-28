@@ -13,8 +13,9 @@ import {
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import * as SecureStore from 'expo-secure-store';
-import db from '../../firebaseFiles/firebase.config';
+import {db, docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
+import { useSelector } from 'react-redux'
 // import ProfileSettings from './ProfileSettings';
 
 // const Stack = createNativeStackNavigator();
@@ -74,10 +75,10 @@ const sampleData = [{
   ],
 }];
 
-export default function ProfileTab({ navigation, user }) {
+export default function ProfileTab({ navigation, userSelf, username }) {
   const { colors } = useTheme();
-  const [userData, setUserData] = useState(sampleData);
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [userData, setUserData] = useState({});
+  const [isLoaded, setIsLoaded] = useState(false);
 
   async function getUser() {
     const auth = getAuth();
@@ -85,6 +86,19 @@ export default function ProfileTab({ navigation, user }) {
     const userRef = doc(db, 'users', auth.currentUser.uid);
     return userRef;
   }
+  const data = useSelector((state) => state.user.data);
+  useEffect(() => {
+    if (userSelf) {
+      setUserData(data);
+      setIsLoaded(true);
+    } else {
+      docQuery('users', [['username', '==', 'EmmyPop']])
+        .then((res) => {
+          setUserData(res[0]);
+          setIsLoaded(true);
+        });
+    }
+  }, []);
   // const [username, setUsername] = useState('');
 
   // async function getUser(key) {
@@ -123,19 +137,21 @@ export default function ProfileTab({ navigation, user }) {
   //   //   setIsLoaded(false);
   //   // }
   // }, []);
-
+  if (isLoaded === false) {
+    return <Text>Loading...</Text>;
+  }
   return (
     <ScrollView>
       <View style={[styles.header]}>
-        <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
+        <Avatar.Image size={150} source={{uri: userData.profile_photo}} />
         <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
-          {userData ? userData[0].username : null}
+          {userData ? userData.username : null}
         </Text>
       </View>
-      {userData ? <StatList stats={userData[0].fitnessStats} /> : null}
+      {userData ? <StatList stats={userData.stats} /> : null}
     </ScrollView>
   );
 }

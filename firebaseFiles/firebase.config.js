@@ -1,6 +1,25 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID, MEASUREMENT_ID } from '@env';
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  query,
+  where,
+  or,
+} from 'firebase/firestore';
+import {
+  API_KEY,
+  AUTH_DOMAIN,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID,
+  APP_ID,
+  MEASUREMENT_ID,
+} from '@env';
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
@@ -17,3 +36,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export default db;
+
+export async function docQuery(collectionName, conditions = []) {
+  const whereClauses = conditions.map((condition) => where(...condition));
+  const q = query(collection(db, collectionName), ...whereClauses);
+  const resultDocs = await getDocs(q);
+  const results = resultDocs.docs.map((doc) => doc.data());
+  return results;
+}
+
+export async function docOrQuery(collectionName, conditions = []) {
+  const whereClauses = conditions.map((condition) => where(...condition));
+  const q = query(collection(db, collectionName), or(...whereClauses));
+  const resultDocs = await getDocs(q);
+  const results = resultDocs.docs.map((doc) => doc.data());
+  return results;
+}

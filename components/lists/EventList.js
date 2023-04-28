@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
 import Modal from 'react-native-modal';
-import { getDocs, collection, query, where } from 'firebase/firestore';
-import db from '../../firebaseFiles/firebase.config';
 import Event from '../cards/Event';
 import EventDetails from '../cards/EventDetails';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
-// no event data exists yet, so just leaving this here for now so it's ready to be used.
-async function getEvents() {
-  const q = query(collection(db, 'testEvents'));
-  const eventDocs = await getDocs(q);
-  const events = eventDocs.docs.map((doc) => doc.data());
-  return events;
-}
 const styles = StyleSheet.create({
   carouselContainer: {
-    height: 200, // You can adjust this value according to your design requirements
+    height: 200,
   },
 });
 
@@ -35,15 +27,24 @@ export default function EventList({ events }) {
   return (
     <>
       <View style={styles.carouselContainer}>
-        <Carousel
-          data={events}
-          renderItem={() => <Event handlePress={handlePress} />}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          layout='stack'
-          activeSlideOffset={10}
-          contentContainerCustomStyle={{ marginVertical: 20 }}
-        />
+        {events.length === 0 ? (
+          <Text>
+            No events to display. Check out the communities tab to get
+            connected!
+          </Text>
+        ) : (
+          <Carousel
+            data={events}
+            renderItem={({ item }) => (
+              <Event event={item} handlePress={handlePress} />
+            )}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            layout='stack'
+            activeSlideOffset={10}
+            contentContainerCustomStyle={{ marginVertical: 20 }}
+          />
+        )}
       </View>
       <Modal isVisible={modalIsVisible}>
         <EventDetails event={viewEvent} close={() => setIsVisible(false)} />

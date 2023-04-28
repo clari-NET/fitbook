@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isLoading: true,
   isSignedIn: false,
-  user: {},
+  data: {},
 };
 
 function changeSignIn(state = initialState, action) {
@@ -22,17 +22,12 @@ export const userSlice = createSlice({
     },
     userStatus: changeSignIn,
     updateUser: (state, action) => {
-      state.user = action.payload;
+      state.data = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  loaded,
-  loading,
-  userStatus,
-  updateUser,
-} = userSlice.actions;
+export const { loaded, loading, userStatus, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

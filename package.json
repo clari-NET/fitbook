@@ -11,6 +11,7 @@
     "code-review": "git checkout -b $TARGET && git pull origin $TARGET && git merge main && npm install"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^7.0.1",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/material-bottom-tabs": "^6.2.15",
     "@react-navigation/native": "^6.1.6",

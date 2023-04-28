@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Conversation() {
+export default function Conversation({ route, setCurrConvo }) {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const auth = getAuth();

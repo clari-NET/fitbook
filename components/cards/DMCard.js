@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Text, Avatar } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native'
 import { getAuth } from 'firebase/auth';
 
 const styles = StyleSheet.create({
@@ -44,13 +45,14 @@ export default function DMCard({ convo, handlePress }) {
       return Math.floor(seconds/60) + " minutes ago";
     }
     if (0 <= seconds <= 60) {
+  const navigation = useNavigation();
       return "now";
     }
 };
 
   const otherUser = convo.user1.uid === auth.currentUser.uid ? convo.user2 : convo.user1;
   return (
-    <Card onPress={() => handlePress(convo)}>
+    <Card onPress={() => navigation.navigate('Conversation', { currConvo: user.name })}>
       <Card.Content>
         <View style={styles.cardRow}>
           <Avatar.Image
