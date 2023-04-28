@@ -53,14 +53,24 @@ export default function EventForm() {
 
   useEffect(() => {
     docQuery('communities')
-      .then((coms) => (
-        coms.map((com) => (
-          { value: com.name, label: com.name }))
-      )).then((currComs) => {
+      .then((coms) => {
+        setCurrentComs(coms);
+        return coms.map((com) => (
+          { value: com.name, label: com.name }));
+      }).then((currComs) => {
         setFilterList(currComs);
       })
       .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    currentComs.forEach((com) => {
+      if (com.name === filter) {
+        const selectedCom = { id: com.id, name: com.name };
+        setFormData({ ...formData, community: selectedCom });
+      }
+    });
+  }, [filter]);
 
   function handleCreate() {
     // NEED TO CONNECT TO THE DB
@@ -99,15 +109,6 @@ export default function EventForm() {
         value={formData.description}
         onChangeText={(value) => handleFormChange(null, value, 'description')}
       />
-      <View style={styles.datePicker}>
-        <Text variant="labelLarge">Date:</Text>
-        <DateTimePicker
-          value={calendarDate}
-          onChange={(event) => handleDateChange(event)}
-          mode='datetime'
-          minimumDate={new Date()}
-        />
-      </View>
       <DropDown
         label={filter}
         mode='outlined'
@@ -118,6 +119,15 @@ export default function EventForm() {
         showDropDown={() => setShowDropDown(true)}
         onDismiss={() => setShowDropDown(false)}
       />
+      <View style={styles.datePicker}>
+        <Text variant="labelLarge">Date:</Text>
+        <DateTimePicker
+          value={calendarDate}
+          onChange={(event) => handleDateChange(event)}
+          mode='datetime'
+          minimumDate={new Date()}
+        />
+      </View>
       <Button mode='contained' onPress={handleCreate}>Create</Button>
     </Surface>
   );
