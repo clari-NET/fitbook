@@ -19,28 +19,10 @@ import * as SecureStore from 'expo-secure-store';
 import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
 import { useSelector } from 'react-redux';
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 120,
-    margin: 20,
-  },
-  body: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 120,
-  },
-  username: {
-    alignItems: 'center',
-  },
-});
-
-// const { currUser } = useSelector((state) => state.data.user);
 const auth = getAuth();
+// const { currUser } = useSelector((state) => state.data.user);
 
-export default function ProfileTab({ user, refresh }) {
+export default function ProfileTab({ navigation: { goBack }, user, refresh }) {
   const { colors } = useTheme();
   const [userData, setUserData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -103,3 +85,20 @@ export default function ProfileTab({ user, refresh }) {
     )
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 120,
+    margin: 20,
+  },
+  body: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 120,
+  },
+  username: {
+    alignItems: 'center',
+  },
+});

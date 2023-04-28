@@ -29,7 +29,7 @@ export default function ProfileCommunityCard({ item, handleFavorite, styles }) {
             <Title variant='titleSmall'>{name}</Title>
             <Text variant='bodySmall'>{`#${tag}`}</Text>
             </View>
-            <Button style={styles.favStar}icon={favorite ? 'star' : 'star-outline'} onPress={() => console.log('favorited!')} />
+            <Button style={styles.favStar} icon={favorite ? 'star' : 'star-outline'} onPress={() => console.log('favorited!')} />
           </Card.Content>
       </View>
     </Card>
