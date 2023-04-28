@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { FlatList, View, StyleSheet } from 'react-native';
 import { FAB, Modal, Text } from 'react-native-paper';
+=======
+import { FlatList, StyleSheet } from 'react-native';
+import { FAB, Modal } from 'react-native-paper';
+>>>>>>> main
 import DropDown from 'react-native-paper-dropdown';
 import Post from '../cards/Post';
 import EventList from '../lists/EventList';
