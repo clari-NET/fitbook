@@ -18,7 +18,6 @@ import { getAuth } from 'firebase/auth';
 import * as SecureStore from 'expo-secure-store';
 import {db, docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
-import { useSelector } from 'react-redux'
 // import ProfileSettings from './ProfileSettings';
 
 const auth = getAuth().currentUser;
