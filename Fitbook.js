@@ -53,6 +53,7 @@ const CustomDefaultTheme = {
     primary: '#FF6000',
     secondary: '#212121',
     tertiary: '#141729',
+    secondaryContainer: '#FFD9C1',
   },
 };
 
