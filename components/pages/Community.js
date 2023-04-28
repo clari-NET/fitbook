@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme, Text } from 'react-native-paper';
 import {
   View, StyleSheet, Image, Button,
 } from 'react-native';
+import { docQuery } from '../../firebaseFiles/firebase.config';
 import Feed from './Feed';
 import JoinCommunity from '../buttons/JoinCommunity';
 
@@ -36,9 +37,24 @@ const styles = StyleSheet.create({
 });
 
 export default function Community({ route }) {
+  const [joined, setJoined] = useState(false);
+  const [communityPosts, setCommunityPosts] = useState([]);
+  const [communityEvents, setCommunityEvents] = useState([]);
   const { colors } = useTheme();
 
   const { community } = route.params;
+
+  useEffect(() => {
+    async function fetchCommunityData() {
+      const posts = await docQuery('posts', [['community.id', '==', community.id]]);
+      setCommunityPosts(posts);
+
+      const events = await docQuery('events', [['community.id', '==', community.id]]);
+      setCommunityEvents(events);
+    }
+
+    fetchCommunityData();
+  }, [community.id]);
 
   return (
     <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
@@ -55,7 +71,7 @@ export default function Community({ route }) {
         </Text>
         <JoinCommunity communityId='placeholder' />
       </View>
-      <Feed />
+      <Feed posts={communityPosts} events={communityEvents} />
     </View>
   );
 }
