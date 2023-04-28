@@ -17,16 +17,19 @@ export default function AppHeader({ onLogout }) {
   const dispatch = useDispatch();
 
   return (
-    <Appbar.Header style={{ justifyContent: 'space-between' }}>
-      {isSignedIn
+    <Appbar.Header style={{ justifyContent: 'center' }}>
+      {/* {isSignedIn
         ? <Button mode='outlined' onPress={onLogout}>Logout</Button>
-        : null}
-      <Appbar.Content title='Fitbook' />
-      <Switch
+        : null} */}
+      {/* <Appbar.Content style={{ fontWeight: 'bold' }} title='Fitbook' /> */}
+      <View style={{ height: 50, width: 42 }}>
+        <Image style={{ height: '100%', width: '100%' }} source={logo} />
+      </View>
+      {/* <Switch
         color={theme?.colors.primary}
         value={dark}
         onValueChange={() => dispatch(toggle())}
-      />
+      /> */}
     </Appbar.Header>
   );
 }
