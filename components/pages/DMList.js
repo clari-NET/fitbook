@@ -6,8 +6,7 @@ import DMCard from '../cards/DMCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { change } from '../../redux/conversation/conversationSlice';
 import {getAuth} from 'firebase/auth';
-import { setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion, getAll, map, onSnapshot } from 'firebase/firestore';
-import uuid from 'react-native-uuid';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import db from '../../firebaseFiles/firebase.config';
 
 const sampleData = [
@@ -71,17 +70,6 @@ export default function MessageList() {
     }
   };
 
-  const fetchConvo = async () => {
-    try {
-      const convoRef = doc(db, 'DMs', currConvo);
-      const unsubscribe = onSnapshot(convoRef, (snap) => {
-        setConvo(snap.data());
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     getConversations();
   }, []);
@@ -91,7 +79,13 @@ export default function MessageList() {
   }
 
   if (Object.keys(messages).length === 0) {
-    return <View><Text>Loading...</Text></View>;
+    return (
+      <View>
+        <Text>
+          Loading...
+        </Text>
+      </View>
+);
   }
 
   return currConvo === 'DMList' ? (

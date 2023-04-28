@@ -15,9 +15,10 @@ const sampleData = [
   {
     profilePhoto: 'https://nickelodeonuniverse.com/wp-content/uploads/Squidward.png',
     fitnessStats: {},
-    friends: [],
+    friends: ['abMZ06958kM43IA3YKBMbV1tzWi1'],
     name: { first: 'Mo', last: 'Akbari' },
-    username: 'EmmyPop',
+    username: 'testuser',
+    id: 'abMZ06958kM43IA3YKBMbV1tzWi1',
   },
 ];
 
@@ -86,6 +87,8 @@ function Friends({ navigation }) {
             uid: friend.id,
             username: friend.data.username,
           },
+          latest: 'no messages yet',
+          lastUpdate: Date.now(),
         });
         dispatch(change(currentId));
         const currentUserRef = doc(db, 'users', auth.currentUser.uid);
