@@ -5,8 +5,10 @@ import {
   Switch,
   Button,
 } from 'react-native-paper';
+import { View, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggle } from '../../redux/theme/themeSlice';
+import logo from '../../assets/Fitbook-logo-orange.png';
 
 export default function AppHeader({ onLogout }) {
   const theme = useTheme();
