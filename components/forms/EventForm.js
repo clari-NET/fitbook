@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
 console.log(Timestamp);
 
 export default function EventForm() {
-  const { data } = useSelector((state) => state.user);
+  const data = useSelector((state) => state.user).data;
+  console.log(data, '-----')
   const [calendarDate, setCalendarDate] = useState(new Date());
   const firebaseDate = Timestamp.fromDate(calendarDate);
   const [showDropDown, setShowDropDown] = useState(false);
@@ -52,6 +53,7 @@ export default function EventForm() {
   });
 
   useEffect(() => {
+    const comsRef = collection(db, 'communities');
     docQuery('communities')
       .then((coms) => {
         setCurrentComs(coms);
@@ -110,7 +112,7 @@ export default function EventForm() {
         onChangeText={(value) => handleFormChange(null, value, 'description')}
       />
       <DropDown
-        label={filter}
+        label='Community'
         mode='outlined'
         list={filterList}
         value={filter}
