@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, Title, Card, Avatar
+  Button, Title, Card, Avatar,
 } from 'react-native-paper';
 import {
   View, StyleSheet
@@ -10,14 +10,14 @@ export default function FriendsCard({ item, handleSendMessage }) {
   const {
     profilePhoto,
     fitnessStats,
-    friends,
     name,
     username,
   } = item;
-  console.log(item)
+
   const handleImageError = () => {
     console.log('profile image load failed')
   }
+
   return (
     <Card style={styles.card}>
       <View style={styles.content}>

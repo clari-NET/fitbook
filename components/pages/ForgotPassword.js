@@ -5,7 +5,6 @@ import {
   useTheme,
   Button,
   Text,
-  Snackbar,
 } from 'react-native-paper';
 import React, { useState } from 'react';
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";

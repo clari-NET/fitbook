@@ -6,6 +6,10 @@ import { useDispatch } from 'react-redux';
 import FriendsList from '../lists/FriendsList';
 import { change } from '../../redux/conversation/conversationSlice';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import {getAuth} from 'firebase/auth';
+import { setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion } from 'firebase/firestore';
+import uuid from 'react-native-uuid';
+import db from '../../firebaseFiles/firebase.config';
 
 const sampleData = [
   {
@@ -13,19 +17,20 @@ const sampleData = [
     fitnessStats: {},
     friends: [],
     name: { first: 'Mo', last: 'Akbari' },
-    username: 'KingMo',
+    username: 'EmmyPop',
   },
 ];
 
-function Friends({ navigation }) {
+function Friends({ navigation, user }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilterdFriendsList] = useState([]);
   const dispatch = useDispatch();
-  console.log('Friends', navigation)
+  const auth = getAuth();
 
   useEffect(() => {
     // get request to fetch friends list
+    console.log(user.id);
     setFriendsList(sampleData);
     setFilterdFriendsList(sampleData);
   }, []);
@@ -40,10 +45,63 @@ function Friends({ navigation }) {
     setSearchQuery(query);
   };
 
-  const handleSendMessage = (username) => {
-    dispatch(change(username));
+  const handleSendMessage = async (username) => {
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('username', '==', username));
+      const allFriends = await getDocs(q);
+      const friends = [];
+      allFriends.forEach((doc) => {
+        friends.push({ id: doc.id, data: doc.data() });
+      });
+      if (friends.length !== 1) {
+        return;
+      }
+      const friend = friends[0];
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const userDoc = await getDoc(userRef);
+      const user = userDoc.data();
+
+      let found = false;
+      friend.data.DMs.forEach((DM) => {
+        if (user.DMs.includes(DM)) {
+          found = true;
+          dispatch(change(DM));
+          navigation.navigate('Messages');
+        }
+      });
+
+      if (!found) {
+        const currentId = uuid.v4();
+        await setDoc(doc(db, 'DMs', currentId), {
+          id: currentId,
+          messages: [],
+          user1: {
+            photo: user.profile_photo,
+            uid: auth.currentUser.uid,
+            username: auth.currentUser.displayName,
+          },
+          user2: {
+            photo: friend.data.profile_photo,
+            uid: friend.id,
+            username: friend.data.username,
+          },
+        });
+        dispatch(change(currentId));
+        const currentUserRef = doc(db, 'users', auth.currentUser.uid);
+        await updateDoc(currentUserRef, {
+          DMs: arrayUnion(currentId),
+        });
+        const friendRef = doc(db, 'users', friend.id);
+        await updateDoc(friendRef, {
+          DMs: arrayUnion(currentId),
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
     navigation.navigate('Messages');
-    console.log(`started DM with: ${username}`);
   };
 
   return (
