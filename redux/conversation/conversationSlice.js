@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {getAuth} from 'firebase/auth';
-import { setDoc, doc, serverTimestamp, updateDoc, collection, getDocs, query,
-  where, orderBy, arrayUnion, deleteDoc } from 'firebase/firestore';
-import db from '../../firebaseFiles/firebase.config';
+import { setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion } from 'firebase/firestore';
 import uuid from 'react-native-uuid';
+import db from '../../firebaseFiles/firebase.config';
 
 const initialState = {
   currConvo: 'DMList',
@@ -31,24 +30,12 @@ const getConversations = async (state, action) => {
   }
 };
 
-const setCurrentConversation = async (state, action) => {
-  try {
-    await getConversations();
-    state.currConvo = action.payload;
-  } catch (e) {
-    console.log(e);
-    state.currConvo = 'DMList';
-  }
+const setCurrentConversation = (state, action) => {
+  state.currConvo = action.payload;
 };
 
 const revertConversation = async (state, action) => {
-  try {
-    await getConversations();
-    state.currConvo = 'DMList';
-  } catch (e) {
-    console.log(e);
-    state.currConvo = 'DMList';
-  }
+  state.currConvo = 'DMList';
 };
 
 const sendMessage = async (state, action) => {
@@ -102,10 +89,12 @@ export const conversationSlice = createSlice({
   name: 'conversation',
   initialState,
   reducers: {
-    getAll: getConversations,
-    change: setCurrentConversation,
-    reset: revertConversation,
-    newConvo: createConversation,
+    reset: (state) => {
+      state.currConvo = 'DMList';
+    },
+    change: (state, action) => {
+      state.currConvo = action.payload;
+    },
   },
 });
 
@@ -113,8 +102,6 @@ export const conversationSlice = createSlice({
 export const {
   reset,
   change,
-  getAll,
-  getOne,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

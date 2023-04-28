@@ -71,7 +71,7 @@ export default function Fitbook() {
   const isMounted = useRef(true);
 
   async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
+    const result = await SecureStore.getItemAsync(key);
     if (result) {
       return result;
     }
