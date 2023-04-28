@@ -1,61 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import {
-  useTheme, Text, SegmentedButtons,
-} from 'react-native-paper';
-import { useSelector } from 'react-redux';
-import { docQuery } from '../../firebaseFiles/firebase.config';
+import { View } from 'react-native';
+import { SegmentedButtons } from 'react-native-paper';
+import { getDoc, doc } from 'firebase/firestore';
+import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import Friends from './Friends';
 import ProfileCommunity from './ProfileCommunity';
 import Feed from './Feed';
 import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 
-export default function Profile({ navigation }) {
-  const { colors } = useTheme();
+export default function Profile({ navigation, route }) {
   const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
-  const { data } = useSelector((state) => state.user);
+  const [events, setEvents] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
+
+  function getPostsAndEvents(curUser) {
+    const postQueryConditions = [['user.user_id', '==', curUser.id]];
+    const eventQueryConditions = [
+      [
+        'members',
+        'array-contains',
+        { user_id: curUser.id, username: curUser.username },
+      ],
+    ];
+    return Promise.all([
+      docQuery('posts', postQueryConditions),
+      docQuery('events', eventQueryConditions),
+    ]);
+  }
 
   useEffect(() => {
-    docQuery('')
-  })
-  // console.log(data);
-  // // console.log('Profile', navigation);
-  // useEffect(() => {
-  //   docQuery('users')
-  //     .then((coms) => {
-  //       console.log('QQ', coms[0]);
-  //     })
-  //     .catch((err) => console.error(err));
-  // },[])
+    getDoc(doc(db, 'users', route.params.userId))
+      .then((u) => {
+        const data = u.data();
+        console.log(data);
+        return data;
+      })
+      .then((data) => {
+        setUser(data);
+        return getPostsAndEvents(data);
+      })
+      .then(([postsData, eventsData]) => {
+        console.log(postsData);
+        console.log(eventsData);
+        setPosts(postsData);
+        setEvents(eventsData);
+      })
+      .catch(console.error);
+  }, [route.params.userId]);
 
-  // useEffect(() => {
-  //   // fetch data for
-  //   // Events
-  //   // Friends
-  //   // Community
-  //   // Profile
-  //   // fetchData(profileSubpage)
-  //   // console.log(`${profileSubPage} was loaded`);
-  // }, [profileSubPage]);
+  console.log('outside sub', posts);
 
-  function SubPage({ page }) {
+  function SubPage({ page, posty, eventy }) {
+    console.log('inside sub', posty);
     return {
-      Activity: <Feed />,
-      Friends: <Friends navigation={navigation} />,
-      ProfileCommunity: <ProfileCommunity />,
-      ProfileTab: <ProfileTab navigation={navigation} userSelf username={data.username} />,
-      ProfileSettings: <ProfileSettings />,
+      Activity: <Feed posts={posty} events={eventy} />,
+      Friends: <Friends navigation={navigation} user={user} />,
+      ProfileCommunity: (
+        <ProfileCommunity navigation={navigation} user={user} />
+      ),
+      ProfileTab: <ProfileTab navigation={navigation} user={user} />,
+      ProfileSettings: <ProfileSettings navigation={navigation} user={user} />,
     }[page];
   }
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}> */}
-      {/* <Button title="Activity" onPress={() => setProfileSubPage('Activity')} />
-        <Button title="Friends" onPress={() => setProfileSubPage('Friends')} />
-        <Button title="Communities" onPress={() => setProfileSubPage('ProfileCommunity')} />
-        <Button title="Profile" onPress={() => setProfileSubPage('ProfileSub')} /> */}
       <SegmentedButtons
         value={profileSubPage}
         onValueChange={setProfileSubPage}
@@ -78,8 +89,8 @@ export default function Profile({ navigation }) {
           },
         ]}
       />
-      {/* </View> */}
-      <SubPage page={profileSubPage} />
+      <SubPage page={profileSubPage} posty={posts} eventy={events} />
+      {/* <Feed posts={posts} events={events} /> */}
     </View>
   );
 }
