@@ -24,10 +24,6 @@ export default function EventList({ events }) {
     setIsVisible(true);
   }
 
-  // useEffect(() => {
-  //   console.log('in eventsList: ', events);
-  // }, [events]);
-
   return (
     <>
       <View style={styles.carouselContainer}>
