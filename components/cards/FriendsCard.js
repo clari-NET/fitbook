@@ -8,7 +8,7 @@ import {
 
 export default function FriendsCard({ item, handleSendMessage }) {
   const {
-    profilePhoto,
+    profile_photo,
     fitnessStats,
     name,
     username,
@@ -21,9 +21,9 @@ export default function FriendsCard({ item, handleSendMessage }) {
   return (
     <Card style={styles.card}>
       <View style={styles.content}>
-        {profilePhoto ? (
+        {profile_photo ? (
           <Avatar.Image
-            source={{ uri: profilePhoto}}
+            source={{ uri: profile_photo}}
             size={64}
             onError={handleImageError}
           />
