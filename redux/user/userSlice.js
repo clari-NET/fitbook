@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { updateDoc, doc } from 'firebase/firestore';
+import db from '../../firebaseFiles/firebase.config';
 
 const initialState = {
   isLoading: true,
@@ -10,11 +12,22 @@ function changeSignIn(state = initialState, action) {
   state.isSignedIn = action.payload;
 }
 function joinACommunity(state = initialState, action) {
+  console.log('dataObject: ', state.data);
   if (state.data.communities && !state.data.communities.includes(action.payload)) {
     state.data.communities.push(action.payload);
   } else {
     state.data.communities = [action.payload];
   }
+  const joinCommunityDB = async () => {
+    try {
+      await updateDoc(doc(db, 'users', state.data.id), {
+        communities: state.data.communities,
+      });
+    } catch (err) {
+      console.error(`Unable to add community id: ${action.payload}`);
+    }
+  };
+  joinCommunityDB();
 }
 function leaveACommunity(state = initialState, action) {
   if (state.data.communities) {
