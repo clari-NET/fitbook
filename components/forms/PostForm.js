@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function PostForm({handleSubmit}) {
+export default function PostForm({ handleSubmit }) {
   return (
     <Surface style={styles.surface}>
       <Text variant='titleLarge'>Create an Event</Text>

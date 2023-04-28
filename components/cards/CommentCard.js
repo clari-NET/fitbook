@@ -83,7 +83,7 @@ export default function CommentCard({
         <View style={styles.commentHeader}>
           <TouchableOpacity onPress={() => {
             navigation.navigate('Profile', {
-              user: comment.user,
+              userId: comment.user.id.toString(),
             });
           }}
           >
@@ -94,7 +94,7 @@ export default function CommentCard({
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
             navigation.navigate('Profile', {
-              user: comment.user,
+              userId: comment.user.id.toString(),
             });
           }}
           >

@@ -7,8 +7,10 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { doc, updateDoc } from 'firebase/firestore';
 import { Button } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import db from '../../firebaseFiles/firebase.config';
 import Post from '../cards/Post';
 import CommentCard from '../cards/CommentCard';
@@ -37,11 +39,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function CommentsList({ route }) {
+export default function CommentsList({ route, navigation }) {
   const { post } = route.params;
   const [comments, setComments] = useState(route.params.comments);
   const [likedComments, setLikedComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+
+  const commenter = useSelector((state) => state.user).data;
 
   const handleCommentLike = async (comment) => {
     const isLiked = likedComments.includes(comment.comment_id);
@@ -72,20 +76,22 @@ export default function CommentsList({ route }) {
     if (!newComment.trim()) return;
 
     const newCommentObj = {
-      id: comments.length + 1,
+      comment_id: uuid.v4(),
       user: {
-        // Add the user information here
-        username: 'YourUsername',
+        id: commenter.id,
+        name: `${commenter.name.first} ${commenter.name.last}`,
+        profilePhoto: 'https://randomuser.me/api/portraits/men/44.jpg', // commenter.profilePhoto
+        username: commenter.username,
       },
       comment: newComment,
       lifts: 0,
-      date: new Date().toISOString(),
+      report: false,
+      date: new Date().getTime(),
     };
 
     const updatedComments = [...comments, newCommentObj];
     setComments(updatedComments);
     setNewComment('');
-
     try {
       const documentRef = doc(db, 'posts', post.id.toString());
       await updateDoc(documentRef, {
@@ -106,6 +112,7 @@ export default function CommentsList({ route }) {
             comment={comment}
             onLike={() => handleCommentLike(comment)}
             liked={likedComments.includes(comment.comment_id)}
+            navigation={navigation}
           />
         ))}
       </ScrollView>
