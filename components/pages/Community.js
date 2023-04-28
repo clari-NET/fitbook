@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
 });
 
 export default function Community({ route }) {
-  const [joined, setJoined] = useState(false);
   const [communityPosts, setCommunityPosts] = useState([]);
   const [communityEvents, setCommunityEvents] = useState([]);
+  const [communityData, setCommunityData] = useState([]);
   const { colors } = useTheme();
 
   const { community } = route.params;
@@ -51,11 +51,14 @@ export default function Community({ route }) {
 
       const events = await docQuery('events', [['community.id', '==', community.id]]);
       setCommunityEvents(events);
-    }
 
+      const communityDataObj = await docQuery('communities', [['id', '==', community.id]]);
+      setCommunityData(communityDataObj);
+    }
     fetchCommunityData();
   }, [community.id]);
 
+  console.log('communityData: ', communityData);
   return (
     <View style={[styles.main_container, { backgroundColor: colors.surface }]}>
       <View style={styles.bannerImage_container}>
@@ -69,7 +72,7 @@ export default function Community({ route }) {
           {community.icon || defaultIcon}
           {community.name}
         </Text>
-        <JoinCommunity communityId='placeholder' />
+        <JoinCommunity communityId={community.id} />
       </View>
       <Feed posts={communityPosts} events={communityEvents} />
     </View>
