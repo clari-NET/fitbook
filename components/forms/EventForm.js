@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import * as firebase from 'firebase/app';
+import { Timestamp } from 'firebase/firestore';
 import {
   Text, TextInput, Surface, Button,
 } from 'react-native-paper';
@@ -21,15 +23,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
+console.log(Timestamp);
+
 export default function EventForm() {
+  const [calendarDate, setCalendarDate] = useState(new Date());
+  const firebaseDate = Timestamp.fromDate(calendarDate);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    datetime: new Date(),
+    date: firebaseDate,
+    user: { name: '', user_id: '' },
+    id: '',
+    lifts: 0,
+    comments: [],
+    community: { id: '', name: '' },
+    content: '',
   });
 
   function handleCreate() {
@@ -43,6 +55,10 @@ export default function EventForm() {
       ...formData,
       [item]: value,
     });
+  }
+
+  function handleDateChange(event) {
+    setCalendarDate(new Date(event.target.value));
   }
 
   return (
@@ -68,8 +84,8 @@ export default function EventForm() {
       <View style={styles.datePicker}>
         <Text variant="labelLarge">Date:</Text>
         <DateTimePicker
-          value={formData.datetime}
-          onChange={(event, selectedDate) => handleFormChange(event, selectedDate, 'datetime')}
+          value={calendarDate}
+          onChange={(event) => handleDateChange(event)}
           mode='datetime'
           minimumDate={new Date()}
         />
