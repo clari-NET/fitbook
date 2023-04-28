@@ -37,7 +37,6 @@ export default function Conversation({ route }) {
   let friend;
 
   const { currConvo } = useSelector((state) => state.conversation);
-  console.log(currConvo)
 
   const [convo, setConvo] = useState({});
 
@@ -78,11 +77,9 @@ export default function Conversation({ route }) {
   }
 
   if (convo.user1.uid === auth.currentUser.uid) {
-    user = convo.user2;
-    friend = convo.user1;
-  } else {
-    user = convo.user1;
     friend = convo.user2;
+  } else {
+    friend = convo.user1;
   }
 
   return (
@@ -96,13 +93,12 @@ export default function Conversation({ route }) {
         <Text style={styles.username}>{friend.username}</Text>
       </View>
       <GiftedChat
-        messages={convo.messages}
+        messages={convo.messages.sort((a, b) => b.createdAt - a.createdAt)}
         onSend={messages => onSend(messages)}
         user={{
-          _id: user.uid,
+          _id: friend.uid,
         }}
       />
     </>
   );
 }
-

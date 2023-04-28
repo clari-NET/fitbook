@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { SegmentedButtons } from 'react-native-paper';
+import { SegmentedButtons, Text } from 'react-native-paper';
 import { getDoc, doc } from 'firebase/firestore';
 import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import Friends from './Friends';
@@ -14,6 +14,8 @@ export default function Profile({ navigation, route }) {
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   function getPostsAndEvents(curUser) {
     const postQueryConditions = [['user.user_id', '==', curUser.id]];
@@ -30,6 +32,11 @@ export default function Profile({ navigation, route }) {
     ]);
   }
 
+  function refresh() {
+    console.log('refreshed!')
+    setRefreshTrigger(!refreshTrigger);
+  }
+
   useEffect(() => {
     getDoc(doc(db, 'users', route.params.userId))
       .then((u) => {
@@ -43,22 +50,27 @@ export default function Profile({ navigation, route }) {
       .then(([postsData, eventsData]) => {
         setPosts(postsData);
         setEvents(eventsData);
+        setIsLoading(false);
       })
       .catch(console.error);
-  }, [route.params.userId]);
+  }, [route.params.userId, refreshTrigger]);
 
-  function SubPage({ page, thisPost, thisEvent, thisNavigation, thisUser }) {
+  function SubPage({ page, thisPost, thisEvent, thisNavigation, thisUser, refresh }) {
     return {
       Activity: <Feed posts={thisPost} events={thisEvent} />,
       Friends: <Friends navigation={thisNavigation} user={thisUser} />,
       ProfileCommunity: (
-        <ProfileCommunity navigation={thisNavigation} user={thisUser} />
+        <ProfileCommunity navigation={thisNavigation} user={thisUser}/>
       ),
-      ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} />,
+      ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} refresh={refresh} />,
       ProfileSettings: (
         <ProfileSettings navigation={thisNavigation} user={thisUser} />
       ),
     }[page];
+  }
+
+  if (isLoading) {
+    return <Text>Loading...</Text>
   }
 
   return (
@@ -91,6 +103,7 @@ export default function Profile({ navigation, route }) {
         thisEvent={events}
         thisNavigation={navigation}
         thisUser={user}
+        refresh={refresh}
       />
     </View>
   );
