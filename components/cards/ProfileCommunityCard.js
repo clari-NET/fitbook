@@ -5,19 +5,22 @@ import {
 import {
   View, StyleSheet
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ProfileCommunityCard({ item, handleFavorite, styles }) {
+export default function ProfileCommunityCard({ item, handlePress, community, handleFavorite, styles }) {
   const {
     banner,
     favorite,
     name,
-    tag,
+    description,
   } = item;
+  const navigation = useNavigation();
+
   const handleImageError = () => {
     console.log('profile image load failed');
   }
   return (
-    <Card >
+    <Card onPress={() => navigation.navigate('Community', { community:item })}>
       {banner ? (
         <Card.Cover source={{ uri: banner }} />
       ) : (
@@ -27,7 +30,7 @@ export default function ProfileCommunityCard({ item, handleFavorite, styles }) {
           <Card.Content style={styles.banner_container}>
             <View>
             <Title variant='titleSmall'>{name}</Title>
-            <Text variant='bodySmall'>{`#${tag}`}</Text>
+            <Text variant='bodySmall'>{description}</Text>
             </View>
             <Button style={styles.favStar} icon={favorite ? 'star' : 'star-outline'} onPress={() => console.log('favorited!')} />
           </Card.Content>

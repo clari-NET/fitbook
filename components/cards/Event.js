@@ -12,6 +12,7 @@ export default function Event({ event, handlePress }) {
             <Text variant='titleSmall'>{event?.location || 'any time'}</Text>
             <Text variant='bodySmall'>
               {event?.date_time.date || 'any day'}
+              {' '}
               {event?.date_time.time || 'any time'}
             </Text>
             <Text variant='titleSmall'>{event?.name || 'untitled event'}</Text>
