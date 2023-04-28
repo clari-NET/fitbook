@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, ScrollView, StyleSheet } from 'react-native';
-import { FAB, Modal, Portal } from 'react-native-paper';
+import React, { useState } from 'react';
+import { FlatList, View, StyleSheet } from 'react-native';
+import { FAB, Modal, Text } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import Post from '../cards/Post';
 import EventList from '../lists/EventList';
@@ -50,26 +50,38 @@ export default function Feed({ posts, events, onPostSelected }) {
 
   return (
     <>
-      <FlatList
-        data={posts}
-        renderItem={({ item }) => <Post post={item} onPress={onPostSelected} />}
-        keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={events.length !== 0 && (
-          <>
-            <EventList events={events} />
-            <DropDown
-              label={filter}
-              mode='outlined'
-              list={filterList}
-              value={filter}
-              setValue={setFilter}
-              visible={showDropDown}
-              showDropDown={() => setShowDropDown(true)}
-              onDismiss={() => setShowDropDown(false)}
-            />
-          </>
-        )}
-      />
+      {posts.length === 0 ? (
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 50 }}
+        >
+          <Text variant='displaySmall' style={{textAlign: 'center'}}>It's quiet in here... Check out the communities tab to start connecting!</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={posts}
+          renderItem={({ item }) => (
+            <Post post={item} onPress={onPostSelected} />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          ListHeaderComponent={
+            events.length !== 0 && (
+              <>
+                <EventList events={events} />
+                <DropDown
+                  label={filter}
+                  mode='outlined'
+                  list={filterList}
+                  value={filter}
+                  setValue={setFilter}
+                  visible={showDropDown}
+                  showDropDown={() => setShowDropDown(true)}
+                  onDismiss={() => setShowDropDown(false)}
+                />
+              </>
+            )
+          }
+        />
+      )}
       <FAB.Group
         open={open}
         visible

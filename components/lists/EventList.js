@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
 import Modal from 'react-native-modal';
 import Event from '../cards/Event';
@@ -26,10 +27,17 @@ export default function EventList({ events }) {
   return (
     <>
       <View style={styles.carouselContainer}>
-        {events.length !== 0 && (
+        {events.length === 0 ? (
+          <Text>
+            No events to display. Check out the communities tab to get
+            connected!
+          </Text>
+        ) : (
           <Carousel
             data={events}
-            renderItem={({ item }) => <Event event={item} handlePress={handlePress} />}
+            renderItem={({ item }) => (
+              <Event event={item} handlePress={handlePress} />
+            )}
             sliderWidth={SLIDER_WIDTH}
             itemWidth={ITEM_WIDTH}
             layout='stack'

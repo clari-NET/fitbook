@@ -45,10 +45,10 @@ export async function docQuery(collectionName, conditions = []) {
   return results;
 }
 
-// export async function docOrQuery(collectionName, conditions = []) {
-//   const whereClauses = conditions.map((condition) => where(...condition));
-//   const q = query(collection(db, collectionName), or(...whereClauses));
-//   const resultDocs = await getDocs(q);
-//   const results = resultDocs.docs.map((doc) => doc.data());
-//   return results;
-// }
+export async function docOrQuery(collectionName, conditions = []) {
+  const whereClauses = conditions.map((condition) => where(...condition));
+  const q = query(collection(db, collectionName), or(...whereClauses));
+  const resultDocs = await getDocs(q);
+  const results = resultDocs.docs.map((doc) => doc.data());
+  return results;
+}

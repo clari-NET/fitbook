@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from'react-native';
+import { Text, Button, Card } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { docQuery, docOrQuery } from '../../firebaseFiles/firebase.config';
 import Feed from './Feed';
 
+
 export default function Home() {
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);
-  const { data } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user).data;
 
   function getPostsAndEvents() {
-    console.log(data);
+    const postQueryConditions = [];
+    const eventQueryConditions = [];
+    if (user?.communities?.length > 0) {
+      postQueryConditions.push(['community.id', 'in', user.communities]);
+      eventQueryConditions.push(['community.id', 'in', user.communities]);
+    }
+    if (user?.friends?.length > 0) {
+      postQueryConditions.push(['user.id', 'in', user.friends]);
+    }
     return Promise.all([
-      docQuery('posts', [
-        // data?.communities?.length > 0 ? ['community.id', 'in', data.communities] : null,
-        // data?.communities?.length > 0 ? ['user.id', 'in', data.friends] : null,
-      ]),
-      docQuery('events'),
-      // docQuery('events', [['community.id', 'in', data.communities]]),
+      postQueryConditions.length === 0 ? [] : docOrQuery('posts', postQueryConditions),
+      eventQueryConditions.length === 0 ? [] : docQuery('events', eventQueryConditions),
     ]);
   }
 
@@ -27,7 +34,7 @@ export default function Home() {
         setEvents(eventsData);
       })
       .catch(console.error);
-  }, [data]);
+  }, [user]);
 
   return (
     <Feed events={events} posts={posts} />
