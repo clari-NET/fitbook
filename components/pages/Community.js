@@ -5,21 +5,6 @@ import {
 } from 'react-native';
 import Feed from './Feed';
 
-// const sampleData = {
-//   id: 1,
-//   name: 'Roller Demons',
-//   banner: 'https://picsum.photos/700',
-//   icon: 'U+1F6F9',
-//   user: {
-//     user_id: 12,
-//     username: 'swolebraham',
-//   },
-//   location: 'San Diego, CA',
-//   members: [
-//     1, 2, 3, 4, 5,
-//   ],
-// };
-
 const defaultImage = 'https://picsum.photos/700';
 const defaultIcon = 'U+1F6F9';
 
