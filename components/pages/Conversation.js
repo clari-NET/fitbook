@@ -26,11 +26,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Conversation({ currConvo, setCurrConvo }) {
+export default function Conversation({ route, setCurrConvo }) {
   const { colors } = useTheme();
   const dispatch = useDispatch();
 
   const [messages, setMessages] = useState([]);
+  const { currConvo } = route.params;
 
   useEffect(() => {
     setMessages([
@@ -60,6 +61,7 @@ export default function Conversation({ currConvo, setCurrConvo }) {
             source={{ uri: 'https://picsum.photos/700' }}
         />
         <Text style={styles.username}>{currConvo}</Text>
+        <Text>asdf</Text>
       </View>
       <GiftedChat
         messages={messages}
