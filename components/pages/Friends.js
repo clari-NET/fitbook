@@ -26,7 +26,6 @@ function Friends({ navigation }) {
   const [filteredFriends, setFilteredFriendsList] = useState([]);
   const dispatch = useDispatch();
   const auth = getAuth();
-  // console.log('Friends', navigation);
 
   useEffect(() => {
     // get request to fetch friends list
@@ -43,11 +42,15 @@ function Friends({ navigation }) {
               friendData.push(individual);
             })
             .catch((err) => console.error(err));
+          return friendData;
+        }).then(() => {
+          setFriendsList(friendData);
+          setFilteredFriendsList(friendData);
         });
-        setFriendsList(friendData);
-        setFilteredFriendsList(friendData);
       }).catch((err) => console.error(err));
   }, []);
+
+  console.log('friendsList', friendsList);
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)

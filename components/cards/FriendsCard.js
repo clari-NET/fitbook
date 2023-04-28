@@ -1,29 +1,28 @@
 import React from 'react';
 import {
-  Button, Title, Card, Avatar
+  Button, Title, Card, Avatar,
 } from 'react-native-paper';
 import {
-  View, StyleSheet
+  View, StyleSheet,
 } from 'react-native';
 
 export default function FriendsCard({ item, handleSendMessage }) {
   const {
-    profilePhoto,
+    profile_photo,
     fitnessStats,
     friends,
     name,
     username,
   } = item;
-  console.log(item)
   const handleImageError = () => {
-    console.log('profile image load failed')
-  }
+    console.log('profile image load failed');
+  };
   return (
     <Card style={styles.card}>
       <View style={styles.content}>
-        {profilePhoto ? (
+        {profile_photo ? (
           <Avatar.Image
-            source={{ uri: profilePhoto}}
+            source={{ uri: profile_photo}}
             size={64}
             onError={handleImageError}
           />
