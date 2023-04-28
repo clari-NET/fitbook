@@ -61,8 +61,8 @@ export default function MessageList() {
           setMessages(convos => ({ ...convos, [convo]: snap.data() }));
         });
 
-        //let fetched = await convoSnap.data();
-        //setMessages(convos => ({ ...convos, [convo]: fetched }));
+        // let fetched = await convoSnap.data();
+        // setMessages(convos => ({ ...convos, [convo]: fetched }));
       });
     } catch (e) {
       console.log(e);
@@ -85,7 +85,7 @@ export default function MessageList() {
           No conversations yet, Start One!
         </Text>
       </View>
-);
+    );
   }
 
   return currConvo === 'DMList' ? (

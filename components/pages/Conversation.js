@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import { View, TouchableOpacity, StyleSheet} from 'react-native';
 import { Text, useTheme, Avatar } from 'react-native-paper';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { Appbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { reset } from '../../redux/conversation/conversationSlice';
@@ -82,18 +82,30 @@ export default function Conversation({ route }) {
     friend = convo.user1;
   }
 
+  const renderBubble = (props) => (
+    <Bubble
+      {...props}
+      wrapperStyle={{
+        right: {
+          backgroundColor: colors.primary,
+        },
+      }}
+    />
+  );
+
   return (
     <>
       <View style={styles.cardRow}>
         <Appbar.BackAction onPress={() => { dispatch(reset()); }} />
         <Avatar.Image
-            size={50}
-            source={{ uri: friend.photo }}
+          size={50}
+          source={{ uri: friend.photo }}
         />
         <Text style={styles.username}>{friend.username}</Text>
       </View>
       <GiftedChat
         messages={convo.messages.sort((a, b) => b.createdAt - a.createdAt)}
+        renderBubble={renderBubble}
         onSend={messages => onSend(messages)}
         user={{
           _id: friend.uid,
