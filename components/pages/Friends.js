@@ -22,7 +22,6 @@ function Friends({ navigation }) {
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilterdFriendsList] = useState([]);
   const dispatch = useDispatch();
-  console.log('Friends', navigation)
 
   useEffect(() => {
     // get request to fetch friends list

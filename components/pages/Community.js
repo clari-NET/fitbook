@@ -5,9 +5,10 @@ import {
 } from 'react-native';
 import { docQuery } from '../../firebaseFiles/firebase.config';
 import Feed from './Feed';
+import JoinCommunity from '../buttons/JoinCommunity';
 
 const defaultImage = 'https://picsum.photos/700';
-const defaultIcon = 'U+1F6F9';
+const defaultIcon = '🔥';
 
 const styles = StyleSheet.create({
   main_container: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   bannerImage_container: {
     width: '100%',
     height: 100,
-    // flex: 2,
+    flex: 1,
   },
   bannerImage: {
     width: '100%',
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: '100%',
     flexDirection: 'row',
-    flex: 1,
+    flex: 0.5,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#FF6000',
@@ -34,16 +35,15 @@ const styles = StyleSheet.create({
   bannerName: {
     color: '#FFF',
   },
+  feed: {
+    flex: 6,
+  },
 });
 
 export default function Community({ route }) {
-  const [joined, setJoined] = useState(false);
   const [communityPosts, setCommunityPosts] = useState([]);
   const [communityEvents, setCommunityEvents] = useState([]);
   const { colors } = useTheme();
-  const joinCommunityToggle = () => {
-    setJoined(!joined);
-  };
 
   const { community } = route.params;
 
@@ -55,7 +55,6 @@ export default function Community({ route }) {
       const events = await docQuery('events', [['community.id', '==', community.id]]);
       setCommunityEvents(events);
     }
-
     fetchCommunityData();
   }, [community.id]);
 
@@ -72,11 +71,11 @@ export default function Community({ route }) {
           {community.icon || defaultIcon}
           {community.name}
         </Text>
-        {joined
-          ? <Button title='Joined' onPress={joinCommunityToggle} />
-          : <Button title='Join' onPress={joinCommunityToggle} />}
+        <JoinCommunity communityId={community.id} />
       </View>
-      <Feed posts={communityPosts} events={communityEvents} />
+      <View style={styles.feed}>
+        <Feed posts={communityPosts} events={communityEvents} />
+      </View>
     </View>
   );
 }
