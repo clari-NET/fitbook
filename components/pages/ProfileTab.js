@@ -1,22 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
-import { getAuth } from 'firebase/auth';
 import {
   useTheme, Avatar, Text, IconButton, Button, Surface,
 } from 'react-native-paper';
+
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import * as SecureStore from 'expo-secure-store';
-import { docQuery } from '../../firebaseFiles/firebase.config';
+import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
+import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 120,
-    marginTop: 20,
+    margin: 20,
   },
   body: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 120,
+  },
+  username: {
     alignItems: 'center',
   },
 });
@@ -24,22 +40,45 @@ const styles = StyleSheet.create({
 // const { currUser } = useSelector((state) => state.data.user);
 const auth = getAuth();
 
-export default function ProfileTab({ user }) {
+export default function ProfileTab({ user, refresh }) {
   const { colors } = useTheme();
   const [userData, setUserData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [reload, setReload] = useState(false);
 
-  // console.log(user, auth.currentUser.uid);
+  const selfData = useSelector((state) => state.user.data);
+  const userSelf = selfData.username === user.username;
+
   useEffect(() => {
-    if (user) {
-      setUserData(user);
+    // if it's themselves
+    if (userSelf) {
+      setUserData(selfData);
+      setIsLoaded(true);
     } else {
-      docQuery('users', [['id', '==', auth.currentUser.uid]])
-        .then((res) => {
-          setUserData(res);
-        });
+      setUserData(user);
+      setIsLoaded(true);
     }
-  }, []);
+  }, [reload]);
+
+  function addFriend(id) {
+    const targetRef = doc(db, 'users', String(id));
+    const myRef = doc(db, 'users', getAuth().currentUser.uid);
+    Promise.all([updateDoc(myRef, { friends: arrayUnion(id) }),
+      updateDoc(targetRef, { friends: arrayUnion(selfData.id) })])
+      .then(() => 'Success')
+      .then(() => refresh())
+      .catch((err) => console.log(err));
+  }
+
+  function unfriend(id) {
+    const targetRef = doc(db, 'users', String(id));
+    const myRef = doc(db, 'users', getAuth().currentUser.uid);
+    Promise.all([updateDoc(myRef, { friends: arrayRemove(id) }),
+      updateDoc(targetRef, { friends: arrayRemove(selfData.id) })])
+      .then(() => 'Success')
+      .then(() => refresh())
+      .catch((err) => console.log(err));
+  }
 
   return (
     !userData.name ? <Text>Loading...</Text> : (
@@ -49,6 +88,12 @@ export default function ProfileTab({ user }) {
         </View>
         <View style={[styles.body]}>
           <Text variant="headlineMedium">{userData.username}</Text>
+          {!userSelf && (userData.friends.includes(selfData.id)
+            ? <IconButton icon="account-minus" size={40} iconColor={colors.primary} onPress={() => unfriend(userData.id)} />
+            : <IconButton icon="account-plus" size={40} iconColor={colors.primary} onPress={() => addFriend(userData.id)} />)
+          }
+        </View>
+        <View style={[styles.username]}>
           <Text variant="headlineMedium">
             {`${userData.name.first} ${userData.name.last}`}
           </Text>
