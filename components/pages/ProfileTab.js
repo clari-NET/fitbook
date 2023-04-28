@@ -14,15 +14,9 @@ import {
   where,
   doc,
 } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 import * as SecureStore from 'expo-secure-store';
-import {db, docQuery } from '../../firebaseFiles/firebase.config';
+import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
-// import ProfileSettings from './ProfileSettings';
-
-const auth = getAuth().currentUser;
-
-// const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
   header: {
@@ -36,134 +30,40 @@ const styles = StyleSheet.create({
   },
 });
 
-const sampleData = {
-  email: 'test@ai.com',
-  name: {
-    first: 'Test',
-    last: 'Ai',
-  },
-  timeStamp: new Date(),
-  username: 'Test AI',
-  stats: [
-    {
-      category: 'Swimming',
-      field: '100 meters',
-      record: '2 minutes',
-    },
-    {
-      category: 'Bench Press',
-      field: 'Max weight',
-      record: '150 lbs',
-    },
-    {
-      category: 'Cycling',
-      field: '3 miles',
-      record: '16 minutes',
-
-    },
-    {
-      category: 'Basketball',
-      field: 'Most 3-pointers',
-      record: '4',
-    },
-    {
-      category: 'Volleyball',
-      field: 'Most jump serves',
-      record: '8',
-    },
-    {
-      category: 'Soccer',
-      field: 'Most goals (per game)',
-      record: '2',
-
-    },
-    {
-      category: 'Golf',
-      field: '18 holes',
-      record: '84',
-    },
-  ],
-};
-
 // const some = useSelector(state => state.data.user)
 
-export default function ProfileTab({ navigation, userSelf, username }) {
+export default function ProfileTab({ navigation, user }) {
   const { colors } = useTheme();
   const [userData, setUserData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  async function getUser() {
-    const auth = getAuth();
-    // console.log(auth.currentUser)
-    const userRef = doc(db, 'users', auth.currentUser.uid);
-    return userRef;
-  }
-  const data = useSelector((state) => state.user.data);
   useEffect(() => {
-    if (userSelf) {
-      setUserData(data);
-      setIsLoaded(true);
+    if (user) {
+      setUserData(user.data);
     } else {
       docQuery('users', [['username', '==', 'EmmyPop']])
         .then((res) => {
           setUserData(res[0]);
-          setIsLoaded(true);
         });
     }
+    setIsLoaded(true);
   }, []);
-  // const [username, setUsername] = useState('');
 
-  // async function getUser(key) {
-  //   if (!user) {
-  //     const result = await SecureStore.getItemAsync(key);
-  //     if (result) {
-  //       return result;
-  //     }
-  //     return sampleData;
-  //   }
-  //   return user;
-  // }
-
-  // async function getProfile(username) {
-  //   const docRef = query(collection(db, 'tests'), where('username', '==', username));
-  //   const result = [];
-
-  //   const userInfo = await getDocs(docRef);
-  //   // console.log(userInfo);
-  //   userInfo.forEach((d) => {
-  //     result.push({ ...d.data(), id: d.id });
-  //     // console.log(d.id);
-  //   });
-  //   setUserData(result);
-  // }
-
-  // useEffect(() => {
-  //   const current = getUser();
-  //   console.log(current);
-  //   // getProfile('testOne');
-  //   // console.log(userData);
-  //   // // console.log(userData[0].fitnessStats[0].stat1);
-  //   // if (userData.length > 0) {
-  //   //   setIsLoaded(true);
-  //   // } else {
-  //   //   setIsLoaded(false);
-  //   // }
-  // }, []);
   if (isLoaded === false) {
     return <Text>Loading...</Text>;
   }
   return (
     <ScrollView>
       <View style={[styles.header]}>
-        <Avatar.Image size={150} source={{uri: userData.profile_photo}} />
+        <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
         <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
-          {userData ? userData.username : null}
+          {isLoaded ? userData.username : null}
         </Text>
       </View>
-      {userData ? <StatList stats={userData.stats} /> : null}
+      {isLoaded ? <StatList stats={userData.stats} /> : null}
     </ScrollView>
   );
 }

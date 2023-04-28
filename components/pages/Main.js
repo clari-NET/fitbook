@@ -33,9 +33,9 @@ function ColoredIcon(name, color) {
 }
 
 function TabNavigator() {
-  const { data } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   return (
-    data !== undefined && (
+    user !== undefined && (
       <Tab.Navigator>
         <Tab.Screen
           name='Home'

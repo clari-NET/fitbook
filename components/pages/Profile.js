@@ -11,14 +11,11 @@ import Feed from './Feed';
 import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 
-export default function Profile({ navigation }) {
+export default function Profile({ navigation, route }) {
   const { colors } = useTheme();
   const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
   const { data } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    docQuery('')
-  })
   // console.log(data);
   // // console.log('Profile', navigation);
   // useEffect(() => {
@@ -44,7 +41,7 @@ export default function Profile({ navigation }) {
       Activity: <Feed />,
       Friends: <Friends navigation={navigation} />,
       ProfileCommunity: <ProfileCommunity />,
-      ProfileTab: <ProfileTab navigation={navigation} userSelf username={data.username} />,
+      ProfileTab: <ProfileTab navigation={navigation} />,
       ProfileSettings: <ProfileSettings />,
     }[page];
   }
