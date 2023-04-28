@@ -89,7 +89,7 @@ export default function Main({ navigation }) {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader navigation={navigation} />
       {/* <View style={[styles.container, { backgroundColor: colors.surface }]}> */}
       <StatusBar />
       {/* </View> */}

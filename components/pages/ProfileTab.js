@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import {
   useTheme, Avatar, Text, IconButton, Button, Surface,
 } from 'react-native-paper';
@@ -15,7 +16,7 @@ import {
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import * as SecureStore from 'expo-secure-store';
-import db from '../../firebaseFiles/firebase.config';
+import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
 // import ProfileSettings from './ProfileSettings';
 
@@ -88,30 +89,62 @@ const sampleData = {
 
 export default function ProfileTab({ navigation, user }) {
   const { colors } = useTheme();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    // setDoc(doc(db, 'users', auth.currentUser.uid), sampleData);
-    const userRef = doc(db, 'users', auth.uid);
-    getDoc(userRef)
-      .then((coll) => {
-        setUserData({ ...coll.data(), id: coll.id });
-      });
+  // async function getUser() {
+  //   const auth = getAuth();
+  //   // console.log(auth.currentUser)
+  //   const userRef = doc(db, 'users', auth.uid);
+  //   return userRef;
+  //   }
+  // const [username, setUsername] = useState('');
 
-    console.log(userData);
-    if (userData.username) {
-      setIsLoaded(true);
-    } else {
-      setIsLoaded(false);
-    }
+  // async function getUser(key) {
+  //   if (!user) {
+  //     const result = await SecureStore.getItemAsync(key);
+  //     if (result) {
+  //       return result;
+  //     }
+  //     return sampleData;
+  //   }
+  //   return user;
+  // }
+
+  // async function getProfile(username) {
+  //   const docRef = query(collection(db, 'tests'), where('username', '==', username));
+  //   const result = [];
+
+  //   const userInfo = await getDocs(docRef);
+  //   // console.log(userInfo);
+  //   userInfo.forEach((d) => {
+  //     result.push({ ...d.data(), id: d.id });
+  //     // console.log(d.id);
+  //   });
+  //   setUserData(result);
+  // }
+
+  // const selectData = useSelector(state => state.user.data);
+  useEffect(() => {
+    console.log(auth.uid);
+    docQuery('users', ['id', '==', 1])
+      .then((res) => {
+        console.log(res);
+        setUserData(res[0]);
+        setIsLoaded(true);
+      });
+    // const docRef = query(collection(db, 'users'), where('id', '==', 1));
+    // getDocs(docRef)
+    //   .then((res) => {
+    //     console.log(res.data());
+    //     setUserData(res[0]);
+    //   });
   }, []);
 
   return (
     <ScrollView>
       <View style={[styles.header]}>
         <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
-        <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
