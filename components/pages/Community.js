@@ -8,7 +8,7 @@ import Feed from './Feed';
 import JoinCommunity from '../buttons/JoinCommunity';
 
 const defaultImage = 'https://picsum.photos/700';
-const defaultIcon = 'U+1F6F9';
+const defaultIcon = '🔥';
 
 const styles = StyleSheet.create({
   main_container: {

@@ -1,34 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { joinCommunity, leaveCommunity } from '../../redux/user/userSlice';
 
 export default function JoinCommunity({ communityId }) {
   const dispatch = useDispatch();
-  // const { data } = useSelector((state) => state.related);
+  const { data } = useSelector((state) => state.user);
   const [inCommunity, setInCommunity] = useState(false);
 
-  // useState(() => {
-  //   if (data.communities.includes(communityId)) { setInCommunity(true); }
-  // }, []);
+  useState(() => {
+    if (data.communities && data.communities.includes(communityId)) { setInCommunity(true); }
+  }, []);
 
   const communityToggle = () => {
     if (!inCommunity) {
-      // dispatch(joinACommunity(communityId))
+      dispatch(joinCommunity(communityId));
       setInCommunity(true);
     } else {
-      // dispatch(leaveACommunity(communityId))
+      dispatch(leaveCommunity(communityId));
       setInCommunity(false);
     }
-    // Add this to Redux store
-    // function joinACommunity(state = initialState, action) {
-    //   state.user.data.communities.push(action.payload);
-    // }
-
-    // function leaveACommunity(state = initialState, action) {
-    //   const index = state.user.data.communities.indexOf(action.payload);
-    //   if (index > -1) { state.user.data.communities.splice(index, 1); }
-    // }
   };
+
+  console.log('inCommunity: ', inCommunity);
+  console.log('communityData: ', data.communities);
 
   return (
     <View>
