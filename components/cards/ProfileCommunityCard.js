@@ -11,7 +11,7 @@ export default function ProfileCommunityCard({ item, handleFavorite, styles }) {
     banner,
     favorite,
     name,
-    tag,
+    description,
   } = item;
   const handleImageError = () => {
     console.log('profile image load failed');
@@ -27,7 +27,7 @@ export default function ProfileCommunityCard({ item, handleFavorite, styles }) {
           <Card.Content style={styles.banner_container}>
             <View>
             <Title variant='titleSmall'>{name}</Title>
-            <Text variant='bodySmall'>{`#${tag}`}</Text>
+            <Text variant='bodySmall'>{description}</Text>
             </View>
             <Button style={styles.favStar} icon={favorite ? 'star' : 'star-outline'} onPress={() => console.log('favorited!')} />
           </Card.Content>

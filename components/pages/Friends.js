@@ -30,7 +30,6 @@ function Friends({ navigation, user }) {
   const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
   const auth = getAuth();
-  console.log(user.friends);
 
   useEffect(() => {
     // get request to fetch friends list
