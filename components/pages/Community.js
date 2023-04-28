@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme, Text } from 'react-native-paper';
 import {
-  View, StyleSheet, Image, Button,
+  View, StyleSheet, Image,
 } from 'react-native';
 import { docQuery } from '../../firebaseFiles/firebase.config';
 import Feed from './Feed';
@@ -32,8 +32,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#FF6000',
   },
+  banner_wrapper: {
+    flexDirection: 'row',
+    flex: 0.5,
+    alignItems: 'center',
+  },
   bannerName: {
     color: '#FFF',
+    fontWeight: 'bold',
+    paddingLeft: 15,
+  },
+  bannerIcon: {
+    fontSize: 26,
+    paddingLeft: 15,
+  },
+  join: {
+    position: 'absolute',
+    right: 0,
   },
   feed: {
     flex: 6,
@@ -67,11 +82,17 @@ export default function Community({ route }) {
         />
       </View>
       <View style={styles.banner_container}>
-        <Text style={styles.bannerName}>
-          {community.icon || defaultIcon}
-          {community.name}
-        </Text>
-        <JoinCommunity communityId={community.id} />
+        <View style={styles.banner_wrapper}>
+          <Text style={styles.bannerIcon}>
+            {community.icon || defaultIcon}
+          </Text>
+          <Text style={styles.bannerName}>
+            {community.name}
+          </Text>
+        </View>
+        <View styles={styles.join}>
+          <JoinCommunity communityId={community.id} />
+        </View>
       </View>
       <View style={styles.feed}>
         <Feed posts={communityPosts} events={communityEvents} />
