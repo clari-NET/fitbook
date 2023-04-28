@@ -46,7 +46,7 @@ export default function EventForm() {
     user: { name: `${data.name.first} ${data.name.last}`, user_id: data.id },
     id: '',
     lifts: 0,
-    comments: [],
+    members: [],
     community: { id: '', name: '' },
     content: '',
   });
@@ -75,7 +75,7 @@ export default function EventForm() {
   function handleCreate() {
     // NEED TO CONNECT TO THE DB
 
-    console.log(formData);
+    console.log(JSON.stringify(formData));
   }
 
   function handleFormChange(event, value, item) {
@@ -85,8 +85,8 @@ export default function EventForm() {
     });
   }
 
-  function handleDateChange(event) {
-    setCalendarDate(new Date(event.target.value));
+  function handleDateChange(event, dateInput) {
+    setCalendarDate(dateInput);
   }
 
   return (
@@ -123,7 +123,7 @@ export default function EventForm() {
         <Text variant="labelLarge">Date:</Text>
         <DateTimePicker
           value={calendarDate}
-          onChange={(event) => handleDateChange(event)}
+          onChange={(event, selectedDate) => handleDateChange(event, selectedDate)}
           mode='datetime'
           minimumDate={new Date()}
         />
