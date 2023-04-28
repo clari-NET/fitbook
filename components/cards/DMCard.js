@@ -43,6 +43,9 @@ export default function DMCard({ convo, handlePress }) {
     if (seconds > 60) {
       return Math.floor(seconds/60) + " minutes ago";
     }
+    if (0 <= seconds <= 60) {
+      return "now";
+    }
 };
 
   const otherUser = convo.user1.uid === auth.currentUser.uid ? convo.user2 : convo.user1;
