@@ -35,9 +35,7 @@ function Friends({ navigation, user }) {
     // get request to fetch friends list
     Promise.all(user.friends.map(id => getDoc(doc(db, 'users', String(id)))))
       .then((resArray) => {
-        console.log(resArray[0].data())
         const data = resArray.map(res => res.data());
-        console.log('Data:',data);
         setFriendsList(data);
         setFilterdFriendsList(data);
         setIsLoading(false);

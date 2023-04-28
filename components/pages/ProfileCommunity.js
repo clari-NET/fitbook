@@ -30,14 +30,11 @@ function ProfileCommunity({ navigation, user}) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  console.log(user.communities)
   useEffect(() => {
     // get request to fetch friends list
     Promise.all(user.communities.map(id => getDoc(doc(db, 'communities', String(id)))))
       .then((resArray) => {
-        console.log(resArray[0].data())
         const data = resArray.map(res => res.data());
-        console.log('Data:',data);
         setCommunitiesList(data);
         setFilterdCommunities(data);
         setIsLoading(false);

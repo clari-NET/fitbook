@@ -15,7 +15,6 @@ export default function ProfileCommunityCard({ item, handlePress, community, han
     description,
   } = item;
   const navigation = useNavigation();
-  console.log(item)
 
   const handleImageError = () => {
     console.log('profile image load failed');
