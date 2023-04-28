@@ -10,7 +10,7 @@ import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 import { useSelector } from 'react-redux';
 
-export default function Profile({ navigation }) {
+export default function Profile({ navigation, route }) {
   const { colors } = useTheme();
   const [profileSubPage, setProfileSubPage] = useState('Activity');
   const { data } = useSelector((state) => state.user);
@@ -33,7 +33,6 @@ export default function Profile({ navigation }) {
   //   // fetchData(profileSubpage)
   //   // console.log(`${profileSubPage} was loaded`);
   // }, [profileSubPage]);
-
   function SubPage({ page }) {
     return {
       Activity: <Feed />,
