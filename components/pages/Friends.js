@@ -10,16 +10,6 @@ import FriendsList from '../lists/FriendsList';
 import { change } from '../../redux/conversation/conversationSlice';
 import db, { docQuery } from '../../firebaseFiles/firebase.config';
 
-const sampleData = [
-  {
-    profilePhoto: 'https://nickelodeonuniverse.com/wp-content/uploads/Squidward.png',
-    fitnessStats: {},
-    friends: [],
-    name: { first: 'Mo', last: 'Akbari' },
-    username: 'KingMo',
-  },
-];
-
 function Friends({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
@@ -30,27 +20,24 @@ function Friends({ navigation }) {
   useEffect(() => {
     // get request to fetch friends list
     const userRef = doc(db, 'users', auth.currentUser.uid);
+    // get current user's id
     getDoc(userRef)
       .then((coms) => {
         const { friends } = coms.data();
-        const friendData = [];
-        friends.forEach((friendId) => {
+        // get all friend's user profile based on current user's friend list
+        return Promise.all(friends.map((friendId) => {
           const friendRef = doc(db, 'users', friendId);
-          getDoc(friendRef)
-            .then((friend) => {
-              const individual = friend.data();
-              friendData.push(individual);
-            })
-            .catch((err) => console.error(err));
-          return friendData;
-        }).then(() => {
-          setFriendsList(friendData);
-          setFilteredFriendsList(friendData);
-        });
+          return getDoc(friendRef)
+            .then((friend) => (
+              friend.data()
+            ));
+        }))
+          .then((friendData) => {
+            setFriendsList(friendData);
+            setFilteredFriendsList(friendData);
+          });
       }).catch((err) => console.error(err));
   }, []);
-
-  console.log('friendsList', friendsList);
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
