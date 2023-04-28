@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { getAuth } from 'firebase/auth';
 import {
   useTheme, Avatar, Text, IconButton, Button, Surface,
 } from 'react-native-paper';
-
 import {
   getDoc,
   getDocs,
@@ -30,18 +30,19 @@ const styles = StyleSheet.create({
   },
 });
 
-// const some = useSelector(state => state.data.user)
+// const { currUser } = useSelector((state) => state.data.user);
+const auth = getAuth();
 
-export default function ProfileTab({ user }) {
+export default function ProfileTab({ currProfile }) {
   const { colors } = useTheme();
   const [userData, setUserData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      setUserData(user.data);
+    if (currProfile) {
+      setUserData(currProfile.data);
     } else {
-      docQuery('users', [['username', '==', 'EmmyPop']])
+      docQuery('users', [['id', '==', auth.currentUser.uid]])
         .then((res) => {
           setUserData(res[0]);
         });
@@ -58,8 +59,11 @@ export default function ProfileTab({ user }) {
         <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
       </View>
       <View style={[styles.body]}>
-        <Text variant="headlineLarge">
+        <Text variant="headlineMedium">
           {isLoaded ? userData.username : null}
+        </Text>
+        <Text variant="headlineMedium">
+          {isLoaded ? `${userData.name.first} ${userData.name.last}` : null}
         </Text>
       </View>
       {isLoaded ? <StatList stats={userData.stats} /> : null}

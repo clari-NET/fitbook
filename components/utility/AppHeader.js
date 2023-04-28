@@ -10,11 +10,12 @@ import { toggle } from '../../redux/theme/themeSlice';
 
 export default function AppHeader({ navigation }) {
   const theme = useTheme();
+  const { isSignedIn } = useSelector((state) => state.user);
 
   return (
     <Appbar.Header style={{ justifyContent: 'space-between' }}>
       <Appbar.Content title='Fitbook' />
-      <Appbar.Action icon="cog" iconColor={theme.colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />
+      {isSignedIn ? <Appbar.Action icon="cog" iconColor={theme.colors.primary} onPress={() => navigation.navigate('ProfileSettings')} /> : null}
     </Appbar.Header>
   );
 }

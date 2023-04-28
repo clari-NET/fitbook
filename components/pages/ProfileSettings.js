@@ -3,25 +3,51 @@ import { StyleSheet, View } from 'react-native';
 import {
   useTheme, Text, Switch, Avatar, Button, IconButton,
 } from 'react-native-paper';
+import { getAuth } from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 import { toggle } from '../../redux/theme/themeSlice';
+import { docQuery } from '../../firebaseFiles/firebase.config';
+import { userStatus } from '../../redux/user/userSlice';
 
-export default function ProfileSettings({ onLogout, profile }) {
+const auth = getAuth();
+
+export default function ProfileSettings({ route, user }) {
   const theme = useTheme();
   const { dark } = useSelector((state) => state.theme);
-  const { isSignedIn } = useSelector((state) => state.user);
+  const [userData, setUserData] = useState({});
   const [isNotifyOn, setisNotifyOn] = useState(true);
   const dispatch = useDispatch();
 
+  async function deleteStore(key) {
+    await SecureStore.deleteItemAsync(key);
+  }
+
+  useEffect(() => {
+    if (user) {
+      setUserData(user);
+    } else {
+      // console.log(auth.currentUser.uid);
+      docQuery('users', [['id', '==', auth.currentUser.uid]])
+        .then((res) => {
+          setUserData(res[0]);
+        });
+    }
+  }, []);
+  // const userInfo = get
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
       <View style={[styles.header]}>
-        <Avatar.Image size={150} source={require('../../assets/SwolebrahamLincoln.png')} />
-        <IconButton icon="plus-circle" iconColor={theme.colors.primary} size={50} style={{ position: 'absolute', marginTop: -5, marginLeft: 115, backgroundColor: 'transparent' }} onPress={() => console.log('Pressed')} />
-      </View>
-      <View style={[styles.body]}>
-        <Text variant="headlineLarge">Email Notifications:</Text>
-        <Switch value={isNotifyOn} onValueChange={() => setisNotifyOn(!isNotifyOn)} />
+        {userData && <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />}
+        <IconButton
+          icon="plus-circle"
+          iconColor={theme.colors.primary}
+          size={50}
+          style={{
+            position: 'absolute', marginTop: -5, marginLeft: 115, backgroundColor: 'transparent',
+          }}
+          onPress={() => console.log('Pressed')}
+        />
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">Light/Dark Mode:</Text>
@@ -32,7 +58,18 @@ export default function ProfileSettings({ onLogout, profile }) {
         />
       </View>
       <View style={[styles.body]}>
-        <Button mode='contained' onPress={onLogout}>Logout</Button>
+        <Button
+          mode='contained'
+          onPress={async () => {
+            auth.signOut();
+            await deleteStore('FitbookEmail');
+            await deleteStore('FitbookPassword');
+            dispatch(userStatus(false));
+          }}
+        >
+          Logout
+
+        </Button>
       </View>
     </View>
   );
