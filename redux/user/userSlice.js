@@ -18,7 +18,7 @@ function joinACommunity(state = initialState, action) {
   } else {
     state.data.communities = [action.payload];
   }
-  const joinCommunityDB = async () => {
+  const joinCommunityUser = async () => {
     try {
       await updateDoc(doc(db, 'users', state.data.id), {
         communities: state.data.communities,
@@ -27,7 +27,19 @@ function joinACommunity(state = initialState, action) {
       console.error(`Unable to add community id: ${action.payload}`);
     }
   };
-  joinCommunityDB();
+  const joinCommunityCommunities = async () => {
+    try {
+      await updateDoc(doc(db, 'communities', action.payload.toString()), {
+        members: {
+          user_id: state.data.id,
+        },
+      });
+    } catch (err) {
+      console.error(`Unable to add user id: ${state.data.id}`);
+    }
+  };
+  joinCommunityUser();
+  joinCommunityCommunities();
 }
 function leaveACommunity(state = initialState, action) {
   if (state.data.communities) {
