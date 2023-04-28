@@ -57,5 +57,3 @@ export default function JoinCommunity({ communityId }) {
     </View>
   );
 }
-
-{/* <Button title='Joined' onPress={communityToggle} /> */}
