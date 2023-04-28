@@ -11,7 +11,7 @@ export default function CommunityCard({ community, handlePress }) {
             <Text variant='titleSmall'>{community.name}</Text>
             <Text variant='bodySmall'>{community.description}</Text>
           </View>
-          <Card.Cover style={{ width: 100, height: 100, resizeMode: 'cover' }} source={{ uri: 'https://picsum.photos/700' }} />
+          <Card.Cover style={{ width: 100, height: 100, resizeMode: 'cover' }} source={{ uri: community.banner }} />
         </View>
       </Card.Content>
     </Card>
