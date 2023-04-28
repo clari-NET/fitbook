@@ -93,7 +93,7 @@ export default function Conversation({ route }) {
         <Text style={styles.username}>{friend.username}</Text>
       </View>
       <GiftedChat
-        messages={convo.messages}
+        messages={convo.messages.sort((a, b) => b.createdAt - a.createdAt)}
         onSend={messages => onSend(messages)}
         user={{
           _id: friend.uid,
@@ -102,4 +102,3 @@ export default function Conversation({ route }) {
     </>
   );
 }
-
