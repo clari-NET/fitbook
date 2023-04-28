@@ -26,14 +26,29 @@ function Friends({ navigation, user }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [friendsList, setFriendsList] = useState([]);
   const [filteredFriends, setFilterdFriendsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
   const auth = getAuth();
+  console.log(user.friends);
 
   useEffect(() => {
     // get request to fetch friends list
-    console.log(user.id);
-    setFriendsList(sampleData);
-    setFilterdFriendsList(sampleData);
+    Promise.all(user.friends.map(id => getDoc(doc(db, 'users', String(id)))))
+      .then((resArray) => {
+        console.log(resArray[0].data())
+        const data = resArray.map(res => res.data());
+        console.log('Data:',data);
+        setFriendsList(data);
+        setFilterdFriendsList(data);
+        setIsLoading(false);
+        setIsError(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
+        console.log(err);
+      });
   }, []);
 
   const handleSearch = (query) => {
