@@ -10,15 +10,15 @@ import {
   query,
   where,
   doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import * as SecureStore from 'expo-secure-store';
-import {db, docQuery } from '../../firebaseFiles/firebase.config';
+import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
-import { useSelector } from 'react-redux'
-// import ProfileSettings from './ProfileSettings';
-
-// const Stack = createNativeStackNavigator();
+import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
   header: {
@@ -28,7 +28,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   body: {
-    alignItems: 'center',
+    // alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 120,
   },
 });
 
@@ -75,83 +78,66 @@ const sampleData = [{
   ],
 }];
 
-export default function ProfileTab({ navigation, userSelf, username }) {
+export default function ProfileTab({ navigation, user, refresh }) {
   const { colors } = useTheme();
   const [userData, setUserData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [reload, setReload] = useState(false);
 
-  async function getUser() {
-    const auth = getAuth();
-    // console.log(auth.currentUser)
-    const userRef = doc(db, 'users', auth.currentUser.uid);
-    return userRef;
-  }
-  const data = useSelector((state) => state.user.data);
+  const selfData = useSelector((state) => state.user.data);
+  const userSelf = selfData.username === user.username;
+
   useEffect(() => {
+    // if it's themselves
     if (userSelf) {
-      setUserData(data);
+      setUserData(selfData);
       setIsLoaded(true);
     } else {
-      docQuery('users', [['username', '==', 'EmmyPop']])
-        .then((res) => {
-          setUserData(res[0]);
-          setIsLoaded(true);
-        });
+      setUserData(user);
+      setIsLoaded(true);
     }
-  }, []);
-  // const [username, setUsername] = useState('');
+  }, [reload]);
 
-  // async function getUser(key) {
-  //   if (!user) {
-  //     const result = await SecureStore.getItemAsync(key);
-  //     if (result) {
-  //       return result;
-  //     }
-  //     return sampleData;
-  //   }
-  //   return user;
-  // }
-
-  // async function getProfile(username) {
-  //   const docRef = query(collection(db, 'tests'), where('username', '==', username));
-  //   const result = [];
-
-  //   const userInfo = await getDocs(docRef);
-  //   // console.log(userInfo);
-  //   userInfo.forEach((d) => {
-  //     result.push({ ...d.data(), id: d.id });
-  //     // console.log(d.id);
-  //   });
-  //   setUserData(result);
-  // }
-
-  // useEffect(() => {
-  //   const current = getUser();
-  //   console.log(current);
-  //   // getProfile('testOne');
-  //   // console.log(userData);
-  //   // // console.log(userData[0].fitnessStats[0].stat1);
-  //   // if (userData.length > 0) {
-  //   //   setIsLoaded(true);
-  //   // } else {
-  //   //   setIsLoaded(false);
-  //   // }
-  // }, []);
   if (isLoaded === false) {
     return <Text>Loading...</Text>;
   }
+
+  function addFriend(id) {
+    const targetRef = doc(db, 'users', String(id));
+    const myRef = doc(db, 'users', getAuth().currentUser.uid);
+    Promise.all([updateDoc(myRef, { friends: arrayUnion(id) }),
+      updateDoc(targetRef, { friends: arrayUnion(selfData.id) })])
+      .then(() => 'Success')
+      .then(() => refresh())
+      .catch((err) => console.log(err));
+  }
+
+  function unfriend(id) {
+    const targetRef = doc(db, 'users', String(id));
+    const myRef = doc(db, 'users', getAuth().currentUser.uid);
+    Promise.all([updateDoc(myRef, { friends: arrayRemove(id) }),
+      updateDoc(targetRef, { friends: arrayRemove(selfData.id) })])
+      .then(() => 'Success')
+      .then(() => refresh())
+      .catch((err) => console.log(err));
+  }
+
   return (
     <ScrollView>
       <View style={[styles.header]}>
-        <Avatar.Image size={150} source={{uri: userData.profile_photo}} />
-        <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />
+        <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
+        {userSelf && <IconButton icon="cog" size={40} iconColor={colors.primary} onPress={() => navigation.navigate('ProfileSettings')} />}
       </View>
       <View style={[styles.body]}>
         <Text variant="headlineLarge">
           {userData ? userData.username : null}
+          {!userSelf && (userData.friends.includes(selfData.id)
+            ? <IconButton icon="account-minus" size={40} iconColor={colors.primary} onPress={() => unfriend(userData.id)} />
+            : <IconButton icon="account-plus" size={40} iconColor={colors.primary} onPress={() => addFriend(userData.id)} />)
+          }
         </Text>
       </View>
-      {userData ? <StatList stats={userData.stats} /> : null}
+      {userData && <StatList stats={userData.stats} />}
     </ScrollView>
   );
 }
