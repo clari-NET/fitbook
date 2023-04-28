@@ -117,7 +117,7 @@ export default function Fitbook() {
       <NavigationContainer theme={dark ? CustomDarkTheme : CustomDefaultTheme}>
         <Stack.Navigator
           initialRouteName={isSignedIn ? 'Main' : 'Login'}
-          screenOptions={{ header: getAppHeader }}
+          screenOptions={isSignedIn ? { header: getAppHeader } : null}
         >
           {isSignedIn ? (
             <>
