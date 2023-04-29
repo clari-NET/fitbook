@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import {
   View, TextInput, Button,
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import FriendsList from '../lists/FriendsList';
-import { change } from '../../redux/conversation/conversationSlice';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import {getAuth} from 'firebase/auth';
-import { setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import {
+  setDoc, doc, getDoc, serverTimestamp, updateDoc, collection, getDocs, query, where, orderBy, arrayUnion,
+} from 'firebase/firestore';
 import uuid from 'react-native-uuid';
+import { change } from '../../redux/conversation/conversationSlice';
+import FriendsList from '../lists/FriendsList';
 import db from '../../firebaseFiles/firebase.config';
 
 const sampleData = [
@@ -33,19 +36,21 @@ function Friends({ navigation, user }) {
 
   useEffect(() => {
     // get request to fetch friends list
-    Promise.all(user.friends.map(id => getDoc(doc(db, 'users', String(id)))))
-      .then((resArray) => {
-        const data = resArray.map(res => res.data());
-        setFriendsList(data);
-        setFilterdFriendsList(data);
-        setIsLoading(false);
-        setIsError(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setIsError(true);
-        console.log(err);
-      });
+    if (user.friends) {
+      Promise.all(user.friends.map((id) => getDoc(doc(db, 'users', String(id)))))
+        .then((resArray) => {
+          const data = resArray.map((res) => res.data());
+          setFriendsList(data);
+          setFilterdFriendsList(data);
+          setIsLoading(false);
+          setIsError(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setIsError(true);
+          console.log(err);
+        });
+    }
   }, []);
 
   const handleSearch = (query) => {

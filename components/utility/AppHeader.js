@@ -7,10 +7,12 @@ import {
 } from 'react-native-paper';
 import { View, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { toggle } from '../../redux/theme/themeSlice';
 import logo from '../../assets/Fitbook-logo-orange.png';
 
-export default function AppHeader({ navigation }) {
+export default function AppHeader() {
+  const navigation = useNavigation();
   const theme = useTheme();
   const { colors } = useTheme();
   const { dark } = useSelector((state) => state.theme);

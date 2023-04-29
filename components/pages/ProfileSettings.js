@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-  useTheme, Text, Switch, Avatar, Button, IconButton,
+  useTheme, Text, Switch, Avatar, Button, IconButton, ActivityIndicator,
 } from 'react-native-paper';
 import { getAuth } from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
@@ -36,14 +36,18 @@ export default function ProfileSettings({ route, user }) {
   }, []);
   // const userInfo = get
   return (
-    !userData.username ? <Text>Loading...</Text> : (
+    !userData.username ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator animating color={theme.colors.primary} />
+      </View>
+    ) : (
       <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
         <View style={[styles.header]}>
           <Avatar.Image size={150} source={{ uri: userData.profile_photo }} />
           <IconButton
             icon="plus-circle"
             iconColor={theme.colors.primary}
-            size={50}
+            size={40}
             style={{
               position: 'absolute', marginTop: -5, marginLeft: 115, backgroundColor: 'transparent',
             }}
