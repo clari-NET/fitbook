@@ -159,7 +159,7 @@ export default function Feed({ posts, events, onPostSelected }) {
         onDismiss={() => setShowModal(false)}
         style={styles.modal}
       >
-        {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} communities={user.communities} />}
+        {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} communities={user.communities} onPostSelected={onPostSelected} />}
         {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} open={setShowModal} />}
       </Modal>
     </>

@@ -30,9 +30,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     height: 150,
   },
+  textInputTitle: {
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
 });
 
-export default function PostForm({ handleSubmit, communities }) {
+export default function PostForm({ handleSubmit, communities, onPostSelected }) {
   const [selectedCommunity, setSelectedCommunity] = useState(null);
   const [selectedCommunityName, setSelectedCommunityName] = useState('');
   const [postContent, setPostContent] = useState('');
@@ -46,17 +50,27 @@ export default function PostForm({ handleSubmit, communities }) {
 
   const communityNameSearch = useRef({});
   useEffect(() => {
-    async function fetchCommunityNames() {
-      const communityConditions = communities.map((id) => ['id', '==', id]);
-      const communityNames = await docOrQuery('communities', communityConditions);
-      setCommunityDropdownOptions(communityNames.map(({ name, id }) => {
-        communityNameSearch.current = {...communityNameSearch.current, [id]:name};
-        return { label: name, value: id };
-      }));
-      // console.log('Community Names: ', communityNames);
+    if (onPostSelected === undefined) {
+      async function fetchCommunityNames() {
+        try {
+          const communityConditions = communities.map((id) => ['id', '==', id]);
+          const communityNames = await docOrQuery('communities', communityConditions);
+          setCommunityDropdownOptions(communityNames.map(({ name, id }) => {
+            communityNameSearch.current = { ...communityNameSearch.current, [id]: name };
+            return { label: name, value: id };
+          }));
+          setIsLoading(false);
+          setIsError(false);
+        } catch {
+          setIsLoading(false);
+          setIsError(true);
+        }
+      }
+      fetchCommunityNames();
+    } else {
       setIsLoading(false);
+      setIsError(false);
     }
-    fetchCommunityNames();
   }, [communities]);
 
   const handleCommunitySelect = (id) => {
@@ -70,21 +84,33 @@ export default function PostForm({ handleSubmit, communities }) {
   if (isError) {
     return <Text>Error has occured</Text>;
   }
-  // console.log()
+
   return (
     <Surface style={styles.surface}>
       <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 20 }}>Create a Post</Text>
-      <DropDown
-        label='Select a community'
-        mode='outlined'
-        value={selectedCommunity}
-        setValue={handleCommunitySelect}
-        visible={showDropDown}
-        showDropDown={() => setShowDropDown(true)}
-        onDismiss={() => setShowDropDown(false)}
-        list={communityDropdownOptions}
-        style={styles.dropdown}
-      />
+      {onPostSelected === undefined
+        ? (
+          <DropDown
+            label='Select a community'
+            mode='outlined'
+            value={selectedCommunity}
+            setValue={handleCommunitySelect}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => setShowDropDown(false)}
+            list={communityDropdownOptions}
+            style={styles.dropdown}
+          />
+        )
+        : (
+          <TextInput
+            label='Community Name'
+            mode='outlined'
+            style={styles.textInputTitle}
+            value={onPostSelected.name}
+            editable={false}
+          />
+        )}
       <TextInput
         label='Say something'
         mode='outlined'
