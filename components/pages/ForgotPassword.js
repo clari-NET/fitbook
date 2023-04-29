@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import {
   useTheme,
@@ -27,22 +27,30 @@ export default function ForgotPassword({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.secondary }]}>
+    <View style={styles.container}>
+      <Image
+        source={require('../../assets/LogoLogin.png')}
+        style={{ width: 50, height: 60, resizeMode: 'contain', marginBottom: 80 }}
+      />
       <Text>Reset your password</Text>
       <TextInput
         label="Email"
         autoCapitalize='none'
         value={email}
         onChangeText={(email) => setEmail(email)}
-        mode="flat"
+        mode="outlined"
         style={styles.input}
-        activeUnderlineColor="#000"
+        activeOutlineColor='#fff'
+        outlineColor='#fff'
+        textColor='#FFF'
+        overflow="hidden"
+        theme={{ roundness: 30 }}
       />
       <Button
         style={styles.btn}
         mode="elevated"
-        buttonColor={colors.primary}
-        textColor={colors.secondary}
+        buttonColor='#FFE6C7'
+        textColor='#000'
         onPress={(e) => {
           handlePasswordReset(e);
         }}
@@ -51,9 +59,9 @@ export default function ForgotPassword({ navigation }) {
       </Button>
       <Button
         style={styles.btn}
-        mode="outlined"
-        textColor={colors.primary}
-        buttonColor={colors.surface}
+        mode="elevated"
+        buttonColor='#FFE6C7'
+        textColor='#000'
         onPress={() => {
           navigation.navigate('Login');
         }}
@@ -70,15 +78,23 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FF6000',
   },
   input: {
     width: '80%',
     marginTop: 5,
+    backgroundColor: '#FF6000',
+    borderRadius: 30,
   },
   btn: {
     width: '60%',
-    marginTop: 5,
+    marginTop: 15,
     marginBottom: 5,
+    borderRadius: 30,
+    borderColor: '#fff',
+  },
+  text: {
+    color: '#fff',
   },
   success: {
     backgroundColor: '#00A67C',
