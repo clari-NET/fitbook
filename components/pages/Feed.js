@@ -53,8 +53,8 @@ export default function Feed({ posts, events, onPostSelected }) {
     const newPost = {
       comments: [],
       community: {
-        id: 1,
-        name: "FitFam Community",
+        id: selectedCommunity,
+        name: selectedCommunityName,
       },
       content: postContent,
       date: new Date().getTime(),

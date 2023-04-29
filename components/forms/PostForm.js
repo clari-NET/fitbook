@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Text,
@@ -7,7 +7,7 @@ import {
   Button,
 } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
-import { docQuery } from '../../firebaseFiles/firebase.config';
+import { docOrQuery } from '../../firebaseFiles/firebase.config';
 
 const styles = StyleSheet.create({
   surface: {
@@ -39,25 +39,38 @@ export default function PostForm({ handleSubmit, communities }) {
   const [communityDropdownOptions, setCommunityDropdownOptions] = useState([]);
   const [showDropDown, setShowDropDown] = useState(false);
 
+  // loading
+  const [isLoading, setIsLoading] = useState(true);
+  // error
+  const [isError, setIsError] = useState(false);
+
+  const communityNameSearch = useRef({});
   useEffect(() => {
     async function fetchCommunityNames() {
       const communityConditions = communities.map((id) => ['id', '==', id]);
-      const communityNames = await docQuery('communities', communityConditions);
-      setCommunityDropdownOptions(communityNames.map((community) => (
-        { label: community.name, value: community.id }
-      )));
+      const communityNames = await docOrQuery('communities', communityConditions);
+      setCommunityDropdownOptions(communityNames.map(({ name, id }) => {
+        communityNameSearch.current = {...communityNameSearch.current, [id]:name};
+        return { label: name, value: id };
+      }));
+      // console.log('Community Names: ', communityNames);
+      setIsLoading(false);
     }
-
     fetchCommunityNames();
   }, [communities]);
 
-  const handleCommunitySelect = (value, label) => {
-    setSelectedCommunity(value);
-    setSelectedCommunityName(label);
-    console.log('SelectedCommunity: ', selectedCommunity);
-    console.log('SelectedCommunityName: ', selectedCommunityName);
+  const handleCommunitySelect = (id) => {
+    setSelectedCommunity(id); // id
+    setSelectedCommunityName(communityNameSearch.current[String(id)]);
   };
 
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+  if (isError) {
+    return <Text>Error has occured</Text>;
+  }
+  // console.log()
   return (
     <Surface style={styles.surface}>
       <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 20 }}>Create a Post</Text>
