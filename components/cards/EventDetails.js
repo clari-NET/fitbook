@@ -6,7 +6,7 @@ export default function Event({ event, close }) {
     <Card>
       <Card.Cover
         style={{ width: '100%' }}
-        source={{ uri: 'https://picsum.photos/700' }}
+        source={{ uri: event.image }}
       />
       <Card.Content>
         <Text variant='titleSmall'>{event.name || 'untitled event'}</Text>

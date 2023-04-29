@@ -5,11 +5,15 @@ import {
   Switch,
   IconButton,
 } from 'react-native-paper';
+import { View, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggle } from '../../redux/theme/themeSlice';
+import logo from '../../assets/Fitbook-logo-orange.png';
 
 export default function AppHeader({ navigation }) {
   const theme = useTheme();
+  const { colors } = useTheme();
+  const { dark } = useSelector((state) => state.theme);
   const { isSignedIn } = useSelector((state) => state.user);
 
   return (

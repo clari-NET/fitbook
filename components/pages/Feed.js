@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { FAB, Modal, Text } from 'react-native-paper';
-// import DropDown from 'react-native-paper-dropdown';
+import { FAB, Modal, Text, useTheme } from 'react-native-paper';
+import DropDown from 'react-native-paper-dropdown';
 import Post from '../cards/Post';
 import EventList from '../lists/EventList';
 import PostForm from '../forms/PostForm';
@@ -9,12 +9,15 @@ import EventForm from '../forms/EventForm';
 
 const styles = StyleSheet.create({
   fab: {
-    position: 'absolute',
     padding: 0,
-    margin: 0,
     bottom: -35,
-    right: -5,
+    right: 0,
     borderRadius: 30,
+    backgroundColor: '#FF6000',
+    textColor: '#FFF',
+  },
+  fabGroup: {
+    color: '#FFF',
   },
   modal: {
     width: '80%',
@@ -34,9 +37,9 @@ const styles = StyleSheet.create({
 // ];
 
 export default function Feed({ posts, events, onPostSelected }) {
-  // const [filter, setFilter] = useState('Recent');
-  // const [sorted, setSorted] = useState(posts);
-  // const [showDropDown, setShowDropDown] = useState(false);
+  const { colors } = useTheme();
+  const [filter, setFilter] = useState('Recent');
+  const [showDropDown, setShowDropDown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [postType, setPostType] = useState('');
@@ -94,11 +97,15 @@ export default function Feed({ posts, events, onPostSelected }) {
         open={open}
         visible
         icon={open ? 'arrow-up' : 'plus'}
-        style={styles.fab}
+        fabStyle={styles.fab}
+        style={styles.fabGroup}
         actions={[
           {
             icon: 'chat',
+            color: colors.secondary,
             label: 'Post',
+            style: { marginBottom: -5 },
+            labelStyle: { marginBottom: -5 },
             onPress: () => {
               setPostType('post');
               setShowModal(true);
@@ -106,7 +113,11 @@ export default function Feed({ posts, events, onPostSelected }) {
           },
           {
             icon: 'calendar-today',
+            color: colors.secondary,
+            backgroundColor: 'black',
             label: 'Event',
+            style: { marginBottom: -25 },
+            labelStyle: { marginBottom: -25 },
             onPress: () => {
               setPostType('event');
               setShowModal(true);
