@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import {
-  useTheme, Avatar, Text, IconButton, ActivityIndicator, Modal,
+  useTheme, Avatar, Text, IconButton, ActivityIndicator, Modal, FAB,
 } from 'react-native-paper';
 import {
   doc,
@@ -84,10 +84,10 @@ export default function ProfileTab({ user, refresh }) {
             <Text variant="headlineMedium">
               {`${userData.name.first} ${userData.name.last}`}
             </Text>
-            {userSelf && <IconButton icon="numeric-9-plus-circle" size={40} iconColor={colors.primary} onPress={() => setVisible(true)} />}
           </View>
           <StatList stats={userData.stats} />
         </ScrollView>
+        {userSelf && <FAB icon="arm-flex" style={styles.fab} color="white" onPress={() => setVisible(true)} />}
         <Modal
           visible={visible}
           onDismiss={() => setVisible(false)}
@@ -120,5 +120,15 @@ const styles = StyleSheet.create({
     // width: '80%',
     margin: 20,
     // backgroundColor: 'white',
+  },
+  fab: {
+    position: 'absolute',
+    padding: 0,
+    margin: 0,
+    bottom: 15,
+    right: 16,
+    borderRadius: 30,
+    backgroundColor: '#FF6600',
+    textColor: 'white',
   },
 });
