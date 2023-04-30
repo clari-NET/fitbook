@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
-import { Text, TextInput, Surface, Button } from 'react-native-paper';
+import {
+  Text,
+  TextInput,
+  Surface,
+  Button,
+} from 'react-native-paper';
+import DropDown from 'react-native-paper-dropdown';
+import { docOrQuery } from '../../firebaseFiles/firebase.config';
 
 const styles = StyleSheet.create({
   surface: {
@@ -8,25 +15,112 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderBottomLeftRadius: 30,
+    backgroundColor: '#fff',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
   },
   textInput: {
     marginHorizontal: 10,
-    marginBottom: 5,
+    marginBottom: 10,
+    height: 150,
+  },
+  textInputTitle: {
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
 });
 
-export default function PostForm({handleSubmit}) {
+export default function PostForm({ handleSubmit, communities, onPostSelected }) {
+  const [selectedCommunity, setSelectedCommunity] = useState(null);
+  const [selectedCommunityName, setSelectedCommunityName] = useState('');
+  const [postContent, setPostContent] = useState('');
+  const [communityDropdownOptions, setCommunityDropdownOptions] = useState([]);
+  const [showDropDown, setShowDropDown] = useState(false);
+
+  // loading
+  const [isLoading, setIsLoading] = useState(true);
+  // error
+  const [isError, setIsError] = useState(false);
+
+  const communityNameSearch = useRef({});
+  useEffect(() => {
+    if (onPostSelected === undefined) {
+      async function fetchCommunityNames() {
+        try {
+          const communityConditions = communities.map((id) => ['id', '==', id]);
+          const communityNames = await docOrQuery('communities', communityConditions);
+          setCommunityDropdownOptions(communityNames.map(({ name, id }) => {
+            communityNameSearch.current = { ...communityNameSearch.current, [id]: name };
+            return { label: name, value: id };
+          }));
+          setIsLoading(false);
+          setIsError(false);
+        } catch {
+          setIsLoading(false);
+          setIsError(true);
+        }
+      }
+      fetchCommunityNames();
+    } else {
+      setIsLoading(false);
+      setIsError(false);
+    }
+  }, [communities]);
+
+  const handleCommunitySelect = (id) => {
+    setSelectedCommunity(id); // id
+    setSelectedCommunityName(communityNameSearch.current[String(id)]);
+  };
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+  if (isError) {
+    return <Text>Error has occured</Text>;
+  }
+
   return (
     <Surface style={styles.surface}>
-      <Text variant='titleLarge'>Create an Event</Text>
+      <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 20 }}>Create a Post</Text>
+      {onPostSelected === undefined
+        ? (
+          <DropDown
+            label='Select a community'
+            mode='outlined'
+            value={selectedCommunity}
+            setValue={handleCommunitySelect}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => setShowDropDown(false)}
+            list={communityDropdownOptions}
+            style={styles.dropdown}
+          />
+        )
+        : (
+          <TextInput
+            label='Community Name'
+            mode='outlined'
+            style={styles.textInputTitle}
+            value={onPostSelected.name}
+            editable={false}
+          />
+        )}
       <TextInput
         label='Say something'
         mode='outlined'
         multiline
         placeholder='Speak to your people...'
         style={styles.textInput}
+        value={postContent}
+        onChangeText={(text) => setPostContent(text)}
       />
-      <Button mode='contained' onPress={handleSubmit}>Post!</Button>
+      <Button mode='contained' onPress={() => handleSubmit(selectedCommunity, selectedCommunityName, postContent)}>Post!</Button>
     </Surface>
   );
 }
