@@ -95,7 +95,11 @@ export default function Community({ route }) {
         </View>
       </View>
       <View style={styles.feed}>
-        <Feed posts={communityPosts} events={communityEvents} />
+        <Feed
+          posts={communityPosts}
+          events={communityEvents}
+          onPostSelected={{ id: community.id, name: community.name }}
+        />
       </View>
     </View>
   );
