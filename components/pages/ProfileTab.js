@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import db from '../../firebaseFiles/firebase.config';
 import StatList from '../lists/StatList';
 import StatForm from '../forms/StatForm';
+import Loading from '../cards/Loading';
 
 export default function ProfileTab({ user, refresh }) {
   const { colors } = useTheme();
@@ -64,11 +65,7 @@ export default function ProfileTab({ user, refresh }) {
   }
 
   return (
-    !userData.username ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator animating color={colors.primary} />
-      </View>
-    ) : (
+    !userData.username ? <Loading /> : (
       <>
         <ScrollView>
           <View style={[styles.header]}>
@@ -77,8 +74,9 @@ export default function ProfileTab({ user, refresh }) {
           <View style={[styles.body]}>
             <Text variant="headlineMedium">{userData.username}</Text>
             {!userSelf && (userData.friends.includes(selfData.id)
-              ? <IconButton icon="account-minus" size={40} iconColor={colors.primary} onPress={() => unfriend(userData.id)} />
-              : <IconButton icon="account-plus" size={40} iconColor={colors.primary} onPress={() => addFriend(userData.id)} />)}
+              ? <FAB icon="account-minus" style={styles.fab} size={40} color="white" onPress={() => unfriend(userData.id)} />
+              : <FAB icon="account-plus" style={styles.fab} size={40} color="white" onPress={() => addFriend(userData.id)} />)}
+            {userSelf && <FAB icon="arm-flex" style={styles.fab} color="white" onPress={() => setVisible(true)} />}
           </View>
           <View style={[styles.username]}>
             <Text variant="headlineMedium">
@@ -87,7 +85,6 @@ export default function ProfileTab({ user, refresh }) {
           </View>
           <StatList stats={userData.stats} />
         </ScrollView>
-        {userSelf && <FAB icon="arm-flex" style={styles.fab} color="white" onPress={() => setVisible(true)} />}
         <Modal
           visible={visible}
           onDismiss={() => setVisible(false)}
@@ -109,7 +106,9 @@ const styles = StyleSheet.create({
   },
   body: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-evenly',
+    // right: -40,
   },
   username: {
     flexDirection: 'row',
@@ -125,8 +124,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     padding: 0,
     margin: 0,
-    bottom: 15,
-    right: 16,
+    top: -60,
+    right: 15,
     borderRadius: 30,
     backgroundColor: '#FF6600',
     textColor: 'white',

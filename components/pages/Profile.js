@@ -55,16 +55,16 @@ export default function Profile({ navigation, route }) {
       .catch(console.error);
   }, [route.params.userId, refreshTrigger]);
 
-  function SubPage({ page, thisPost, thisEvent, thisNavigation, thisUser }) {
+  function SubPage({ page, thisPost, thisEvent, thisUser }) {
     return {
       Activity: <Feed posts={thisPost} events={thisEvent} />,
-      Friends: <Friends navigation={thisNavigation} user={thisUser} />,
+      Friends: <Friends navigation={navigation} user={thisUser} />,
       ProfileCommunity: (
-        <ProfileCommunity navigation={thisNavigation} user={thisUser} />
+        <ProfileCommunity navigation={navigation} user={thisUser} />
       ),
-      ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} refresh={refresh} />,
+      ProfileTab: <ProfileTab navigation={navigation} user={thisUser} refresh={refresh} />,
       ProfileSettings: (
-        <ProfileSettings navigation={thisNavigation} user={thisUser} />
+        <ProfileSettings navigation={navigation} user={thisUser} />
       ),
     }[page];
   }
@@ -105,7 +105,7 @@ export default function Profile({ navigation, route }) {
         page={profileSubPage}
         thisPost={posts}
         thisEvent={events}
-        thisNavigation={navigation}
+        // thisNavigation={navigation}
         thisUser={user}
       />
     </View>
