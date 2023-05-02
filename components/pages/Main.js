@@ -102,49 +102,15 @@ export default function Main({ navigation }) {
   return (
     <>
       <AppHeader navigation={navigation} />
-      {/* <View style={[styles.container, { backgroundColor: colors.surface }]}> */}
       <StatusBar />
-      <TabStack.Navigator>
-        <TabStack.Screen
-          name='TabNavigator'
-          component={TabNavigator}
-          options={{ headerShown: false }}
-        />
-        <TabStack.Screen
-          name='Comment'
-          component={Comment}
-          options={{ headerBackVisible: false }}
-        />
-        <TabStack.Screen
-          name='Activity'
-          component={Activity}
-          options={{ headerBackVisible: false }}
-        />
-        <TabStack.Screen
-          name='Friends'
-          component={Friends}
-          options={{ headerBackVisible: false }}
-        />
-        <TabStack.Screen
-          name='Community'
-          component={Community}
-          options={{ headerBackVisible: false }}
-        />
-        <TabStack.Screen
-          name='ProfileTab'
-          component={ProfileTab}
-          options={{ headerBackVisible: false }}
-        />
-        <TabStack.Screen
-          name='ProfileSettings'
-          component={ProfileSettings}
-          options={{ headerBackVisible: false }}
-        />
-        <TabStack.Screen
-          name='Conversation'
-          component={Conversation}
-          options={{ headerBackVisible: false }}
-        />
+      <TabStack.Navigator
+        screenOptions={{ headerBackVisible: false, headerShown: false }}
+      >
+        <TabStack.Screen name='TabNavigator' component={TabNavigator} />
+        <TabStack.Screen name='Comment' component={Comment} />
+        <TabStack.Screen name='Community' component={Community} />
+        <TabStack.Screen name='ProfileSettings' component={ProfileSettings} />
+        <TabStack.Screen name='Conversation' component={Conversation} />
       </TabStack.Navigator>
     </>
   );
