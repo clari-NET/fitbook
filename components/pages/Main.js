@@ -104,7 +104,7 @@ export default function Main({ navigation }) {
       <AppHeader navigation={navigation} />
       <StatusBar />
       <TabStack.Navigator
-        screenOptions={{ headerBackVisible: false, headerShown: false }}
+        screenOptions={{ headerShown: false }}
       >
         <TabStack.Screen name='TabNavigator' component={TabNavigator} />
         <TabStack.Screen name='Comment' component={Comment} />
