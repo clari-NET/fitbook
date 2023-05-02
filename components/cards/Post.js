@@ -92,8 +92,11 @@ export default function Post({ post }) {
       <Card.Content>
         <View style={styles.postHeader}>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Profile', {
-              userId: post.user.user_id.toString(),
+            navigation.push('TabNavigator', {
+              screen: 'Profile',
+              params: {
+                userId: post.user.user_id.toString(),
+              },
             });
           }}
           >
@@ -103,8 +106,11 @@ export default function Post({ post }) {
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Profile', {
-              userId: post.user.user_id.toString(),
+            navigation.push('TabNavigator', {
+              screen: 'Profile',
+              params: {
+                userId: post.user.user_id.toString(),
+              },
             });
           }}
           >
