@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useTheme, Button, Surface } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, TabActions } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   postContainer: {
@@ -69,9 +69,9 @@ export default function Post({ post }) {
     <Surface style={styles.postContainer}>
       <View style={styles.postHeader}>
         <TouchableOpacity onPress={() => {
-          navigation.navigate('Profile', {
+          navigation.dispatch(TabActions.jumpTo('Profile', {
             user: post.user,
-          });
+          }));
         }}
         >
           <Image

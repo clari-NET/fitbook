@@ -46,6 +46,12 @@ function TabNavigator() {
           name='Profile'
           component={Profile}
           initialParams={{ userId: getAuth().currentUser.uid }}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              e.preventDefault();
+              navigation.navigate('Profile', { userId: getAuth().currentUser.uid });
+            },
+          })}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => ColoredIcon('bell', color),
@@ -102,14 +108,11 @@ export default function Main({ navigation }) {
           options={{ headerShown: false }}
         />
         <TabStack.Screen name='Comment' component={Comment} />
-        <TabStack.Screen name='Activity' component={Activity} />
-        <TabStack.Screen name='Friends' component={Friends} />
         <TabStack.Screen
           name='Community'
           component={Community}
           options={{ title: '' }}
         />
-        <TabStack.Screen name='ProfileTab' component={ProfileTab} />
         <TabStack.Screen name='ProfileSettings' component={ProfileSettings} />
         <TabStack.Screen name='Conversation' component={Conversation} />
       </TabStack.Navigator>

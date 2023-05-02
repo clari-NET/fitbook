@@ -17,6 +17,13 @@ export default function Profile({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
+      e.preventDefault();
+
+    })
+  }, [navigation])
+
   function getPostsAndEvents(curUser) {
     const postQueryConditions = [['user.user_id', '==', curUser.id]];
     const eventQueryConditions = [
