@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
-import { FAB, Modal, Text, useTheme } from 'react-native-paper';
+import {
+  FlatList,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Modal,
+  TouchableWithoutFeedback,
+  Keyboard,
+  useWindowDimensions,
+} from 'react-native';
+import { FAB, Text, useTheme, Portal } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import { useSelector } from 'react-redux';
 import { doc, setDoc } from 'firebase/firestore';
@@ -22,13 +32,22 @@ const styles = StyleSheet.create({
   fabGroup: {
     color: '#FFF',
   },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    justifyContent: 'center',
+  },
   modal: {
-    width: '80%',
-    margin: 20,
-    justifyContent: 'flex-end',
+    height: 'auto',
+    width: 'auto',
+    backgroundColor: 'white',
+    margin: 30,
+    padding: 30,
+    borderRadius: 30,
   },
 });
 
+// PLEASE KEEP DROPDOWN COMMENTED STUFF BECAUSE I'M ADDING IT BACK IN LATER
 // const filterList = [
 //   { value: 'hot', label: 'Hot' },
 //   { value: 'top', label: 'Top' },
@@ -48,7 +67,11 @@ export default function Feed({ posts, events, onPostSelected }) {
   const [postType, setPostType] = useState('');
   const user = useSelector((state) => state.user).data;
 
-  async function handlePostSubmit(selectedCommunity, selectedCommunityName, postContent) {
+  async function handlePostSubmit(
+    selectedCommunity,
+    selectedCommunityName,
+    postContent,
+  ) {
     setShowModal(false);
     const newPost = {
       comments: [],
@@ -91,9 +114,17 @@ export default function Feed({ posts, events, onPostSelected }) {
     <>
       {posts.length === 0 ? (
         <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 50 }}
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 50,
+          }}
         >
-          <Text variant='displaySmall' style={{ textAlign: 'center' }}>It's quiet in here... Check out the communities tab to start connecting!</Text>
+          <Text variant='displaySmall' style={{ textAlign: 'center' }}>
+            It's quiet in here... Check out the communities tab to start
+            connecting!
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -106,7 +137,7 @@ export default function Feed({ posts, events, onPostSelected }) {
             events.length !== 0 && (
               <>
                 <EventList events={events} />
-                {/* <DropDown
+                {/* <DropDown {*PLEASE KEEP THESE COMMENTS FOR NOW*}
                   label={filter}
                   mode='outlined'
                   list={filterList}
@@ -154,13 +185,35 @@ export default function Feed({ posts, events, onPostSelected }) {
         ]}
         onStateChange={() => setOpen(!open)}
       />
-      <Modal
-        visible={showModal}
-        onDismiss={() => setShowModal(false)}
-        style={styles.modal}
-      >
-        {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} communities={user.communities} onPostSelected={onPostSelected} />}
-        {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} open={setShowModal} />}
+      <Modal visible={showModal} transparent animationType='none'>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.modalBackdrop}
+        >
+          <TouchableWithoutFeedback onPress={() => setShowModal(false)}>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View
+                  style={styles.modal}
+                >
+                  {postType === 'post' && (
+                    <PostForm
+                      handleSubmit={handlePostSubmit}
+                      communities={user.communities}
+                      onPostSelected={onPostSelected}
+                    />
+                  )}
+                  {postType === 'event' && (
+                    <EventForm
+                      handleSubmit={handleEventSubmit}
+                      open={setShowModal}
+                    />
+                  )}
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </Modal>
     </>
   );

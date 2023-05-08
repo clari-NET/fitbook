@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import {
   Text,
   TextInput,
@@ -11,28 +11,37 @@ import { docOrQuery } from '../../firebaseFiles/firebase.config';
 
 const styles = StyleSheet.create({
   surface: {
+    height: '100%',
+    width: '100%',
     padding: 30,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    backgroundColor: '#fff',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
+    // borderTopLeftRadius: 30,
+    // borderTopRightRadius: 30,
+    // borderBottomLeftRadius: 30,
+    // backgroundColor: '#fff',
+    // elevation: 4,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.27,
+    // shadowRadius: 4.65,
   },
   textInput: {
-    marginHorizontal: 10,
     marginBottom: 10,
-    height: 150,
+    height: 100,
+    width: 'auto',
+    // margin: 20,
+    // width: 200,
+    // width: '100%',
   },
   textInputTitle: {
     marginHorizontal: 10,
     marginBottom: 10,
+  },
+  dropdown: {
+    // flex: 1,
+    width: '100%',
   },
 });
 
@@ -42,30 +51,37 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
   const [postContent, setPostContent] = useState('');
   const [communityDropdownOptions, setCommunityDropdownOptions] = useState([]);
   const [showDropDown, setShowDropDown] = useState(false);
-
-  // loading
   const [isLoading, setIsLoading] = useState(true);
-  // error
   const [isError, setIsError] = useState(false);
 
   const communityNameSearch = useRef({});
+
+  async function fetchCommunityNames() {
+    try {
+      const communityConditions = communities.map((id) => ['id', '==', id]);
+      const communityNames = await docOrQuery(
+        'communities',
+        communityConditions,
+      );
+      setCommunityDropdownOptions(
+        communityNames.map(({ name, id }) => {
+          communityNameSearch.current = {
+            ...communityNameSearch.current,
+            [id]: name,
+          };
+          return { label: name, value: id };
+        }),
+      );
+      setIsLoading(false);
+      setIsError(false);
+    } catch {
+      setIsLoading(false);
+      setIsError(true);
+    }
+  }
+
   useEffect(() => {
     if (onPostSelected === undefined) {
-      async function fetchCommunityNames() {
-        try {
-          const communityConditions = communities.map((id) => ['id', '==', id]);
-          const communityNames = await docOrQuery('communities', communityConditions);
-          setCommunityDropdownOptions(communityNames.map(({ name, id }) => {
-            communityNameSearch.current = { ...communityNameSearch.current, [id]: name };
-            return { label: name, value: id };
-          }));
-          setIsLoading(false);
-          setIsError(false);
-        } catch {
-          setIsLoading(false);
-          setIsError(true);
-        }
-      }
       fetchCommunityNames();
     } else {
       setIsLoading(false);
@@ -86,31 +102,31 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
   }
 
   return (
-    <Surface style={styles.surface}>
-      <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 20 }}>Create a Post</Text>
-      {onPostSelected === undefined
-        ? (
-          <DropDown
-            label='Select a community'
-            mode='outlined'
-            value={selectedCommunity}
-            setValue={handleCommunitySelect}
-            visible={showDropDown}
-            showDropDown={() => setShowDropDown(true)}
-            onDismiss={() => setShowDropDown(false)}
-            list={communityDropdownOptions}
-            style={styles.dropdown}
-          />
-        )
-        : (
-          <TextInput
-            label='Community Name'
-            mode='outlined'
-            style={styles.textInputTitle}
-            value={onPostSelected.name}
-            editable={false}
-          />
-        )}
+    <>
+      <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 20 }}>
+        Create a Post
+      </Text>
+      {onPostSelected === undefined ? (
+        <DropDown
+          label='Select a community'
+          mode='outlined'
+          value={selectedCommunity}
+          setValue={handleCommunitySelect}
+          visible={showDropDown}
+          showDropDown={() => setShowDropDown(true)}
+          onDismiss={() => setShowDropDown(false)}
+          list={communityDropdownOptions}
+          style={styles.dropdown}
+        />
+      ) : (
+        <TextInput
+          label='Community Name'
+          mode='outlined'
+          style={styles.textInputTitle}
+          value={onPostSelected.name}
+          editable={false}
+        />
+      )}
       <TextInput
         label='Say something'
         mode='outlined'
@@ -120,7 +136,12 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
         value={postContent}
         onChangeText={(text) => setPostContent(text)}
       />
-      <Button mode='contained' onPress={() => handleSubmit(selectedCommunity, selectedCommunityName, postContent)}>Post!</Button>
-    </Surface>
+      <Button
+        mode='contained'
+        onPress={() => handleSubmit(selectedCommunity, selectedCommunityName, postContent)}
+      >
+        Post!
+      </Button>
+    </>
   );
 }
