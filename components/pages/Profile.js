@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { SegmentedButtons, Text } from 'react-native-paper';
+import { useTheme, SegmentedButtons, ActivityIndicator } from 'react-native-paper';
 import { getDoc, doc } from 'firebase/firestore';
 import db, { docQuery } from '../../firebaseFiles/firebase.config';
 import Friends from './Friends';
@@ -10,12 +10,13 @@ import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 
 export default function Profile({ navigation, route }) {
-  const [profileSubPage, setProfileSubPage] = useState('Friends');
+  const [profileSubPage, setProfileSubPage] = useState('ProfileTab');
   const [events, setEvents] = useState([]);
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const { colors } = useTheme();
 
   function getPostsAndEvents(curUser) {
     const postQueryConditions = [['user.user_id', '==', curUser.id]];
@@ -33,7 +34,6 @@ export default function Profile({ navigation, route }) {
   }
 
   function refresh() {
-    console.log('refreshed!')
     setRefreshTrigger(!refreshTrigger);
   }
 
@@ -55,22 +55,26 @@ export default function Profile({ navigation, route }) {
       .catch(console.error);
   }, [route.params.userId, refreshTrigger]);
 
-  function SubPage({ page, thisPost, thisEvent, thisNavigation, thisUser, refresh }) {
+  function SubPage({ page, thisPost, thisEvent, thisUser }) {
     return {
       Activity: <Feed posts={thisPost} events={thisEvent} />,
-      Friends: <Friends navigation={thisNavigation} user={thisUser} />,
+      Friends: <Friends navigation={navigation} user={thisUser} />,
       ProfileCommunity: (
-        <ProfileCommunity navigation={thisNavigation} user={thisUser} />
+        <ProfileCommunity navigation={navigation} user={thisUser} />
       ),
-      ProfileTab: <ProfileTab navigation={thisNavigation} user={thisUser} refresh={refresh} />,
+      ProfileTab: <ProfileTab navigation={navigation} user={thisUser} refresh={refresh} />,
       ProfileSettings: (
-        <ProfileSettings navigation={thisNavigation} user={thisUser} />
+        <ProfileSettings navigation={navigation} user={thisUser} />
       ),
     }[page];
   }
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator animating color={colors.primary} />
+      </View>
+    );
   }
 
   return (
@@ -101,9 +105,8 @@ export default function Profile({ navigation, route }) {
         page={profileSubPage}
         thisPost={posts}
         thisEvent={events}
-        thisNavigation={navigation}
+        // thisNavigation={navigation}
         thisUser={user}
-        refresh={refresh}
       />
     </View>
   );

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
   View, TextInput, StyleSheet
 } from 'react-native';
-import { Button, useTheme } from 'react-native-paper';
-import ProfileCommunityList from '../lists/ProfileCommunityList';
+import { Button, useTheme, ActivityIndicator } from 'react-native-paper';
 import { doc, getDoc } from 'firebase/firestore';
+import ProfileCommunityList from '../lists/ProfileCommunityList';
 import db from '../../firebaseFiles/firebase.config';
 
 const sampleData = [
@@ -22,34 +22,36 @@ const sampleData = [
   },
 ];
 
-function ProfileCommunity({ navigation, user}) {
+function ProfileCommunity({ navigation, user }) {
   const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [communitiesList, setCommunitiesList] = useState([]);
-  const [filteredCommunities, setFilterdCommunities] = useState([]);
+  const [filteredCommunities, setFilteredCommunities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     // get request to fetch friends list
-    Promise.all(user.communities.map(id => getDoc(doc(db, 'communities', String(id)))))
-      .then((resArray) => {
-        const data = resArray.map(res => res.data());
-        setCommunitiesList(data);
-        setFilterdCommunities(data);
-        setIsLoading(false);
-        setIsError(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setIsError(true);
-        console.log(err);
-      });
+    if (user.communities) {
+      Promise.all(user.communities.map((id) => getDoc(doc(db, 'communities', String(id)))))
+        .then((resArray) => {
+          const data = resArray.map((res) => res.data());
+          setCommunitiesList(data);
+          setFilteredCommunities(data);
+          setIsLoading(false);
+          setIsError(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setIsError(true);
+          console.log(err);
+        });
+    }
   }, []);
 
   const handleSearch = (query) => {
     // need to make the live search to wait(to be delayed a bit)
-    setFilteredCommunityList([...communityList
+    setFilteredCommunities([...communitiesList
       .filter((community) => community.name.toLowerCase().includes(query.toLowerCase())
         || community.tag.toLowerCase().includes(query.toLowerCase()))]);
     setSearchQuery(query);

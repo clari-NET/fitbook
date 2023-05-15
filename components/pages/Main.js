@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getAuth } from 'firebase/auth';
@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import db from '../../firebaseFiles/firebase.config';
 import Home from './Home';
 import Profile from './Profile';
-import ProfileTab from './ProfileTab';
 import ProfileSettings from './ProfileSettings';
 import CommunityTab from './CommunityTab';
 import DMList from './DMList';
@@ -19,65 +18,74 @@ import AppHeader from '../utility/AppHeader';
 import { updateUser } from '../../redux/user/userSlice';
 import Comment from './Comment';
 import Community from './Community';
-import Activity from './Feed';
-import Friends from './Friends';
 import Conversation from './Conversation';
+import Loading from '../cards/Loading';
 
 const Tab = createMaterialBottomTabNavigator();
 
-function ColoredIcon(name, color) {
-  return <Icon name={name} color={color} size={20} />;
+function ColoredIcon(name, color, isFA = false) {
+  if (isFA) {
+    return <FontAwesome5 name={name} color={color} size={20} />;
+  }
+  return <Icon name={name} color={color} size={24} />;
 }
 
 function TabNavigator() {
-  const user = useSelector((state) => state.user).data;
   return (
-    user !== undefined && (
-      <Tab.Navigator>
-        <Tab.Screen
-          name='Home'
-          component={Home}
-          options={{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => ColoredIcon('home', color),
-          }}
-        />
-        <Tab.Screen
-          name='Profile'
-          component={Profile}
-          initialParams={{ userId: getAuth().currentUser.uid }}
-          options={{
-            tabBarLabel: 'Profile',
-            tabBarIcon: ({ color }) => ColoredIcon('bell', color),
-          }}
-        />
-        <Tab.Screen
-          name='CommunityTab'
-          component={CommunityTab}
-          options={{
-            tabBarLabel: 'Communities',
-            tabBarIcon: ({ color }) => ColoredIcon('account-group', color),
-          }}
-        />
-        <Tab.Screen
-          name='Messages'
-          component={DMList}
-          options={{
-            tabBarLabel: 'Messages',
-            tabBarIcon: ({ color }) => ColoredIcon('chat', color),
-          }}
-        />
-      </Tab.Navigator>
-    )
+    <Tab.Navigator
+      options={{
+        headerBackVisible: false,
+      }}
+    >
+      <Tab.Screen
+        name='Home'
+        component={Home}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => ColoredIcon('home', color),
+        }}
+      />
+      <Tab.Screen
+        name='Profile'
+        component={Profile}
+        initialParams={{ userId: getAuth().currentUser.uid }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate('Profile', { userId: getAuth().currentUser.uid });
+          },
+        })}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color }) => ColoredIcon('user-alt', color, true),
+        }}
+      />
+      <Tab.Screen
+        name='CommunityTab'
+        component={CommunityTab}
+        options={{
+          tabBarLabel: 'Communities',
+          tabBarIcon: ({ color }) => ColoredIcon('account-group', color),
+        }}
+      />
+      <Tab.Screen
+        name='Messages'
+        component={DMList}
+        options={{
+          tabBarLabel: 'Messages',
+          tabBarIcon: ({ color }) => ColoredIcon('chat', color),
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 
 const TabStack = createNativeStackNavigator();
 
 export default function Main({ navigation }) {
-  const { colors } = useTheme();
   const dispatch = useDispatch();
   const auth = getAuth();
+  const user = useSelector((state) => state.user).data;
 
   useEffect(() => {
     getDoc(doc(db, 'users', auth.currentUser.uid))
@@ -90,26 +98,20 @@ export default function Main({ navigation }) {
       .catch(console.error);
   }, []);
 
+  if (!user) {
+    return <Loading />;
+  }
+
   return (
     <>
       <AppHeader navigation={navigation} />
-      {/* <View style={[styles.container, { backgroundColor: colors.surface }]}> */}
       <StatusBar />
-      <TabStack.Navigator>
-        <TabStack.Screen
-          name='TabNavigator'
-          component={TabNavigator}
-          options={{ headerShown: false }}
-        />
+      <TabStack.Navigator
+        screenOptions={{ headerShown: false }}
+      >
+        <TabStack.Screen name='TabNavigator' component={TabNavigator} />
         <TabStack.Screen name='Comment' component={Comment} />
-        <TabStack.Screen name='Activity' component={Activity} />
-        <TabStack.Screen name='Friends' component={Friends} />
-        <TabStack.Screen
-          name='Community'
-          component={Community}
-          options={{ title: '' }}
-        />
-        <TabStack.Screen name='ProfileTab' component={ProfileTab} />
+        <TabStack.Screen name='Community' component={Community} />
         <TabStack.Screen name='ProfileSettings' component={ProfileSettings} />
         <TabStack.Screen name='Conversation' component={Conversation} />
       </TabStack.Navigator>
