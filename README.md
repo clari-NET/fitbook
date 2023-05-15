@@ -2,32 +2,15 @@
 
 A social media application that brings together fitness minded individuals through user created communities and events.
 
-## Getting Started
-
-Installation
-- Clone the repository
-    ```
-        git clone https://github.com/clari-NET/fitbook
-    ```
-- Install the dependencies
-    ```
-        npm install
-    ```
-- Run the following script
-    ```
-        npm start (if you have Expo installed)
-        npm run web (if you do NOT have Expo installed)
-    ```
-
 ## Authors
 
-[Andrew Ihn](https://github.com/roormade)
-[Brett Tanonaka](https://github.com/B-Tanonaka)
-[Elliott Tung](https://github.com/elliott234)
-[Johnathan Simeroth](https://github.com/johnsimeroth)
-[Minseok Song](https://github.com/msong1)
-[Nicholas Milligan](https://github.com/NicMilli)
-[Yale Yang](https://github.com/yaleyang5)
+[Andrew Ihn](https://github.com/roormade)\
+[Brett Tanonaka](https://github.com/B-Tanonaka)\
+[Elliott Tung](https://github.com/elliott234)\
+[Johnathan Simeroth](https://github.com/johnsimeroth)\
+[Minseok Song](https://github.com/msong1)\
+[Nicholas Milligan](https://github.com/NicMilli)\
+[Yale Yang](https://github.com/yaleyang5)\
 [Yeongcheol Hwang](https://github.com/yeonghwang94)
 
 ## Built With
@@ -40,11 +23,6 @@ Installation
 - Users can comment and like posts
 - Navigation between communitites, events, and user profiles from various points in the application
 - Creating navigation stacks allowing the user to go back to previous screens
-
-<details>
-  <summary>Loader.io test results</summary>
-<img src="https://user-images.githubusercontent.com/118404699/232241888-09b4b35d-5232-4b93-a911-ec54e4c83c30.png" alt="loader stress test at 7,500 request per second" width="75%" height="50%" />
-</details>
 
 ## Overview
 This API handles requests for the product overview and related items section of Wired Wardrobe's [client-side application](https://github.com/Wired-Wardrobe/project-atlier). Approximately one million products are available in the database.
@@ -133,3 +111,19 @@ Each component was hosted on an Amazon Web Services (AWS) EC2 instance. AWS RDS 
     <img src="https://user-images.githubusercontent.com/118404699/232246237-53a1910c-572c-4d18-951b-ed9cd1635aaf.png" alt="k6 local stress test at styles endpoint" width="100%" height="100%"/>
 </details>
 
+## Getting Started
+
+Installation
+- Clone the repository
+    ```
+        git clone https://github.com/clari-NET/fitbook
+    ```
+- Install the dependencies
+    ```
+        npm install
+    ```
+- Run the following script
+    ```
+        npm start | if you have Expo installed (best run on an iPhone 14)
+        npm run web
+    ```
