@@ -24,92 +24,54 @@ A social media application that brings together fitness minded individuals throu
 - Navigation between communitites, events, and user profiles from various points in the application
 - Creating navigation stacks allowing the user to go back to previous screens
 
-## Overview
-This API handles requests for the product overview and related items section of Wired Wardrobe's [client-side application](https://github.com/Wired-Wardrobe/project-atlier). Approximately one million products are available in the database.
+## Login
+Users are able to log in or create an account using an email and password or their Google account
 
-#### Server
+## Home feed
+Once logged in, the user is presented a home feed with posts and events from communities they have joined
 
-Each server is able to handle around 2,500 requests per second with caching
+#### Bottom navigation
+The navigation bar sticks to the bottom of the screen and has four tab options: Home, Profile, Communities, Messages
 
-#### Database
+#### Creating a post or community
+On the home tab, a user can press on the plus button to create a post or event
 
-PostgreSQL, a relational database was used as each product has a set of associated styles, photos, and sku numbers
+## Profile
+On the profile tab, a top navigation appears that shows the user their activity, friends, communities, and profile information
+<div>
+	<details>
+		<summary>Top Navigation</summary>
+		<div>
+      <h4>Activity</h4>
+      <p>Comments and posts</p>
+    </div>
+    <div>
+      <h4>Friends</h4>
+      <p>List of friends that the user can choose to direct message</p>
+    </div>
+    <div>
+      <h4>Communities</h4>
+      <p>Communities user has joined</p>
+    </div>
+    <div>
+      <h4>Profile</h4>
+      <p>User information such as username, statistics, profile photo</p>
+    </div>
+	</details>
+</div>
 
-<details>
-  <summary>Schema photo example</summary>
-  <img src="https://user-images.githubusercontent.com/118404699/232244966-fe93e175-9f0f-46e5-8f28-5faae4dbf369.png" alt="PostgreSQL schema" width="50%" height="50%">
-</details>
+## Communities
+<ul>
+	<li>List of available and suggested communitites that the user has not joined</li>
+	<li>Search function that filters list of communitites</li>
+  <li>Able to click on community card to navigate to the community page</li>
+</ul>
 
-#### Deployment
-
-Each component was hosted on an Amazon Web Services (AWS) EC2 instance. AWS RDS and Elastic Beanstalk were not used.
-- Database, 1
-- Load balancer, 1
-- Servers, 3
-
-## Optimizations
-
-#### Adding servers
-- NGINX load balancer distributes requests across the servers
-- Benefit: Linear increase, each server was able to handle approximately 800 requests per second with less than 10ms latency
-- Cost: Having to purchase more server space
-
-#### Caching
-- NGINX cache stores data for 10 minutes
-- Benefit: Linear increase, improved each server capacity by 300% to handle about 2,500 requests per second with less than 5ms latency
-- Cost: Increasing storage space
-
-## Stress Testing
-
-#### Loader.io - Deployed testing after optimizing
-
-- Deployed testing was primarily on the styles endpoint because it is the most data demanding
-
-<details>
-    <summary>5,000 requests per second test results</summary>
-    <ul>
-      <li>Requests per second: 5,000</li>
-      <li>Total requests: 300,000</li>
-      <li>Latency: 1ms</li>
-      <li>Error rate: 0%</li>
-    </ul>
-    <img src="https://user-images.githubusercontent.com/118404699/232247977-832f24fa-f640-45ab-96f3-b09c9143f801.png" alt="Loader.io deployed stress test at 5000 requests per second" width="100%" height="100%"/>
-</details>
-
-<details>
-    <summary>7,500 requests per second test results</summary>
-    <ul>
-      <li>Requests per second: 7,500</li>
-      <li>Total requests: 449,969</li>
-      <li>Latency: 4ms</li>
-      <li>Error rate: 0%</li>
-    </ul>
-    <img src="https://user-images.githubusercontent.com/118404699/232241888-09b4b35d-5232-4b93-a911-ec54e4c83c30.png" alt="Loader.io deployed stress test at 5000 requests per second" width="100%" height="100%"/>
-</details>
-
-#### k6 - Local testing before optimizing
-
-<details>
-    <summary>Product id test results</summary>
-      <ul>
-        <li>Requests per second: 2,730</li>
-        <li>Total requests: 821,784</li>
-        <li>Latency: 43ms</li>
-        <li>Error rate: 0%</li>
-    </ul>
-    <img src="https://user-images.githubusercontent.com/118404699/232246178-6739aeb1-3b72-4246-8027-ab54a512d503.png" alt="k6 local stress test at product id endpoint" width="100%" height="100%"/>
-</details>
-
-<details>
-    <summary>Styles test results</summary>
-    <ul>
-      <li>Requests per second: 1,319</li>
-      <li>Total requests: 397,066</li>
-      <li>Latency: 79ms</li>
-      <li>Error rate: 0%</li>
-    </ul>
-    <img src="https://user-images.githubusercontent.com/118404699/232246237-53a1910c-572c-4d18-951b-ed9cd1635aaf.png" alt="k6 local stress test at styles endpoint" width="100%" height="100%"/>
-</details>
+## Messages
+<ul>
+	<li>Conversations with other users</li>
+	<li>Click on message card to navigate to the conversation</li>
+</ul>
 
 ## Getting Started
 
