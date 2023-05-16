@@ -22,7 +22,7 @@ A social media application that brings together fitness minded individuals throu
 - Ability to create communities, posts, and events
 - Users can comment and like posts
 - Navigation between communitites, events, and user profiles from various points in the application
-- Creating navigation stacks allowing the user to go back to previous screens
+- Creates navigation stacks allowing the user to go back to previous screens
 
 ## Login
 Users are able to log in or create an account using an email and password or their Google account
@@ -43,6 +43,8 @@ The navigation bar sticks to the bottom of the screen and has four tab options: 
 
 <img src="https://github.com/clari-NET/fitbook/assets/118404699/510a0780-eaf6-4486-b87d-f6ab2e4cf388" width="15%" height="15%"/>
 
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/60c8974c-48c0-4e2f-af7d-50ed795b0356" width="15%" height="15%"/>
+
 #### Creating a post or community
 On the home tab, a user can press on the plus button to create a post or event
 
@@ -56,7 +58,6 @@ On the profile tab, a top navigation appears that shows the user their activity,
 		<div>
       <h4>Activity</h4>
       <p>Comments and posts</p>
-      <img src="https://github.com/clari-NET/fitbook/assets/118404699/60c8974c-48c0-4e2f-af7d-50ed795b0356" width="15%" height="15%"/>
     </div>
     <div>
       <h4>Friends</h4>
