@@ -35,10 +35,18 @@ Once logged in, the user is presented a home feed with posts and events from com
 #### Bottom navigation
 The navigation bar sticks to the bottom of the screen and has four tab options: Home, Profile, Communities, Messages
 
+#### Comments
+<ul>
+  <li>User able to reply to posts</li>
+  <li>Each comment can be 'lifted' (liked) and 'dropped' (disliked)</li>
+</ul>
+
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/510a0780-eaf6-4486-b87d-f6ab2e4cf388" width="15%" height="15%"/>
+
 #### Creating a post or community
 On the home tab, a user can press on the plus button to create a post or event
 
-<img src="https://github.com/clari-NET/fitbook/assets/118404699/62638f1e-2278-42c9-8a08-7c666dab5b95" width="30%" height="30%"/>
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/fb60787f-a247-443e-8c3f-435a674a87bc" width="15%" height="15%"/>
 
 ## Profile
 On the profile tab, a top navigation appears that shows the user their activity, friends, communities, and profile information
@@ -48,6 +56,7 @@ On the profile tab, a top navigation appears that shows the user their activity,
 		<div>
       <h4>Activity</h4>
       <p>Comments and posts</p>
+      <img src="https://github.com/clari-NET/fitbook/assets/118404699/60c8974c-48c0-4e2f-af7d-50ed795b0356" width="15%" height="15%"/>
     </div>
     <div>
       <h4>Friends</h4>
@@ -70,6 +79,7 @@ On the profile tab, a top navigation appears that shows the user their activity,
 	<li>Search function that filters list of communitites</li>
   <li>Able to click on community card to navigate to the community page</li>
 </ul>
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/8de36655-ca86-43b0-8592-b7bced7d47fe" width="15%" height="15%"/>
 
 ## Messages
 <ul>
