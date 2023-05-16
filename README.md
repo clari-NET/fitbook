@@ -30,11 +30,15 @@ Users are able to log in or create an account using an email and password or the
 ## Home feed
 Once logged in, the user is presented a home feed with posts and events from communities they have joined
 
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/62638f1e-2278-42c9-8a08-7c666dab5b95" width="15%" height="15%"/>
+
 #### Bottom navigation
 The navigation bar sticks to the bottom of the screen and has four tab options: Home, Profile, Communities, Messages
 
 #### Creating a post or community
 On the home tab, a user can press on the plus button to create a post or event
+
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/62638f1e-2278-42c9-8a08-7c666dab5b95" width="30%" height="30%"/>
 
 ## Profile
 On the profile tab, a top navigation appears that shows the user their activity, friends, communities, and profile information
