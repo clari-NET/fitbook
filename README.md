@@ -26,9 +26,12 @@ A social media application that brings together fitness minded individuals throu
 - Dark mode
 
 ## Login
-Users are able to log in or create an account using an email and password or their Google account
+Users are required to log in or create an account using an email and password in order to access the application
 
-<img src="https://github.com/clari-NET/fitbook/assets/118404699/d107bd61-1965-45b6-9776-5f9f6ec74c9c" width="15%" height="15%"/>
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/a7a9065f-aeff-4ff2-9f14-24b422ba322e" width="15%" height="15%"/>
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/2fef05e3-8930-462c-8cd4-6f86716cf3b4" width="15%" height="15%"/>
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/c1e8295d-1928-47f4-b3e4-e260c1e21ea4" width="15%" height="15%"/>
+<img src="https://github.com/clari-NET/fitbook/assets/118404699/5fa94d3f-d9bd-4d3c-94b9-a93a6cc9ad6d" width="15%" height="15%"/>
 
 ## Home feed
 Once logged in, the user is presented a home feed with posts and events from communities they have joined
