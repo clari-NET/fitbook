@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Text } from 'react-native-paper';
 import { View } from 'react-native';
 
