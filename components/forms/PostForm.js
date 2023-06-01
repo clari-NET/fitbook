@@ -7,7 +7,7 @@ import {
   Button,
   Portal,
 } from 'react-native-paper';
-import DropDown from 'react-native-paper-dropdown';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { docOrQuery } from '../../firebaseFiles/firebase.config';
 
 const styles = StyleSheet.create({
@@ -15,33 +15,17 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     padding: 30,
-    // borderTopLeftRadius: 30,
-    // borderTopRightRadius: 30,
-    // borderBottomLeftRadius: 30,
-    // backgroundColor: '#fff',
-    // elevation: 4,
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 3,
-    // },
-    // shadowOpacity: 0.27,
-    // shadowRadius: 4.65,
   },
   textInput: {
     marginBottom: 10,
     height: 100,
     width: 'auto',
-    // margin: 20,
-    // width: 200,
-    // width: '100%',
   },
   textInputTitle: {
     marginHorizontal: 10,
     marginBottom: 10,
   },
   dropdown: {
-    // flex: 1,
     width: '100%',
     zIndex: 100,
   },
@@ -91,11 +75,6 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
     }
   }, [communities]);
 
-  const handleCommunitySelect = (id) => {
-    setSelectedCommunity(id); // id
-    setSelectedCommunityName(communityNameSearch.current[String(id)]);
-  };
-
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
@@ -109,20 +88,16 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
         Create a Post
       </Text>
       {onPostSelected === undefined ? (
-        // <View style={{zIndex: 1}}>
-        <DropDown
+        <DropDownPicker
           label='Select a community'
-          mode='outlined'
           value={selectedCommunity}
-          setValue={handleCommunitySelect}
-          visible={showDropDown}
-          showDropDown={() => setShowDropDown(true)}
-          onDismiss={() => setShowDropDown(false)}
-          list={communityDropdownOptions}
+          setValue={setSelectedCommunity}
+          open={showDropDown}
+          setOpen={setShowDropDown}
+          items={communityDropdownOptions}
           style={styles.dropdown}
           dropdownStyle={styles.dropdown}
         />
-        // </View>
       ) : (
         <TextInput
           label='Community Name'
@@ -143,7 +118,11 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
       />
       <Button
         mode='contained'
-        onPress={() => handleSubmit(selectedCommunity, selectedCommunityName, postContent)}
+        onPress={() => handleSubmit(
+          selectedCommunity,
+          communityNameSearch.current[String(selectedCommunity)],
+          postContent,
+        )}
       >
         Post!
       </Button>
