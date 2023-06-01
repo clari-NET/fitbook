@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { Platform, StyleSheet, KeyboardAvoidingView, View } from 'react-native';
 import {
   Text,
   TextInput,
   Surface,
   Button,
+  Portal,
 } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import { docOrQuery } from '../../firebaseFiles/firebase.config';
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
   dropdown: {
     // flex: 1,
     width: '100%',
+    zIndex: 100,
   },
 });
 
@@ -107,6 +109,7 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
         Create a Post
       </Text>
       {onPostSelected === undefined ? (
+        // <View style={{zIndex: 1}}>
         <DropDown
           label='Select a community'
           mode='outlined'
@@ -117,7 +120,9 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
           onDismiss={() => setShowDropDown(false)}
           list={communityDropdownOptions}
           style={styles.dropdown}
+          dropdownStyle={styles.dropdown}
         />
+        // </View>
       ) : (
         <TextInput
           label='Community Name'
