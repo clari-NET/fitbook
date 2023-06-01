@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   Text,
   TextInput,
-  Surface,
   Button,
-  Portal,
+  useTheme,
 } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { docOrQuery } from '../../firebaseFiles/firebase.config';
@@ -25,15 +24,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
   },
-  dropdown: {
-    width: '100%',
-    zIndex: 100,
-  },
 });
 
 export default function PostForm({ handleSubmit, communities, onPostSelected }) {
   const [selectedCommunity, setSelectedCommunity] = useState(null);
-  const [selectedCommunityName, setSelectedCommunityName] = useState('');
   const [postContent, setPostContent] = useState('');
   const [communityDropdownOptions, setCommunityDropdownOptions] = useState([]);
   const [showDropDown, setShowDropDown] = useState(false);
@@ -41,6 +35,7 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
   const [isError, setIsError] = useState(false);
 
   const communityNameSearch = useRef({});
+  const { colors } = useTheme();
 
   async function fetchCommunityNames() {
     try {
@@ -89,14 +84,32 @@ export default function PostForm({ handleSubmit, communities, onPostSelected }) 
       </Text>
       {onPostSelected === undefined ? (
         <DropDownPicker
-          label='Select a community'
+          placeholder='Select a community'
           value={selectedCommunity}
           setValue={setSelectedCommunity}
+          setItems={setCommunityDropdownOptions}
           open={showDropDown}
           setOpen={setShowDropDown}
           items={communityDropdownOptions}
-          style={styles.dropdown}
-          dropdownStyle={styles.dropdown}
+          style={{
+            backgroundColor: colors.background,
+            borderColor: colors.onSurfaceVariant,
+            width: '100%',
+            borderRadius: 0,
+          }}
+          dropDownContainerStyle={{
+            backgroundColor: colors.background,
+            borderColor: colors.onSurfaceVariant,
+            borderRadius: 0,
+          }}
+          placeholderStyle={{
+            color: colors.onSurfaceVariant,
+            fontSize: 16,
+          }}
+          textStyle={{
+            color: colors.onSurfaceVariant,
+            fontSize: 16,
+          }}
         />
       ) : (
         <TextInput

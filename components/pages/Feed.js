@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    // backgroundColor: 'rgba(255,255,255,0.9)',
     justifyContent: 'center',
   },
   modal: {
     height: 'auto',
     width: 'auto',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     margin: 30,
     padding: 30,
     borderRadius: 30,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 // ];
 
 export default function Feed({ posts, events, onPostSelected }) {
-  const { colors } = useTheme();
+  const { colors, dark } = useTheme();
   const [filter, setFilter] = useState('Recent');
   const [showDropDown, setShowDropDown] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -188,13 +188,13 @@ export default function Feed({ posts, events, onPostSelected }) {
       <Modal visible={showModal} transparent animationType='none'>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.modalBackdrop}
+          style={[styles.modalBackdrop, { backgroundColor: colors.backdrop }]}
         >
           <TouchableWithoutFeedback onPress={() => setShowModal(false)}>
             <View style={{ flex: 1, justifyContent: 'center' }}>
               <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View
-                  style={styles.modal}
+                  style={[styles.modal, { backgroundColor: colors.surface }]}
                 >
                   {postType === 'post' && (
                     <PostForm
