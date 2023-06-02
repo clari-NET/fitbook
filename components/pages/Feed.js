@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { FAB, Modal, Text, useTheme } from 'react-native-paper';
-import DropDown from 'react-native-paper-dropdown';
+import uuid from 'react-native-uuid';
+import { useSelector } from 'react-redux';
+import { doc, setDoc } from 'firebase/firestore';
+import db from '../../firebaseFiles/firebase.config';
 import Post from '../cards/Post';
 import EventList from '../lists/EventList';
 import PostForm from '../forms/PostForm';
@@ -43,9 +46,34 @@ export default function Feed({ posts, events, onPostSelected }) {
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [postType, setPostType] = useState('');
+  const user = useSelector((state) => state.user).data;
 
-  function handlePostSubmit() {
+  async function handlePostSubmit(selectedCommunity, selectedCommunityName, postContent) {
     setShowModal(false);
+    const newPost = {
+      comments: [],
+      community: {
+        id: selectedCommunity,
+        name: selectedCommunityName,
+      },
+      content: postContent,
+      date: new Date().getTime(),
+      id: uuid.v4(),
+      lifts: 0,
+      user: {
+        name: `${user.name.first} ${user.name.last}`,
+        profilePhoto: user.profile_photo,
+        user_id: user.id,
+        username: user.username,
+      },
+    };
+
+    try {
+      const documentRef = doc(db, 'posts', newPost.id.toString());
+      await setDoc(documentRef, newPost);
+    } catch (error) {
+      console.error('Error posting your post:', error);
+    }
   }
 
   function handleEventSubmit() {
@@ -131,7 +159,7 @@ export default function Feed({ posts, events, onPostSelected }) {
         onDismiss={() => setShowModal(false)}
         style={styles.modal}
       >
-        {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} />}
+        {postType === 'post' && <PostForm handleSubmit={handlePostSubmit} communities={user.communities} onPostSelected={onPostSelected} />}
         {postType === 'event' && <EventForm handleSubmit={handleEventSubmit} open={setShowModal} />}
       </Modal>
     </>
